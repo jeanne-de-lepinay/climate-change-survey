@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Do You Feel About Climate Change? — Survey Results</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ── DEMOGRAPHICS TOGGLE ───────────────────────────────────────────────────────
+// ── DEMOGRAPHICS TOGGLE ───────────────────────────────────────────────────────
+let _demoRendered = false;
+
+function positionDropdown(){
+  const btn = document.getElementById('demoToggle');
+  const dd  = document.getElementById('demoDropdown');
+  if(!dd.classList.contains('open')) return;
+  const r   = btn.getBoundingClientRect();
+  const ddW = Math.min(700, window.innerWidth - 24);
+  // Place directly below button in fixed viewport coords (no scrollY needed for fixed)
+  let top  = r.bottom + 8;
+  let left = r.left;
+  // Clamp right edge
+  if(left + ddW > window.innerWidth - 8) left = Math.max(8, window.innerWidth - ddW - 8);
+  // Clamp bottom: if not enough room below, flip above
+  const maxH = window.innerHeight - top - 16;
+  if(maxH < 200 && r.top > window.innerHeight/2){
+    // Flip above
+    top = Math.max(8, r.top - parseInt(dd.offsetHeight||400) - 8);
+  }
+  dd.style.top  = top  + 'px';
+  dd.style.left = left + 'px';
+  dd.style.width = ddW + 'px';
+}
+
+function toggleDemo(){
+  const btn = document.getElementById('demoToggle');
+  const dd  = document.getElementById('demoDropdown');
+  const isOpen = dd.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  if(isOpen){
+    positionDropdown();
+    if(!_demoRendered){ _demoRendered = true; renderDemoCharts(); }
+  }
+}
+
+// Reposition on scroll so dropdown sticks to button
+window.addEventListener('scroll', positionDropdown, {passive:true});
+window.addEventListener('resize', positionDropdown, {passive:true});
+// Close dropdown when clicking outside
+document.addEventListener('click',function(e){
+  const btn=document.getElementById('demoToggle');
+  const dd=document.getElementById('demoDropdown');
+  if(btn&&dd&&!btn.contains(e.target)&&!dd.contains(e.target)){
+    dd.classList.remove('open');
+    btn.classList.remove('open');
+  }
+});
+</script>
+<style>
+  :root {
+    --ink:#1a1a2e; --ink-mid:#3d3d5c; --ink-light:#8888aa;
+    --paper:#f5f3ee; --card:#ffffff;
+    --teal:#2a6049; --teal2:#4a9070; --teal3:#7bbfa0;
+    --amber:#c8773a; --amber2:#e09a5a;
+    --red:#8b3a3a; --red2:#c05a5a; --red3:#e08a8a;
+    --blue:#3a5e8b; --blue2:#5a80b5; --blue3:#8aaad5;
+    --plum:#6b4c8b; --grey:#9a9490; --grey2:#c8c4be; --rule:#dddbd4;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.6;overflow-x:hidden;}
+
+  /* ── HEADER ── */
+  header{background:var(--ink);color:white;padding:48px 56px 44px;position:relative;}
+  /* decorative circles in a non-clipping pseudo wrapper */
+  .header-deco{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+  .header-deco::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,0.035);}
+  .header-deco::after{content:'';position:absolute;bottom:-100px;left:240px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,0.025);}
+  header>*:not(.header-deco){position:relative;z-index:1;}
+  .header-eyebrow{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:14px;}
+  header h1{font-family:'Playfair Display',serif;font-size:clamp(26px,3.5vw,46px);font-weight:700;line-height:1.12;max-width:680px;margin-bottom:0;}
+  header h1 em{font-style:italic;color:#9ecfbb;}
+
+  /* header title block */
+  .header-body{margin-bottom:28px;position:relative;}
+  .header-intro{font-size:13px;font-style:italic;color:rgba(255,255,255,0.6);line-height:1.7;margin:16px 0 24px;max-width:680px;}
+  .header-intro-method{display:block;margin-top:8px;font-size:11px;font-style:normal;color:rgba(255,255,255,0.35);line-height:1.65;}
+
+  /* demographics toggle button */
+  .demo-toggle-btn{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:8px 16px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);border-radius:8px;color:rgba(255,255,255,0.75);font-size:12px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:background .2s,color .2s;user-select:none;}
+  .demo-toggle-btn:hover{background:rgba(255,255,255,0.15);color:white;}
+  .demo-toggle-btn svg{transition:transform .3s;}
+  .demo-toggle-btn.open svg{transform:rotate(180deg);}
+  /* demographics dropdown overlay */
+  .demo-dropdown{display:none;position:fixed;z-index:9999;background:#fff;border:1px solid var(--rule);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.22);padding:28px 28px 22px;width:700px;max-width:calc(100vw - 24px);max-height:calc(100vh - 120px);overflow-y:auto;}
+  .demo-dropdown.open{display:flex;gap:28px;flex-wrap:wrap;}
+  .demo-dropdown-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:18px;width:100%;}
+  .demo-panel{flex:1;min-width:160px;}
+  .demo-panel-title{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:10px;}
+  /* gender pills (dark-on-light inside dropdown) */
+  .gender-row{display:flex;flex-direction:column;gap:7px;}
+  .gender-item{display:flex;align-items:center;gap:8px;}
+  .gender-bar-track{flex:1;height:7px;background:rgba(0,0,0,0.08);border-radius:99px;overflow:hidden;min-width:80px;}
+  .gender-bar-fill{height:100%;border-radius:99px;}
+  .gender-label{font-size:12px;color:var(--ink-mid);white-space:nowrap;}
+  .gender-pct{font-size:12px;font-weight:600;color:var(--ink);min-width:36px;text-align:right;}
+  /* mini charts in dropdown */
+  .demo-chart-wrap{width:100%;height:150px;position:relative;}
+  .demo-chart-wrap.tall{height:220px;}
+  .demo-chart-wrap{position:relative;}
+  .demo-chart-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important;}
+
+  /* header meta strip */
+  .header-meta{display:flex;gap:32px;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(255,255,255,0.12);}
+  .meta-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:2px;}
+  .meta-value{font-size:14px;font-weight:500;color:rgba(255,255,255,0.9);}
+
+  @media(max-width:700px){
+    header{padding:32px 24px 28px;}
+    .demo-dropdown{width:calc(100vw - 48px);}
+  }
+
+  /* ── MAIN ── */
+  main{max-width:1200px;margin:0 auto;padding:52px 40px 48px;}
+  .section-label{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);margin-bottom:32px;padding-bottom:10px;border-bottom:1px solid var(--rule);}
+  .divider{margin:52px 0 36px;display:flex;align-items:center;gap:16px;}
+  .divider-line{flex:1;height:1px;background:var(--rule);}
+  .divider-text{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);white-space:normal;padding:0 8px;text-align:center;max-width:70%;line-height:1.6;}
+
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:24px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;}
+  .grid-1{display:grid;grid-template-columns:1fr;gap:24px;margin-bottom:24px;}
+  @media(max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr;} main{padding:32px 20px 60px;} .card[style*="grid-template-columns"]{grid-template-columns:1fr!important;}}
+
+  .card{background:var(--card);border-radius:14px;padding:28px 28px 24px;border:1px solid var(--rule);}
+  .card-q{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-light);margin-bottom:5px;}
+  .card-title{font-family:'Playfair Display',serif;font-size:15.5px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:5px;}
+  .card-note{font-size:11px;color:var(--ink-light);margin-bottom:20px;}
+
+  .stat-row{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;}
+  .stat-box{flex:1;min-width:130px;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px 20px 16px;}
+  .stat-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;line-height:1;margin-bottom:6px;}
+  .stat-desc{font-size:12px;color:var(--ink-mid);line-height:1.4;}
+  .c-teal{color:var(--teal);}.c-amber{color:var(--amber);}.c-red{color:var(--red);}.c-blue{color:var(--blue);}.c-plum{color:var(--plum);}
+
+  .likert-bar{display:flex;height:38px;border-radius:8px;overflow:hidden;margin-bottom:10px;}
+  .likert-seg{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:rgba(255,255,255,0.92);}
+  .likert-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+  .likert-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-mid);}
+  .likert-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+  .stat-strip{display:flex;flex-wrap:wrap;gap:0;margin-bottom:22px;border:1px solid var(--rule);border-radius:10px;overflow:hidden;}
+  .stat-strip-item{flex:1;min-width:0;padding:10px 12px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);background:#faf9f6;}
+  .stat-strip-item:last-child{border-right:none;}
+  .stat-strip-label{font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-light);margin-bottom:3px;}
+  .stat-strip-val{font-family:'Playfair Display',serif;font-size:clamp(16px,4vw,24px);font-weight:700;line-height:1;}
+
+  .dist-note{margin-top:16px;padding:14px 18px;background:#f9f8f5;border-radius:8px;border:1px solid var(--rule);font-size:12px;color:var(--ink-mid);line-height:1.6;}
+  .dist-note strong{color:var(--ink);}
+
+  /* method note at bottom */
+  .method-note{background:none;border:none;border-radius:0;border-top:1px solid var(--rule);padding:24px 4px 24px;font-size:11.5px;color:var(--ink-light);line-height:1.9;}
+
+  /* ── CLUSTER TEASER ── */
+  .cluster-teaser{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+    padding:48px 0 0;border-top:1px solid var(--rule);margin-top:8px;}
+  .cluster-teaser-label{font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--teal2);margin-bottom:12px;}
+  .cluster-teaser-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;
+    color:var(--ink);line-height:1.3;margin-bottom:14px;}
+  .cluster-teaser-intro{font-size:13px;line-height:1.75;color:var(--ink-mid);margin-bottom:24px;}
+  .cluster-teaser-btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);
+    color:#fff;border:none;border-radius:8px;padding:11px 20px;font-size:13px;font-weight:500;
+    font-family:inherit;cursor:pointer;transition:background .2s;}
+  .cluster-teaser-btn:hover{background:#2a2a4a;}
+  .cluster-teaser-profiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .cluster-teaser-card{border-top:3px solid var(--c);background:var(--card);
+    border-radius:10px;padding:16px 18px;border:1px solid var(--rule);border-top-width:3px;}
+  .ctc-count{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;
+    color:var(--c);line-height:1;margin-bottom:4px;}
+  .ctc-name{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:5px;}
+  .ctc-desc{font-size:11px;color:var(--ink-light);line-height:1.5;}
+  @media(max-width:900px){
+    .cluster-teaser{grid-template-columns:1fr;}
+    .cluster-teaser-profiles{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:500px){.cluster-teaser-profiles{grid-template-columns:1fr;}}
+
+  /* ── CONCLUSION ── */
+  .conclusion-section{background:var(--ink);margin:48px 0 0;}
+  .conclusion-inner{max-width:1200px;margin:0 auto;padding:52px 40px 60px;}
+  .conclusion-label{font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
+  .conclusion-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#ffffff;margin-bottom:32px;line-height:1.25;}
+  .conclusion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+  .conclusion-card{padding:28px 24px;border-top:2px solid rgba(255,255,255,0.08);}
+  .conclusion-card:nth-child(1){border-top-color:var(--teal);}
+  .conclusion-card:nth-child(2){border-top-color:var(--blue);}
+  .conclusion-card:nth-child(3){border-top-color:var(--amber);}
+  .conclusion-card:nth-child(4){border-top-color:var(--red2);}
+  .conclusion-card:nth-child(5){border-top-color:var(--teal2);}
+  .conclusion-card-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#ffffff;margin-bottom:10px;line-height:1.3;}
+  .conclusion-card p{font-size:12.5px;line-height:1.75;color:rgba(255,255,255,0.55);margin:0;}
+  @media(max-width:900px){.conclusion-inner{padding:36px 20px 48px;}.conclusion-title{font-size:22px;}.conclusion-grid{grid-template-columns:1fr;}}
+  .method-note h3{font-family:'Inter',sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);margin-bottom:16px;}
+  .method-note strong{color:var(--ink-mid);font-weight:600;}
+
+  .h-donut canvas{max-height:300px;}
+  .h-sm canvas{max-height:200px;}
+  .h-hist { position:relative; width:100%; height:clamp(200px, 35vw, 360px); }
+  .h-hist canvas { position:absolute; inset:0; width:100%!important; height:100%!important; }
+  .h-tall { position:relative; height:500px; }
+  .h-tall canvas { position:absolute; inset:0; width:100%!important; height:100%!important; }
+  .h-overlap { position:relative; height:400px; }
+  .h-overlap canvas { position:absolute; inset:0; width:100%!important; height:100%!important; }
+
+
+  /* ── INTRO DETAILS ── */
+  .intro-details{border-top:1px solid var(--rule);padding:20px 4px 24px;}
+  .intro-details summary{
+    list-style:none;display:flex;align-items:center;gap:8px;
+    cursor:pointer;user-select:none;
+    font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-light);margin-bottom:0;
+  }
+  .intro-details summary::-webkit-details-marker{display:none;}
+  .intro-details summary::before{
+    content:'';display:inline-block;
+    width:0;height:0;
+    border-top:4px solid transparent;
+    border-bottom:4px solid transparent;
+    border-left:6px solid var(--ink-light);
+    transition:transform .2s;flex-shrink:0;
+  }
+  .intro-details[open] summary::before{transform:rotate(90deg);}
+  .intro-details summary:hover{color:var(--ink-mid);}
+  .intro-details summary:hover::before{border-left-color:var(--ink-mid);}
+  .intro-details-body{
+    padding-top:20px;
+    font-size:11.5px;color:var(--ink-light);line-height:1.9;
+  }
+  .intro-details-body p{margin-bottom:14px;}
+  .intro-details-body p:last-child{margin-bottom:0;}
+  .intro-details-body .intro-subhead{
+    font-size:9px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink-light);margin-bottom:8px;margin-top:20px;
+  }
+  .intro-details-body ul{margin:0 0 14px 0;padding-left:16px;display:flex;flex-direction:column;gap:6px;}
+  .intro-details-body strong{color:var(--ink-mid);font-weight:600;}
+
+
+  /* ── PAGE NAV ── */
+  .header-top-nav{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;}
+  .header-eyebrow{margin-bottom:0;}
+  .page-nav{display:flex;gap:4px;background:rgba(255,255,255,0.07);border-radius:8px;padding:3px;}
+  .page-nav-btn{background:none;border:none;color:rgba(255,255,255,0.5);font-size:11px;font-weight:500;
+    letter-spacing:.04em;padding:6px 14px;border-radius:6px;cursor:pointer;font-family:inherit;transition:all .2s;}
+  .page-nav-btn:hover{color:rgba(255,255,255,0.8);}
+  .page-nav-btn.active{background:rgba(255,255,255,0.12);color:#ffffff;}
+  /* ── CLUSTER OVERLAY ── */
+  .cluster-overlay{position:fixed;inset:0;z-index:9000;background:#0f1117;
+    overflow-y:auto;display:flex;flex-direction:column;}
+  .cluster-overlay-inner{flex:1;display:flex;flex-direction:column;}
+  .cluster-close-btn{position:fixed;top:18px;right:24px;z-index:9100;
+    display:inline-flex;align-items:center;gap:7px;
+    background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);
+    color:rgba(255,255,255,0.85);font-size:12px;font-weight:500;font-family:inherit;
+    padding:7px 14px 7px 10px;border-radius:20px;cursor:pointer;
+    backdrop-filter:blur(8px);transition:background .2s;}
+  .cluster-close-btn:hover{background:rgba(255,255,255,0.18);}
+  /* Make the cluster canvas fill the full viewport height — handled by inline embed styles */
+
+  footer{text-align:center;padding:32px;font-size:11px;color:var(--ink-light);border-top:1px solid var(--rule);}
+</style>
+</head>
+<body>
+
+<div id="page-survey" class="page">
+<header>
+  <div class="header-deco"></div>
+  <div class="header-top-nav">
+  <div class="header-eyebrow">Antarctic Expedition Survey</div>
+  <nav class="page-nav">
+    <button class="page-nav-btn active" id="nav-survey" onclick="showPage('survey')">Survey results</button>
+    <button class="page-nav-btn" id="nav-cluster" onclick="showPage('cluster')">Respondent profiles</button>
+  </nav>
+</div>
+  <div class="header-body">
+    <h1>How do you feel about <em>climate change?</em></h1>
+
+    <p class="header-intro">This survey was conducted aboard the Fridtjof Nansen, an HX expedition vessel, during Antarctic voyages. Questionnaires were available in English and Chinese. Results below represent the answers of guests who chose to participate — a self-selected group with an interest in science, nature, and polar environments.<br><span class="header-intro-method">Methodology — Surveys were transcribed manually by a single analyst (Jeanne de Lépinay). Where a respondent ticked two answers to a single-choice question, each was counted as 0.5. Unmarked scale items were excluded from that question's denominator (n&nbsp;=&nbsp;66 for Q3, Q4, Q9, Q10). Participation bias, language barriers, question phrasing and single-analyst transcription may influence results.</span></p>
+
+    <!-- Demographics toggle -->
+    <button class="demo-toggle-btn" id="demoToggle" onclick="toggleDemo()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="5" r="2"/><path d="M7 8v2M4 11a3 3 0 016 0"/></svg>
+      Respondent demographics
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 6,8 10,4"/></svg>
+    </button>
+
+  </div>
+
+  <div class="header-meta">
+    <div><div class="meta-label">Respondents</div><div class="meta-value">67</div></div>
+    <div><div class="meta-label">Questions</div><div class="meta-value">Q1 – Q11</div></div>
+    <div><div class="meta-label">Languages</div><div class="meta-value">English · Chinese</div></div>
+    <div><div class="meta-label">Nationalities</div><div class="meta-value">15+ countries</div></div>
+    <div><div class="meta-label">Mean age</div><div class="meta-value">62 years</div></div>
+  </div>
+</header>
+
+<main>
+
+<!-- AT A GLANCE -->
+<div style="margin-top:4px"><div class="section-label">At a glance</div></div>
+<div class="stat-row">
+  <div class="stat-box"><div class="stat-num c-teal">71.6%</div><div class="stat-desc">believe climate change is a serious human-caused problem</div></div>
+  <div class="stat-box"><div class="stat-num c-amber">50%</div><div class="stat-desc">feel "concerned but hopeful" when hearing about climate change</div></div>
+  <div class="stat-box"><div class="stat-num c-teal">78%</div><div class="stat-desc">see some or significant damage as unavoidable, but still support action</div></div>
+  <div class="stat-box"><div class="stat-num c-red">7.5</div><div class="stat-desc">average personal worry score out of 10 — vs 4.7 perceived for the public</div></div>
+  <div class="stat-box"><div class="stat-num c-blue">53%</div><div class="stat-desc">are willing or very willing to make major lifestyle changes</div></div>
+</div>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-text">Views &amp; Reactions — Q1 · Q2 · Q3</div><div class="divider-line"></div></div>
+
+<!-- Q1 full-width hero card -->
+<div class="grid-1" style="margin-bottom:24px;">
+  <div class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
+    <div>
+      <div class="card-q">Q1 — Key finding</div>
+      <div class="card-title" style="font-size:21px;margin-bottom:12px;">How do respondents view climate change?</div>
+      <div class="card-note" style="margin-bottom:24px;">Single choice · 67 respondents</div>
+      <div style="background:var(--paper);border-radius:12px;padding:20px 24px;border:1px solid var(--rule);margin-bottom:16px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;">Most common response</div>
+        <div style="font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:var(--teal);line-height:1;">71.6%</div>
+        <div style="font-size:14px;color:var(--ink-mid);margin-top:8px;line-height:1.5;">consider climate change a <strong style="color:var(--ink)">serious problem caused by humans</strong> — the single most selected response by a wide margin.</div>
+      </div>
+      <div style="font-size:12px;color:var(--ink-light);line-height:1.6;">Only 4 respondents (6%) questioned human causation or the scale of the problem. The remaining 22% acknowledge climate change as real but express uncertainty about its causes or impacts.</div>
+    </div>
+    <div style="width:100%;max-width:400px;margin:0 auto;">
+      <canvas id="q1Chart" style="max-height:400px;"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Q2 Q3 -->
+<div class="grid-2">
+  <div class="card">
+    <div class="card-q">Q2</div>
+    <div class="card-title">Emotional reaction</div>
+    <div class="card-note">Single choice · 67 respondents</div>
+    <div class="h-donut"><canvas id="q2Chart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-q">Q3</div>
+    <div class="card-title">Outlook on climate change</div>
+    <div class="card-note">Single choice · 66 respondents</div>
+    <div class="h-donut"><canvas id="q3Chart"></canvas></div>
+  </div>
+</div>
+
+<!-- Q4 Q5 -->
+<div class="divider"><div class="divider-line"></div><div class="divider-text">Behaviour &amp; Attitudes Towards Travel — Q4 · Q5</div><div class="divider-line"></div></div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-q">Q4</div>
+    <div class="card-title">How often do you intentionally avoid climate-related information?</div>
+    <div class="card-note">Scale: 1 = Never → 5 = Always · 66 respondents</div>
+    <div class="likert-bar" id="q4bar"></div>
+    <div class="likert-legend" id="q4legend"></div>
+    <div class="h-sm"><canvas id="q4Chart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-q">Q5</div>
+    <div class="card-title">Feelings about the climate impact of travel &amp; tourism</div>
+    <div class="card-note">Single choice · 67 respondents</div>
+    <div class="likert-bar" id="q5bar"></div>
+    <div class="likert-legend" id="q5legend"></div>
+    <div class="h-sm"><canvas id="q5Chart"></canvas></div>
+  </div>
+</div>
+
+<!-- Q6 Q7 -->
+<div class="divider"><div class="divider-line"></div><div class="divider-text">Societal Views &amp; Personal Willingness — Q6 · Q7</div><div class="divider-line"></div></div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-q">Q6</div>
+    <div class="card-title">Likelihood of large-scale societal change to address climate change</div>
+    <div class="card-note">Scale: 1 = Very unlikely → 5 = Very likely · 67 respondents</div>
+    <div class="likert-bar" id="q6bar"></div>
+    <div class="likert-legend" id="q6legend"></div>
+    <div class="h-sm"><canvas id="q6Chart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-q">Q7</div>
+    <div class="card-title">Personal willingness to make major lifestyle changes</div>
+    <div class="card-note">Scale: 1 = Very unwilling → 5 = Very willing · 67 respondents</div>
+    <div class="likert-bar" id="q7bar"></div>
+    <div class="likert-legend" id="q7legend"></div>
+    <div class="h-sm"><canvas id="q7Chart"></canvas></div>
+  </div>
+</div>
+
+<!-- Q8 Q9 Q10 -->
+<div class="divider"><div class="divider-line"></div><div class="divider-text">Worry Scales — Q8 · Q9 · Q10</div><div class="divider-line"></div></div>
+
+<div class="grid-1">
+  <div class="card">
+    <div class="card-q">Q8</div>
+    <div class="card-title">How worried are <span style="font-style:italic;color:var(--teal)">you personally</span> about climate change?</div>
+    <div class="card-note">Scale: 1 = Not at all worried → 10 = Extremely worried · 67 respondents</div>
+    <div class="stat-strip">
+      <div class="stat-strip-item"><div class="stat-strip-label">Mean</div><div class="stat-strip-val c-teal">7.49</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Median</div><div class="stat-strip-val c-teal">8.0</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Std Dev</div><div class="stat-strip-val" style="color:var(--ink-mid)">2.39</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Mode</div><div class="stat-strip-val" style="color:var(--ink-mid)">9</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Skewness</div><div class="stat-strip-val" style="color:var(--ink-mid)">−1.07</div></div>
+    </div>
+    <div class="h-hist"><canvas id="q8Chart"></canvas></div>
+    <div class="dist-note"><strong>Strongly left-skewed.</strong> Respondents cluster at the high end — 46% scored 9 or 10. The bell curve shows how far this distribution departs from a normal shape, reflecting the high personal concern of those who chose to travel to Antarctica.</div>
+  </div>
+</div>
+
+<div class="grid-1">
+  <div class="card">
+    <div class="card-q">Q9</div>
+    <div class="card-title">How worried do you think the <span style="font-style:italic;color:var(--blue)">general public</span> is about climate change?</div>
+    <div class="card-note">Scale: 1 = Not at all worried → 10 = Extremely worried · 66 respondents</div>
+    <div class="stat-strip">
+      <div class="stat-strip-item"><div class="stat-strip-label">Mean</div><div class="stat-strip-val c-blue">4.68</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Median</div><div class="stat-strip-val c-blue">4.0</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Std Dev</div><div class="stat-strip-val" style="color:var(--ink-mid)">1.83</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Mode</div><div class="stat-strip-val" style="color:var(--ink-mid)">4</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Skewness</div><div class="stat-strip-val" style="color:var(--ink-mid)">+0.32</div></div>
+    </div>
+    <div class="h-hist"><canvas id="q9Chart"></canvas></div>
+    <div class="dist-note"><strong>Roughly normal,</strong> and the best fit to a bell curve of all three questions. Respondents perceive the general public as considerably less concerned than they are themselves — a gap of 2.8 points on average.</div>
+  </div>
+</div>
+
+<div class="grid-1">
+  <div class="card">
+    <div class="card-q">Q10</div>
+    <div class="card-title">How worried do you think <span style="font-style:italic;color:var(--amber)">fellow guests onboard</span> are about climate change?</div>
+    <div class="card-note">Scale: 1 = Not at all worried → 10 = Extremely worried · 66 respondents</div>
+    <div class="stat-strip">
+      <div class="stat-strip-item"><div class="stat-strip-label">Mean</div><div class="stat-strip-val c-amber">6.26</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Median</div><div class="stat-strip-val c-amber">7.0</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Std Dev</div><div class="stat-strip-val" style="color:var(--ink-mid)">2.00</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Mode</div><div class="stat-strip-val" style="color:var(--ink-mid)">7</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Skewness</div><div class="stat-strip-val" style="color:var(--ink-mid)">−0.56</div></div>
+    </div>
+    <div class="h-hist"><canvas id="q10Chart"></canvas></div>
+    <div class="dist-note"><strong>Moderately left-skewed,</strong> peaking at 7. Fellow guests are rated as more engaged than the public (+1.6 points), yet still 1.2 points below respondents' own worry level.</div>
+  </div>
+</div>
+
+<!-- Q8/9/10 COMBINED — diverging dot plot -->
+<div class="grid-1">
+  <div class="card">
+    <div class="card-q">Q8 · Q9 · Q10 — Combined View</div>
+    <div class="card-title">The worry gap: self vs. fellow guests vs. general public</div>
+    <div class="card-note">All three distributions plotted as smoothed frequency curves on the same axis (% of respondents) · hover for values</div>
+    <div class="h-overlap"><canvas id="overlapChart"></canvas></div>
+    <div class="dist-note">A clear <strong>worry gap</strong> emerges across the three groups. Personal concern (teal) clusters heavily at the high end. Perceived public concern (blue) sits 2.8 points lower and forms the most symmetrical bell shape. Perceived guest concern (amber) falls in between — respondents see their fellow travellers as more climate-aware than the average person, but not as intensely concerned as themselves.</div>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="divider"><div class="divider-line"></div><div class="divider-text">Q11 · Open Comments — Thematic Categories</div><div class="divider-line"></div></div>
+<div class="grid-1">
+  <div class="card">
+    <div class="card-q">Q11</div>
+    <div class="card-title">What themes emerge from the open comments?</div>
+    <div class="card-note">35 substantive comments · 32 respondents left blank · some comments span multiple categories</div>
+    <div class="h-tall"><canvas id="q11Chart"></canvas></div>
+  </div>
+</div>
+
+
+
+
+<!-- CLUSTER ANALYSIS TEASER -->
+<div class="cluster-teaser">
+  <div class="cluster-teaser-left">
+    <div class="cluster-teaser-label">Going deeper</div>
+    <h2 class="cluster-teaser-title">Four respondent profiles emerge from the data</h2>
+    <p class="cluster-teaser-intro">A cluster analysis groups respondents into four distinct profiles based on their answers across all questions. Each profile reflects a coherent set of beliefs, emotions, and behaviours — from the highly engaged to the sceptical.</p>
+    <button class="cluster-teaser-btn" onclick="showPage('cluster')">
+      <span>Explore respondent profiles</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
+    </button>
+  </div>
+  <div class="cluster-teaser-profiles">
+    <div class="cluster-teaser-card" style="--c:#52c47a">
+      <div class="ctc-count">29</div>
+      <div class="ctc-name">Engaged Optimist</div>
+      <div class="ctc-desc">Accept CC · Hopeful · Action-oriented · Largest group</div>
+    </div>
+    <div class="cluster-teaser-card" style="--c:#5b8ecc">
+      <div class="ctc-count">21</div>
+      <div class="ctc-name">Alarmed &amp; Overwhelmed</div>
+      <div class="ctc-desc">Highest personal worry · Feels helpless despite full acceptance</div>
+    </div>
+    <div class="cluster-teaser-card" style="--c:#a889d4">
+      <div class="ctc-count">9</div>
+      <div class="ctc-name">Measured Moderate</div>
+      <div class="ctc-desc">Mixed conviction · Emotionally detached · Youngest cluster</div>
+    </div>
+    <div class="cluster-teaser-card" style="--c:#e05252">
+      <div class="ctc-count">8</div>
+      <div class="ctc-name">Skeptic / Doubter</div>
+      <div class="ctc-desc">Denies or minimises CC · Low worry · Low willingness</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONCLUSION -->
+<div class="conclusion-section">
+  <div class="conclusion-inner">
+    <div class="conclusion-label">Key findings</div>
+    <h2 class="conclusion-title">What this survey tells us</h2>
+    <div class="conclusion-grid">
+
+      <div class="conclusion-card">
+        <div class="conclusion-card-title">Concern is near-universal — but uneven</div>
+        <p>Over 70% see climate change as a serious human-caused problem, and personal worry averages 7.5/10. Yet the cluster analysis reveals the group is not monolithic: 43% are <em>Engaged Optimists</em>, while 31% feel <em>Alarmed but Overwhelmed</em> — same beliefs, very different emotional states.</p>
+      </div>
+
+      <div class="conclusion-card">
+        <div class="conclusion-card-title">Personal action, collective doubt</div>
+        <p>Respondents are willing to change their own behaviour (avg 3.9/5) but deeply sceptical that society will act at scale (avg 2.2/5). This tension cuts across all four profiles — even the most engaged don't believe the world will follow.</p>
+      </div>
+
+      <div class="conclusion-card">
+        <div class="conclusion-card-title">The worry gap</div>
+        <p>Respondents rate public concern at just 4.7/10 — 2.8 points below their own. They perceive their fellow guests as closer to them, but still less alarmed. This gap suggests a widespread feeling of being an engaged minority in a disengaged world.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</main>
+</div><!-- /page-survey -->
+
+<div id="page-cluster" class="cluster-overlay" style="display:none;" aria-modal="true">
+  <button class="cluster-close-btn" onclick="closeCluster()" title="Back to survey results">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="2" y1="2" x2="14" y2="14"/><line x1="14" y1="2" x2="2" y2="14"/></svg>
+    Back to survey
+  </button>
+  <div class="cluster-overlay-inner">
+
+    <div class="divider"><div class="divider-line"></div><div class="divider-text">Respondent Profiles — Cluster Analysis</div><div class="divider-line"></div></div>
+
+<div class="grid-1" style="margin-bottom:24px;">
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div style="padding:24px 28px 16px;">
+      <div class="card-q">Cluster Analysis</div>
+      <div class="card-title">Four respondent profiles emerge from the data</div>
+      <div class="card-note">2D projection via PCA · 61.8% of variance explained · hover over dots for respondent details · click legend to highlight a profile</div>
+    </div>
+    <div class="cluster-embed">
+      <style>
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .cluster-embed { font-family: 'Segoe UI', Arial, sans-serif; background: #0f1117; color: #e0e0e0; min-height: 100vh; }
+  .cluster-embed h1 { font-size: 1.25em; font-weight: 600; color: #fff; padding: 18px 24px 4px; }
+  .subtitle { font-size: 0.8em; color: #888; padding: 0 24px 14px; }
+  .layout { display: flex; gap: 0; height: calc(100vh - 70px); }
+  #clusterCanvasWrap { flex: 1; position: relative; overflow: hidden; }
+  .cluster-embed canvas { display: block; cursor: crosshair; width: 100%; height: 100%; }
+  .sidebar { width: 280px; background: #1a1d25; border-left: 1px solid #2a2d38; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+  .legend { display: flex; flex-direction: column; gap: 8px; }
+  .legend-item { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; padding: 8px 10px; border-radius: 8px; transition: background 0.15s; }
+  .legend-item:hover { background: #22253a; }
+  .legend-item.active { background: #22253a; outline: 1px solid #444; }
+  .legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
+  .legend-text { font-size: 0.78em; line-height: 1.45; color: #ccc; }
+  .legend-text strong { color: #fff; font-size: 0.9em; display: block; margin-bottom: 2px; }
+  .legend-text .count { color: #888; font-size: 0.85em; }
+  .tooltip { position: absolute; background: #1e2130; border: 1px solid #3a3f55; border-radius: 8px; padding: 10px 13px; font-size: 0.78em; pointer-events: none; max-width: 220px; line-height: 1.6; display: none; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+  .tooltip .tid { font-weight: bold; font-size: 0.95em; color: #fff; }
+  .tooltip .tcluster { font-size: 0.75em; border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
+  .tooltip .trow { color: #aaa; }
+  .tooltip .trow span { color: #ddd; }
+  .section-title { font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.08em; color: #666; margin-top: 4px; }
+  .axis-note { font-size: 0.72em; color: #555; line-height: 1.5; margin-top: 4px; }
+  .controls { display: flex; flex-direction: column; gap: 6px; }
+  .btn { background: #22253a; border: 1px solid #333; color: #bbb; padding: 6px 10px; border-radius: 6px; font-size: 0.76em; cursor: pointer; transition: all 0.15s; text-align: left; }
+  .btn:hover { background: #2c3050; color: #fff; border-color: #555; }
+  .btn.active { background: #2c3050; border-color: #6677cc; color: #fff; }
+  .filter-group-label { font-size: 0.68em; text-transform: uppercase; letter-spacing: 0.08em; color: #555; margin-top: 6px; padding-left: 2px; }
+  .btn-count { color: #666; font-size: 0.88em; }
+  .cluster-embed hr { border: none; border-top: 1px solid #2a2d38; }
+
+      .cluster-overlay .cluster-embed .layout { height: calc(100vh - 70px); }
+      .cluster-overlay .cluster-embed .sidebar { width: 260px; background: #1a1d25; }
+      </style>
+      <div class="layout">
+  <div id="clusterCanvasWrap">
+    <canvas id="clusterCanvas"></canvas>
+    <div class="tooltip" id="clusterTip"></div>
+  </div>
+  <div class="sidebar">
+    <div class="section-title">Profiles</div>
+    <div class="legend" id="clusterLegend"></div>
+    <hr>
+    <div class="section-title">Axes (PCA)</div>
+    <div class="axis-note">
+      <strong style="color:#aaa">→ Horizontal (PC1, 41.6%)</strong><br>
+      Driven mainly by <em>personal worry (Q8)</em>, climate view (Q1), outlook (Q3), and travel feeling (Q5). Right = high worry + strong belief.
+      <br><br>
+      <strong style="color:#aaa">↑ Vertical (PC2, 20.2%)</strong><br>
+      Driven by <em>guest worry (Q10)</em> and <em>public worry (Q9)</em>. Up = higher concern for others.
+      <br><br>
+      Together these two axes explain <strong style="color:#aaa">61.8%</strong> of variance in the data.
+    </div>
+    <hr>
+    <div class="section-title">Highlight</div>
+    <div class="controls" id="clusterControls">
+      <button class="btn active" id="clusterBtnAll" onclick="setHighlight('all', this)">Show all</button>
+      <div class="filter-group-label">Gender</div>
+      <button class="btn" onclick="setHighlight('female', this)">Female respondents</button>
+      <button class="btn" onclick="setHighlight('male', this)">Male respondents</button>
+      <div class="filter-group-label">Age</div>
+      <button class="btn" onclick="setHighlight('young', this)">Under 50</button>
+      <button class="btn" onclick="setHighlight('old', this)">60+</button>
+      <div class="filter-group-label">Region</div>
+      <button class="btn" onclick="setHighlight('region-anz', this)">Australia & NZ <span class="btn-count">(AU, NZ)</span></button>
+      <button class="btn" onclick="setHighlight('region-us', this)">United States</button>
+      <button class="btn" onclick="setHighlight('region-uk', this)">UK & Ireland <span class="btn-count">(UK, IE)</span></button>
+      <button class="btn" onclick="setHighlight('region-europe', this)">Continental Europe <span class="btn-count">(DE, CH, NL, TR)</span></button>
+      <button class="btn" onclick="setHighlight('region-china', this)">China</button>
+      <button class="btn" onclick="setHighlight('region-other', this)">Other <span class="btn-count">(CA, JO)</span></button>
+    </div>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+// ── CLUSTER MAP ──────────────────────────────────────────────────────────────
+const PROFILES = [
+  { id: 0, name: 'Skeptic / Doubter', color: '#e05252', bg: 'rgba(224,82,82,0.15)', desc: 'Denies or minimises CC · Low worry · Low willingness' },
+  { id: 1, name: 'Alarmed & Overwhelmed', color: '#5b8ecc', bg: 'rgba(91,142,204,0.15)', desc: '100% accept CC · Highest personal worry · Feels helpless' },
+  { id: 2, name: 'Engaged Optimist', color: '#52c47a', bg: 'rgba(82,196,122,0.15)', desc: 'Accept CC · Hopeful · Action-oriented · Largest group' },
+  { id: 3, name: 'Measured Moderate', color: '#a889d4', bg: 'rgba(168,137,212,0.15)', desc: 'Mixed conviction · Detached emotion · Youngest cluster' },
+];
+
+const DATA = {"points": [{"id": "B1", "x": -0.5676, "y": -1.507, "cluster": 3, "q8": 6.0, "nationality": "(blank - no nationality written)", "gender": "Female", "age": 56, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B2", "x": 0.1271, "y": 0.0063, "cluster": 1, "q8": 8.0, "nationality": "United States", "gender": "Male", "age": 85, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B3", "x": 3.4401, "y": 0.9414, "cluster": 2, "q8": 10.0, "nationality": "Australia", "gender": "Male", "age": 73, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B4", "x": -7.0515, "y": -0.5957, "cluster": 0, "q8": 2.0, "nationality": "Australia", "gender": "Female", "age": 74, "q1": "Climate change is overstated", "q2": "Skeptical / annoyed"}, {"id": "B5", "x": 3.7299, "y": 0.9752, "cluster": 2, "q8": 10.0, "nationality": "Australia", "gender": "Female", "age": 71, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B6", "x": 0.5722, "y": 0.5366, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 67, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done"}, {"id": "B7", "x": 0.7798, "y": 1.2688, "cluster": 2, "q8": 8.0, "nationality": "United Kingdom", "gender": "Male", "age": 73, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B8", "x": 1.1691, "y": 0.5082, "cluster": 2, "q8": 9.0, "nationality": "Ireland", "gender": "Female", "age": 64, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B9", "x": 2.2404, "y": 0.9092, "cluster": 2, "q8": 9.0, "nationality": "Ireland", "gender": "Female", "age": 65, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B10", "x": 1.9876, "y": -1.9631, "cluster": 1, "q8": 9.0, "nationality": "Ireland", "gender": "Female", "age": 64, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful / Concerned but overwhelmed "}, {"id": "B11", "x": 2.2425, "y": 3.797, "cluster": 2, "q8": 8.0, "nationality": "United States", "gender": "Female", "age": 84, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B12", "x": 1.5894, "y": 0.4153, "cluster": 2, "q8": 8.0, "nationality": "Australia", "gender": "Male", "age": 63, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B13", "x": -0.65, "y": -1.0378, "cluster": 1, "q8": 7.0, "nationality": "United Kingdom", "gender": "Female", "age": 69, "q1": "Climate change is a serious human-caused problem", "q2": "Skeptical / annoyed"}, {"id": "B14", "x": 1.9742, "y": 0.4621, "cluster": 2, "q8": 9.0, "nationality": "Canada", "gender": "Female", "age": 71, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B15", "x": 2.0091, "y": -0.3201, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 75, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B16", "x": 0.101, "y": 0.3625, "cluster": 2, "q8": 7.0, "nationality": "United States", "gender": "Female", "age": 74, "q1": "Climate change is real, but its causes or impacts ", "q2": "Concerned but hopeful"}, {"id": "B17", "x": 2.9052, "y": 1.5237, "cluster": 2, "q8": 10.0, "nationality": "Germany", "gender": "Female", "age": 65, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B18", "x": 1.6025, "y": -1.485, "cluster": 1, "q8": 9.0, "nationality": "Germany", "gender": "Female", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done"}, {"id": "B19", "x": 0.3489, "y": 0.515, "cluster": 2, "q8": 7.0, "nationality": "Jordan", "gender": "Male", "age": 74, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B20", "x": 0.3775, "y": -0.7672, "cluster": 1, "q8": 7.0, "nationality": "China", "gender": "Female", "age": 64, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B21", "x": -5.0283, "y": 2.6553, "cluster": 0, "q8": 2.0, "nationality": "China", "gender": "Male", "age": 43, "q1": "Climate change is real, but its causes or impacts", "q2": "Positive / Hopeful / not too concerned"}, {"id": "B22", "x": 1.4095, "y": -3.2569, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Male", "age": 55, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B23", "x": 0.2347, "y": 3.5886, "cluster": 2, "q8": 7.0, "nationality": "United States", "gender": "Female", "age": 58, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B24", "x": 0.652, "y": 0.4209, "cluster": 2, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 102, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B25", "x": 3.834, "y": 2.6995, "cluster": 2, "q8": 10.0, "nationality": "Australia", "gender": "Female", "age": 53, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B26", "x": -5.8075, "y": 1.3985, "cluster": 0, "q8": 3.0, "nationality": "Switzerland", "gender": "Male", "age": 63, "q1": "Climate change is happening regardless of human action", "q2": "Concerned but overwhelmed"}, {"id": "B27", "x": 1.69, "y": 3.3732, "cluster": 2, "q8": 8.0, "nationality": "Switzerland", "gender": "Female", "age": 62, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B28", "x": -0.1227, "y": 2.0349, "cluster": 2, "q8": 5.0, "nationality": "China", "gender": "Female", "age": 57, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B29", "x": -0.953, "y": 0.9918, "cluster": 2, "q8": 7.0, "nationality": "Germany", "gender": "Male", "age": 39, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B30", "x": 0.9412, "y": -1.4452, "cluster": 1, "q8": 10.0, "nationality": "Germany", "gender": "Female", "age": 36, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done"}, {"id": "B31", "x": -4.5133, "y": -2.2538, "cluster": 3, "q8": 4.0, "nationality": "China", "gender": "Male", "age": 25, "q1": "Climate change is real, but its causes or impacts", "q2": "Neutral or emotionally detached"}, {"id": "B32", "x": 2.4119, "y": 0.029, "cluster": 2, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 54, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B33", "x": -1.6071, "y": -1.6867, "cluster": 3, "q8": 6.0, "nationality": "China", "gender": "(not marked)", "age": 30, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B34", "x": 2.133, "y": -2.1481, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 50, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B35", "x": 2.0028, "y": -1.8292, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B36", "x": 1.7197, "y": 1.5609, "cluster": 2, "q8": 9.0, "nationality": "United Kingdom", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Positive / Hopeful / not too concerned"}, {"id": "B37", "x": -1.1145, "y": -4.1712, "cluster": 3, "q8": 9.0, "nationality": "The Netherlands", "gender": "Male", "age": 22, "q1": "Climate change is happening regardless of human action", "q2": "Concerned but hopeful"}, {"id": "B38", "x": 0.7906, "y": -2.2564, "cluster": 1, "q8": 9.0, "nationality": "Turkey", "gender": "Male", "age": 46, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B39", "x": 0.8281, "y": 0.0621, "cluster": 2, "q8": 8.0, "nationality": "United Kingdom", "gender": "Female", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B40", "x": 1.0059, "y": 0.6162, "cluster": 2, "q8": 8.0, "nationality": "United Kingdom", "gender": "Male", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B41", "x": 1.4158, "y": -0.7902, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 67, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B42", "x": 1.426, "y": 1.9331, "cluster": 2, "q8": 7.0, "nationality": "United States", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B43", "x": -7.5147, "y": 0.8557, "cluster": 0, "q8": 2.0, "nationality": "Australia", "gender": "Male", "age": 65, "q1": "Climate change is overstated", "q2": "Positive / Hopeful / not too concerned"}, {"id": "B44", "x": -6.2669, "y": 1.091, "cluster": 0, "q8": 3.0, "nationality": "Australia", "gender": "Female", "age": 65, "q1": "Climate change is overstated", "q2": "Concerned but hopeful"}, {"id": "B45", "x": 2.0136, "y": -1.3231, "cluster": 1, "q8": 9.0, "nationality": "United Kingdom", "gender": "Female", "age": 74, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B46", "x": -1.8867, "y": 2.7183, "cluster": 2, "q8": 6.0, "nationality": "Australia", "gender": "Male", "age": 97, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B47", "x": -1.4666, "y": -2.2908, "cluster": 3, "q8": 7.0, "nationality": "United States", "gender": "Female", "age": 58, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B48", "x": 1.924, "y": -3.5863, "cluster": 1, "q8": 10.0, "nationality": "United Kingdom", "gender": "Female", "age": 66, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B49", "x": -0.8874, "y": -0.2777, "cluster": 2, "q8": 7.0, "nationality": "United Kingdom", "gender": "Female", "age": 59, "q1": "Climate change is happening regardless of human action", "q2": "Concerned but hopeful"}, {"id": "B50", "x": -4.2851, "y": 5.7589, "cluster": 0, "q8": 3.0, "nationality": "United Kingdom", "gender": "Male", "age": 67, "q1": "Climate change is real, but its causes or impacts", "q2": "Skeptical / annoyed"}, {"id": "B51", "x": -0.0385, "y": 2.2818, "cluster": 2, "q8": 7.0, "nationality": "Switzerland", "gender": "Female", "age": 73, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B52", "x": 2.3042, "y": -1.4264, "cluster": 1, "q8": 10.0, "nationality": "Switzerland", "gender": "Female", "age": 39, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B53", "x": -7.4602, "y": -1.9342, "cluster": 0, "q8": 3.0, "nationality": "United Kingdom", "gender": "Female", "age": 58, "q1": "Climate change is happening regardless of human action", "q2": "Neutral or emotionally detached"}, {"id": "B54", "x": 3.9582, "y": 2.2117, "cluster": 2, "q8": 10.0, "nationality": "Australia", "gender": "Female", "age": 74, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B55", "x": -0.1894, "y": -0.5746, "cluster": 1, "q8": 7.0, "nationality": "United Kingdom", "gender": "Female", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done"}, {"id": "B56", "x": 3.529, "y": 0.7308, "cluster": 2, "q8": 10.0, "nationality": "United Kingdom", "gender": "Male", "age": 70, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B57", "x": 2.9718, "y": 1.6082, "cluster": 2, "q8": 9.0, "nationality": "China", "gender": "Female", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B58", "x": 0.6626, "y": -1.0158, "cluster": 1, "q8": 8.0, "nationality": "China", "gender": "Female", "age": 39, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B59", "x": -8.7659, "y": 4.2497, "cluster": 0, "q8": 1.0, "nationality": "Australia", "gender": "Male", "age": 70, "q1": "Climate change is not happening", "q2": "Positive / Hopeful / not too concerned"}, {"id": "B60", "x": 3.1042, "y": -1.6785, "cluster": 1, "q8": 10.0, "nationality": "United States", "gender": "Female", "age": 53, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B61", "x": 3.1671, "y": -1.5198, "cluster": 1, "q8": 10.0, "nationality": "United States", "gender": "Male", "age": 30, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B62", "x": 1.8302, "y": -2.1475, "cluster": 1, "q8": 10.0, "nationality": "New Zealand", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done"}, {"id": "B63", "x": 2.7875, "y": 2.887, "cluster": 2, "q8": 9.0, "nationality": "Australia", "gender": "Female", "age": 70, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B64", "x": -2.8765, "y": -4.1115, "cluster": 3, "q8": 8.0, "nationality": "Germany", "gender": "Male", "age": 72, "q1": "Climate change is real, but its causes or impacts", "q2": "Hopeless / nothing can be done"}, {"id": "B65", "x": -4.7735, "y": -3.9548, "cluster": 3, "q8": 5.0, "nationality": "Germany", "gender": "Female", "age": 69, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B66", "x": -2.2293, "y": -2.898, "cluster": 3, "q8": 6.0, "nationality": "China", "gender": "Female", "age": 49, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B67", "x": -1.8878, "y": -1.726, "cluster": 3, "q8": 5.0, "nationality": "China", "gender": "Male", "age": 62, "q1": "Climate change is a serious human-caused problem", "q2": "Positive / Hopeful / not too concerned"}],
+  "centers": [{"x": -6.5225, "y": 1.6849}, {"x": 1.4064, "y": -1.4299}, {"x": 1.5062, "y": 1.4189}, {"x": -2.3374, "y": -2.7333}]
+};
+
+const canvas = document.getElementById('clusterCanvas');
+const ctx = canvas.getContext('2d');
+const tip = document.getElementById('clusterTip');
+let W, H, scale, offX, offY;
+let activeCluster = null;
+let highlight = 'all';
+
+function getColor(cluster, alpha=1) {
+  const c = PROFILES[cluster].color;
+  const r = parseInt(c.slice(1,3),16);
+  const g = parseInt(c.slice(3,5),16);
+  const b = parseInt(c.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function setupCanvas() {
+  const wrap = document.getElementById('clusterCanvasWrap');
+  W = wrap.clientWidth; H = wrap.clientHeight;
+  canvas.width = W; canvas.height = H;
+
+  const xs = DATA.points.map(p=>p.x), ys = DATA.points.map(p=>p.y);
+  const minX = Math.min(...xs)-1.5, maxX = Math.max(...xs)+1.5;
+  const minY = Math.min(...ys)-1.5, maxY = Math.max(...ys)+1.5;
+  const dataW = maxX - minX, dataH = maxY - minY;
+  scale = Math.min((W-80)/dataW, (H-80)/dataH);
+  offX = (W - dataW*scale)/2 - minX*scale;
+  offY = (H + dataH*scale)/2 + minY*scale;
+}
+
+function toScreen(x, y) {
+  return [x*scale + offX, -y*scale + offY];
+}
+
+const ANGLOSPHERE = ['United States','United Kingdom','Australia','Canada','New Zealand','Ireland'];
+const CONT_EUROPE = ['Germany','Switzerland','The Netherlands','Turkey'];
+
+function isHighlighted(p) {
+  if (highlight === 'all') return true;
+  if (highlight === 'female') return p.gender === 'Female';
+  if (highlight === 'male') return p.gender === 'Male';
+  if (highlight === 'young') return p.age !== null && p.age < 50;
+  if (highlight === 'old') return p.age !== null && p.age >= 60;
+  if (highlight === 'region-anz') return ['Australia','New Zealand'].includes(p.nationality);
+  if (highlight === 'region-us') return p.nationality === 'United States';
+  if (highlight === 'region-uk') return ['United Kingdom','Ireland'].includes(p.nationality);
+  if (highlight === 'region-europe') return CONT_EUROPE.includes(p.nationality);
+  if (highlight === 'region-china') return p.nationality === 'China';
+  if (highlight === 'region-other') return !ANGLOSPHERE.includes(p.nationality) && !CONT_EUROPE.includes(p.nationality) && p.nationality !== 'China';
+  return true;
+}
+
+function draw() {
+  ctx.clearRect(0,0,W,H);
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctx.lineWidth = 1;
+  for (let v = -10; v <= 10; v += 2) {
+    const [sx1, sy1] = toScreen(v, -10);
+    const [sx2, sy2] = toScreen(v, 10);
+    ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
+    const [sx3, sy3] = toScreen(-10, v);
+    const [sx4, sy4] = toScreen(10, v);
+    ctx.beginPath(); ctx.moveTo(sx3, sy3); ctx.lineTo(sx4, sy4); ctx.stroke();
+  }
+
+  // Axis lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.lineWidth = 1.5;
+  const [ax1,ay1] = toScreen(-11,0), [ax2,ay2] = toScreen(11,0);
+  ctx.beginPath(); ctx.moveTo(ax1,ay1); ctx.lineTo(ax2,ay2); ctx.stroke();
+  const [bx1,by1] = toScreen(0,-8), [bx2,by2] = toScreen(0,8);
+  ctx.beginPath(); ctx.moveTo(bx1,by1); ctx.lineTo(bx2,by2); ctx.stroke();
+
+  // Axis labels
+  ctx.fillStyle = 'rgba(255,255,255,0.25)';
+  ctx.font = '11px Segoe UI';
+  ctx.textAlign = 'center';
+  const [lx,ly] = toScreen(10.5,0); ctx.fillText('→ Worry + Belief', lx-20, ly-8);
+  const [ux,uy] = toScreen(0,7.5); ctx.fillText('↑ Concern for others', ux, uy+14);
+
+  // Cluster zone shading
+  for (let c = 0; c < 4; c++) {
+    if (activeCluster !== null && activeCluster !== c) continue;
+    const pts = DATA.points.filter(p=>p.cluster===c);
+    if (!pts.length) continue;
+    // Draw convex-hull-like region (simple bounding ellipse)
+    const cxs = pts.map(p=>toScreen(p.x,p.y)[0]);
+    const cys = pts.map(p=>toScreen(p.x,p.y)[1]);
+    const cx = cxs.reduce((a,b)=>a+b,0)/cxs.length;
+    const cy = cys.reduce((a,b)=>a+b,0)/cys.length;
+    const rx = Math.max(...cxs.map(x=>Math.abs(x-cx)))+20;
+    const ry = Math.max(...cys.map(y=>Math.abs(y-cy)))+20;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI*2);
+    const col = PROFILES[c].color;
+    const r = parseInt(col.slice(1,3),16), g = parseInt(col.slice(3,5),16), b = parseInt(col.slice(5,7),16);
+    ctx.fillStyle = `rgba(${r},${g},${b},0.06)`;
+    ctx.fill();
+  }
+
+  // Points (dimmed first, then bright)
+  for (let pass = 0; pass < 2; pass++) {
+    DATA.points.forEach(p => {
+      const lit = isHighlighted(p) && (activeCluster === null || activeCluster === p.cluster);
+      if (pass === 0 && lit) return;
+      if (pass === 1 && !lit) return;
+      const [sx, sy] = toScreen(p.x, p.y);
+      const alpha = lit ? 1 : 0.1;
+      const r = lit ? 7 : 5;
+      ctx.beginPath();
+      ctx.arc(sx, sy, r, 0, Math.PI*2);
+      ctx.fillStyle = getColor(p.cluster, alpha);
+      ctx.fill();
+      if (lit) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      if (lit) {
+        ctx.fillStyle = `rgba(255,255,255,${alpha*0.7})`;
+        ctx.font = '9px Segoe UI';
+        ctx.textAlign = 'center';
+        ctx.fillText(p.id, sx, sy-10);
+      }
+    });
+  }
+
+  // Cluster centers (X markers)
+  DATA.centers.forEach((c, i) => {
+    if (activeCluster !== null && activeCluster !== i) return;
+    const [sx, sy] = toScreen(c.x, c.y);
+    ctx.strokeStyle = PROFILES[i].color;
+    ctx.lineWidth = 2.5;
+    const s = 9;
+    ctx.beginPath(); ctx.moveTo(sx-s,sy-s); ctx.lineTo(sx+s,sy+s); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(sx+s,sy-s); ctx.lineTo(sx-s,sy+s); ctx.stroke();
+
+    ctx.fillStyle = PROFILES[i].color;
+    ctx.font = 'bold 11px Segoe UI';
+    ctx.textAlign = 'left';
+    ctx.fillText('P' + (i+1), sx+12, sy+4);
+  });
+}
+
+// Legend
+const legendEl = document.getElementById('clusterLegend');
+PROFILES.forEach((p, i) => {
+  const div = document.createElement('div');
+  div.className = 'legend-item active';
+  div.id = 'leg-' + i;
+  div.innerHTML = `<div class="legend-dot" style="background:${p.color}"></div>
+    <div class="legend-text"><strong>P${i+1}: ${p.name}</strong>${p.desc}<br><span class="count">${DATA.points.filter(x=>x.cluster===i).length} respondents</span></div>`;
+  div.onclick = () => {
+    activeCluster = (activeCluster === i) ? null : i;
+    document.querySelectorAll('.legend-item').forEach((el,j)=>{
+      el.classList.toggle('active', activeCluster === null || activeCluster === j);
+    });
+    draw();
+  };
+  legendEl.appendChild(div);
+});
+
+// Tooltip
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  let closest = null, minDist = 20;
+  DATA.points.forEach(p => {
+    const [sx, sy] = toScreen(p.x, p.y);
+    const d = Math.hypot(sx-mx, sy-my);
+    if (d < minDist) { minDist = d; closest = p; }
+  });
+  if (closest) {
+    const profile = PROFILES[closest.cluster];
+    tip.style.display = 'block';
+    tip.innerHTML = `<div style="margin-bottom:6px"><span class="tid">${closest.id}</span> <span class="tcluster" style="background:${profile.color}22;color:${profile.color};border:1px solid ${profile.color}44">P${closest.cluster+1}</span></div>
+      <div class="trow">Nationality: <span>${closest.nationality}</span></div>
+      <div class="trow">Age: <span>${closest.age || '?'}</span> · Gender: <span>${closest.gender}</span></div>
+      <div class="trow">Personal Worry (Q8): <span>${closest.q8 || '?'}/10</span></div>
+      <div class="trow" style="margin-top:5px;font-size:0.9em;color:#999">Q1: ${closest.q1.substring(0,60)}…</div>
+      <div class="trow" style="font-size:0.9em;color:#999">Q2: ${closest.q2.substring(0,50)}</div>`;
+    const tipW = 230, tipH = 140;
+    let tx = e.clientX - rect.left + 14;
+    let ty = e.clientY - rect.top - 20;
+    if (tx + tipW > W) tx = mx - tipW - 14;
+    if (ty + tipH > H) ty = H - tipH - 10;
+    tip.style.left = tx + 'px';
+    tip.style.top = ty + 'px';
+    canvas.style.cursor = 'pointer';
+  } else {
+    tip.style.display = 'none';
+    canvas.style.cursor = 'crosshair';
+  }
+});
+canvas.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+
+function setHighlight(h, btn) {
+  highlight = h;
+  document.querySelectorAll('#clusterControls .btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  draw();
+}
+window.setHighlight = setHighlight;
+
+window.addEventListener('resize', () => { setupCanvas(); draw(); });
+setupCanvas();
+draw();
+// Init
+setupCanvas(); draw();
+window.addEventListener('resize', () => { setupCanvas(); draw(); });
+})();
+</script>
+  </div><!-- /cluster-overlay-inner -->
+</div><!-- /cluster-overlay -->
+
+<footer>Survey: "How do you feel about climate change?" · 67 respondents · Handwritten surveys in English and Chinese</footer>
+
+<script>
+const C={
+  teal:'#2a6049',teal2:'#4a9070',teal3:'#7bbfa0',
+  amber:'#c8773a',amber2:'#e09a5a',
+  red:'#8b3a3a',red2:'#c05a5a',red3:'#e08a8a',
+  blue:'#3a5e8b',blue2:'#5a80b5',blue3:'#8aaad5',
+  plum:'#6b4c8b',grey:'#9a9490',grey2:'#c8c4be',
+};
+
+Chart.defaults.font.family="'Inter',sans-serif";
+Chart.defaults.color='#3d3d5c';
+
+function renderDemoCharts(){
+// ── HEADER DEMO CHARTS ────────────────────────────────────────────────────────
+// Age histogram (mini, dark theme)
+new Chart(document.getElementById('demoAge'),{
+  type:'bar',
+  data:{
+    labels:['Under 35','35–49','50–64','65–74','75+'],
+    datasets:[{
+      data:[4,6,25,22,10],
+      backgroundColor:['#7bbfa0','#4a9070','#2a6049','#5a80b5','#3a5e8b'],
+      borderRadius:3,borderSkipped:false,borderWidth:0,
+    }]
+  },
+  options:{
+    maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y} respondents`}}},
+    scales:{
+      y:{display:false,beginAtZero:true},
+      x:{grid:{display:false},ticks:{color:'#8888aa',font:{size:9}},border:{display:false}}
+    }
+  }
+});
+
+// Region pie (mini, dark theme)
+new Chart(document.getElementById('demoRegion'),{
+  type:'doughnut',
+  data:{
+    labels:['North America','UK & Ireland','Australia & NZ','Continental Europe','China','Middle East','Unknown'],
+    datasets:[{
+      data:[17,15,12,12,9,1,1],
+      backgroundColor:['#5a80b5','#4a9070','#7bbfa0','#e09a5a','#c05a5a','#9b7cc0','#c8c4be'],
+      borderWidth:2,borderColor:'#ffffff',hoverOffset:6,
+    }]
+  },
+  options:{
+    maintainAspectRatio:false,
+    cutout:'42%',
+    layout:{padding:{right:0}},
+    plugins:{
+      legend:{
+        position:'right',
+        labels:{
+          color:'#3d3d5c',
+          boxWidth:10,boxHeight:10,padding:7,
+          font:{size:10,family:"'Inter',sans-serif"},
+          generateLabels(chart){
+            const ds=chart.data.datasets[0];
+            const total=ds.data.reduce((a,b)=>a+b,0);
+            return chart.data.labels.map((lbl,i)=>{
+              const pct=Math.round(ds.data[i]/total*100);
+              return{text:lbl+' '+pct+'%',fillStyle:ds.backgroundColor[i],strokeStyle:'#fff',lineWidth:1,index:i};
+            });
+          }
+        }
+      },
+      tooltip:{callbacks:{label:ctx=>` ${ctx.parsed} respondents (${Math.round(ctx.parsed/67*100)}%)`}}
+    }
+  }
+});
+}
+
+// ── DONUT WITH PERCENTAGES ────────────────────────────────────────────────────
+function makeDonut(id, labels, data, colors, n) {
+  new Chart(document.getElementById(id),{
+    type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:2.5,borderColor:'#fff',hoverOffset:10}]},
+    options:{
+      cutout:'54%',
+      plugins:{
+        legend:{
+          position:'bottom',
+          labels:{boxWidth:11,boxHeight:11,padding:10,font:{size:11},
+            generateLabels(chart){
+              const ds=chart.data.datasets[0];
+              return chart.data.labels.map((lbl,i)=>{
+                const val=ds.data[i];
+                const pct=(val/n*100).toFixed(1);
+                return{text:`${lbl} — ${pct}%`,fillStyle:ds.backgroundColor[i],strokeStyle:'#fff',lineWidth:1,index:i};
+              });
+            }
+          }
+        },
+        tooltip:{callbacks:{label:ctx=>` ${ctx.parsed} respondents (${(ctx.parsed/n*100).toFixed(1)}%)`}}
+      }
+    },
+    plugins:[{
+      // draw % label inside each slice
+      afterDraw(chart){
+        const{ctx,data}=chart;
+        const ds=data.datasets[0];
+        const meta=chart.getDatasetMeta(0);
+        meta.data.forEach((arc,i)=>{
+          const val=ds.data[i];
+          const pct=(val/n*100);
+          if(pct<4) return; // skip tiny slices
+          const{x,y}=arc.tooltipPosition();
+          ctx.save();
+          ctx.fillStyle='rgba(255,255,255,0.95)';
+          ctx.font="600 11px 'Inter',sans-serif";
+          ctx.textAlign='center';
+          ctx.textBaseline='middle';
+          ctx.fillText(pct.toFixed(0)+'%',x,y);
+          ctx.restore();
+        });
+      }
+    }]
+  });
+}
+
+makeDonut('q1Chart',
+  ['Serious human-caused problem','Real but causes/impacts uncertain',
+   'Happening regardless of humans','Overstated','Not happening'],
+  [48,11,4,3,1],[C.teal,C.blue2,C.amber2,C.amber,C.red],67);
+
+makeDonut('q2Chart',
+  ['Concerned but hopeful','Concerned but overwhelmed',
+   'Hopeless / nothing can be done','Positive / not too concerned',
+   'Skeptical / annoyed','Neutral / Detached'],
+  [33.5,17.5,6,5,3,2],[C.teal,C.amber,C.red,C.teal3,C.amber2,C.grey],67);
+
+makeDonut('q3Chart',
+  ['Some damages unavoidable, action matters','Action can still reduce harm',
+   'Humans cannot affect climate','Already too late',
+   'Tech solutions will prevent damage'],
+  [30,20.5,7,5,3.5],[C.teal,C.teal2,C.red,C.red2,C.blue2],66);
+
+// ── LIKERT + COLUMN ──────────────────────────────────────────────────────────
+function makeLikert(barId,legendId,segs){
+  const bar=document.getElementById(barId),leg=document.getElementById(legendId);
+  const total=segs.reduce((s,d)=>s+d.val,0);
+  segs.forEach(d=>{
+    const pct=d.val/total*100;
+    const seg=document.createElement('div');
+    seg.className='likert-seg';seg.style.flex=pct.toFixed(2);seg.style.background=d.color;
+    if(pct>9)seg.textContent=pct.toFixed(0)+'%';
+    bar.appendChild(seg);
+    leg.innerHTML+=`<div class="likert-legend-item"><div class="likert-dot" style="background:${d.color}"></div>${d.label}: ${d.val}</div>`;
+  });
+}
+function makeColumn(id,labels,data,colors,n){
+  new Chart(document.getElementById(id),{
+    type:'bar',data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:5,borderSkipped:false}]},
+    options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y} (${(ctx.parsed.y/n*100).toFixed(1)}%)`}}},
+      scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.05)'},ticks:{stepSize:5}},x:{grid:{display:false},ticks:{font:{size:11}}}}}
+  });
+}
+
+const q4s=[{label:'1 – Never',val:24,color:C.teal},{label:'2',val:23,color:C.teal3},{label:'3',val:10,color:C.amber2},{label:'4',val:5,color:C.amber},{label:'5 – Always',val:4,color:C.red}];
+makeLikert('q4bar','q4legend',q4s);makeColumn('q4Chart',['1 – Never','2','3','4','5 – Always'],[24,23,10,5,4],q4s.map(d=>d.color),66);
+
+const q5s=[{label:'Concerned & reflective',val:35.5,color:C.teal},{label:'Concerned but separate',val:15,color:C.teal2},{label:'Uncomfortable / avoid',val:5,color:C.amber2},{label:'Neutral / detached',val:5,color:C.grey},{label:'Skeptical / irritated',val:3.5,color:C.amber},{label:'No particular feeling',val:2,color:C.grey2},{label:'Never thought about it',val:1,color:C.blue3}];
+makeLikert('q5bar','q5legend',q5s);makeColumn('q5Chart',['Concerned\n& reflective','Concerned\nbut separate','Uncomfortable','Neutral','Skeptical','No feeling','Never\nthought'],[35.5,15,5,5,3.5,2,1],q5s.map(d=>d.color),67);
+
+const q6s=[{label:'1 – Very unlikely',val:12,color:C.red},{label:'2',val:29,color:C.amber},{label:'3',val:19,color:C.amber2},{label:'4',val:5,color:C.teal3},{label:'5 – Very likely',val:2,color:C.teal}];
+makeLikert('q6bar','q6legend',q6s);makeColumn('q6Chart',['1','2','3','4','5'],[12,29,19,5,2],q6s.map(d=>d.color),67);
+
+const q7s=[{label:'1 – Very unwilling',val:4,color:C.red},{label:'2',val:5,color:C.red3},{label:'3',val:6,color:C.amber2},{label:'4',val:32,color:C.teal3},{label:'5 – Very willing',val:20,color:C.teal}];
+makeLikert('q7bar','q7legend',q7s);makeColumn('q7Chart',['1','2','3','4','5'],[4,5,6,32,20],q7s.map(d=>d.color),67);
+
+// ── HISTOGRAMS ────────────────────────────────────────────────────────────────
+function normalPDF(x,mean,sd){return(1/(sd*Math.sqrt(2*Math.PI)))*Math.exp(-0.5*Math.pow((x-mean)/sd,2));}
+
+function makeHistogram(id,counts,mean,sd,n,color){
+  const labels=['1','2','3','4','5','6','7','8','9','10'];
+  const bellData=labels.map((_,i)=>parseFloat((normalPDF(i+1,mean,sd)*n).toFixed(3)));
+  const meanPlugin={
+    afterDatasetsDraw(chart){
+      const{ctx,scales:{x,y}}=chart;
+      const sdLeft=x.getPixelForValue(Math.max(0,mean-sd-1));
+      const sdRight=x.getPixelForValue(Math.min(9,mean+sd-1));
+      ctx.save();
+      ctx.fillStyle=color+'22';
+      ctx.fillRect(sdLeft,y.top,sdRight-sdLeft,y.bottom-y.top);
+      const mx=x.getPixelForValue(mean-1);
+      ctx.setLineDash([5,4]);ctx.strokeStyle=color;ctx.lineWidth=2;ctx.globalAlpha=0.9;
+      ctx.beginPath();ctx.moveTo(mx,y.top+20);ctx.lineTo(mx,y.bottom);ctx.stroke();
+      ctx.setLineDash([]);ctx.globalAlpha=1;
+      ctx.fillStyle=color;ctx.font="600 11px 'Inter',sans-serif";ctx.textAlign='center';
+      ctx.fillText('μ = '+mean.toFixed(2),mx,y.top+14);ctx.restore();
+    }
+  };
+  new Chart(document.getElementById(id),{
+    type:'bar',
+    data:{labels,datasets:[
+      {type:'bar',label:'Observed responses',data:counts,backgroundColor:color+'bb',borderColor:color,borderWidth:1.5,borderRadius:5,borderSkipped:false,order:2},
+      {type:'line',label:'Fitted normal curve',data:bellData,borderColor:color,borderWidth:2.5,borderDash:[7,4],pointRadius:4,pointBackgroundColor:'#fff',pointBorderColor:color,pointBorderWidth:2,pointHoverRadius:6,fill:false,tension:0.42,order:1}
+    ]},
+    options:{
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{display:true,position:'top',align:'end',labels:{boxWidth:20,boxHeight:3,padding:14,font:{size:11}}},
+        tooltip:{mode:'index',intersect:false,callbacks:{label:ctx=>{
+          if(ctx.datasetIndex===0)return` Observed: ${ctx.parsed.y} (${(ctx.parsed.y/n*100).toFixed(1)}%)`;
+          return` Normal curve: ${ctx.parsed.y.toFixed(2)}`;
+        }}}
+      },
+      scales:{
+        y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.05)'},title:{display:true,text:'Number of respondents',font:{size:11}}},
+        x:{grid:{display:false},title:{display:true,text:'← Not at all worried                                                          Extremely worried →',font:{size:11}}}
+      }
+    },
+    plugins:[meanPlugin]
+  });
+}
+
+makeHistogram('q8Chart',[1,3,4,1,3,4,11,9,19,12],7.493,2.389,67,C.teal);
+makeHistogram('q9Chart',[1,5,13,18,7,7,11,3,1,0],4.682,1.833,66,C.blue);
+makeHistogram('q10Chart',[1,2,5,4,9,11,15,10,9,0],6.258,1.995,66,C.amber);
+
+// ── COMBINED VIEW: smoothed frequency curves ────────────────────────────────
+(function(){
+  const labels=['1','2','3','4','5','6','7','8','9','10'];
+  const pct=(arr,n)=>arr.map(v=>parseFloat((v/n*100).toFixed(1)));
+  new Chart(document.getElementById('overlapChart'),{
+    type:'line',
+    data:{labels,datasets:[
+      {label:'Q8 – Personal worry (μ = 7.49)',data:pct([1,3,4,1,3,4,11,9,19,12],67),borderColor:C.teal,backgroundColor:C.teal+'22',borderWidth:3,fill:true,tension:0.45,pointRadius:5,pointBackgroundColor:'#fff',pointBorderColor:C.teal,pointBorderWidth:2,pointHoverRadius:7},
+      {label:'Q10 – Fellow guests (μ = 6.26)',data:pct([1,2,5,4,9,11,15,10,9,0],66),borderColor:C.amber,backgroundColor:C.amber+'1a',borderWidth:3,borderDash:[6,3],fill:true,tension:0.45,pointRadius:5,pointBackgroundColor:'#fff',pointBorderColor:C.amber,pointBorderWidth:2,pointHoverRadius:7},
+      {label:'Q9 – General public (μ = 4.68)',data:pct([1,5,13,18,7,7,11,3,1,0],66),borderColor:C.blue,backgroundColor:C.blue+'16',borderWidth:3,borderDash:[3,3],fill:true,tension:0.45,pointRadius:5,pointBackgroundColor:'#fff',pointBorderColor:C.blue,pointBorderWidth:2,pointHoverRadius:7},
+    ]},
+    options:{
+      maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{position:'bottom',labels:{boxWidth:24,boxHeight:3,padding:16,font:{size:12},usePointStyle:false}},
+        tooltip:{callbacks:{label:ctx=>{
+          const name=ctx.dataset.label.split('–')[0].trim();
+          return ` ${name}: ${ctx.parsed.y}% of respondents`;
+        }}}
+      },
+      scales:{
+        y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.05)'},title:{display:true,text:'% of respondents',font:{size:11}},ticks:{callback:v=>v+'%'}},
+        x:{grid:{display:false},title:{display:true,text:'← Not at all worried                                                          Extremely worried →',font:{size:11}}}
+      }
+    }
+  });
+})();
+
+// ── Q11 ──────────────────────────────────────────────────────────────────────
+new Chart(document.getElementById('q11Chart'),{
+  type:'bar',
+  data:{
+    labels:['Call for awareness & collective action','Personal responsibility & behaviour change','Skepticism / natural-cycle framing','Political & leadership failure','Critique of green technology','Climate grief, distress & pessimism','Future generations & long-term thinking','Observed / local climate impacts'],
+    datasets:[{data:[14,7,6,5,5,5,4,2],backgroundColor:[C.teal,C.teal2,C.red,C.red2,C.amber,C.plum,C.blue,C.teal3],borderRadius:6,borderSkipped:false}]
+  },
+  options:{
+    maintainAspectRatio:false,
+    indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.x} comment${ctx.parsed.x!==1?'s':''} mention this theme`}}},
+    scales:{x:{grid:{color:'rgba(0,0,0,0.05)'},title:{display:true,text:'Number of comments (35 total · some span multiple categories)',font:{size:11}},ticks:{stepSize:1}},y:{grid:{display:false},ticks:{font:{size:12},autoSkip:false}}}
+  }
+});
+</script>
+<script>
+function showPage(name) {
+  if (name === 'cluster') {
+    const overlay = document.getElementById('page-cluster');
+    overlay.style.display = '';
+    document.body.style.overflow = 'hidden';
+    document.getElementById('nav-cluster').classList.add('active');
+    document.getElementById('nav-survey').classList.remove('active');
+    // Trigger resize after overlay is visible so canvas gets correct dimensions
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event('resize'));
+        // Extra fallback after CSS transition settles
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+      });
+    });
+  } else {
+    closeCluster();
+  }
+}
+function closeCluster() {
+  document.getElementById('page-cluster').style.display = 'none';
+  document.body.style.overflow = '';
+  document.getElementById('nav-survey').classList.add('active');
+  document.getElementById('nav-cluster').classList.remove('active');
+  window.scrollTo(0, 0);
+}
+// Close on Escape key
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCluster(); });
+</script>
+
+<!-- Dropdown panel -->
+    <div class="demo-dropdown" id="demoDropdown">
+      <div class="demo-dropdown-title">Respondent demographics · n = 67</div>
+
+      <!-- Gender -->
+      <div class="demo-panel" style="min-width:170px;max-width:200px;">
+        <div class="demo-panel-title">Gender</div>
+        <div class="gender-row" style="margin-top:8px;">
+          <div class="gender-item">
+            <div class="gender-bar-track"><div class="gender-bar-fill" style="width:61%;background:#4a9070;"></div></div>
+            <div class="gender-label">Female</div><div class="gender-pct">61%</div>
+          </div>
+          <div class="gender-item">
+            <div class="gender-bar-track"><div class="gender-bar-fill" style="width:37%;background:#5a80b5;"></div></div>
+            <div class="gender-label">Male</div><div class="gender-pct">37%</div>
+          </div>
+          <div class="gender-item">
+            <div class="gender-bar-track"><div class="gender-bar-fill" style="width:2%;background:#c8c4be;"></div></div>
+            <div class="gender-label">Not stated</div><div class="gender-pct">1%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Age -->
+      <div class="demo-panel" style="min-width:190px;">
+        <div class="demo-panel-title">Age group (2026)</div>
+        <div class="demo-chart-wrap"><canvas id="demoAge"></canvas></div>
+      </div>
+
+      <!-- Region -->
+      <div class="demo-panel" style="min-width:260px;flex:2;">
+        <div class="demo-panel-title">Region of origin</div>
+        <div class="demo-chart-wrap tall"><canvas id="demoRegion"></canvas></div>
+      </div>
+    </div>
+
+</body>
+</html>
