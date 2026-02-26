@@ -290,7 +290,7 @@ document.addEventListener('click',function(e){
     <p class="header-intro">This survey is conducted on HX expedition vessels to Antarctica &amp; Arctic regions. It is an ongoing study on our ships' microcosm and will continue to evolve as more answers are added to the database. Questionnaires are available in English and Chinese. Results below represent the answers of guests who chose to participate — a self-selected group with an interest in science, nature, and polar environments.<br><span class="header-intro-method">Methodology — Surveys were distributed as paper forms and via QR code (online version) and transcribed by a single analyst (Jeanne de Lépinay). Where a respondent ticked two answers to a single-choice question, each was counted as 0.5. Unmarked scale items were excluded from that question's denominator (n&nbsp;=&nbsp;85–86 for select questions). Participation bias, language barriers, question phrasing and single-analyst transcription may influence results.</span></p>
 
     <!-- Cruises + Demographics on same row -->
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px;position:relative;overflow:visible;">
 
     <!-- Demographics toggle -->
     <button class="demo-toggle-btn" id="demoToggle" onclick="toggleDemo()" style="margin-bottom:0;">
@@ -299,24 +299,44 @@ document.addEventListener('click',function(e){
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 6,8 10,4"/></svg>
     </button>
 
-    <!-- Cruises dropdown -->
-    <details class="cruise-list" style="margin-bottom:0;">
-      <summary style="display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,0.5);list-style:none;user-select:none;padding:8px 16px;background:transparent;border:1px solid transparent;border-radius:8px;">
-        Cruises included in this dataset
-        <svg class="cruise-chevron" width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><polyline points="2,3 5.5,7 9,3"/></svg>
-      </summary>
-      <div style="margin-top:8px;padding:10px 14px;background:rgba(255,255,255,0.07);border-radius:8px;border:1px solid rgba(255,255,255,0.12);">
-        <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">1 cruise · 88 respondents</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;">
-          <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-right:8px;vertical-align:middle;"></span>
-          Highlights of Antarctica — MS Fridtjof Nansen &nbsp;·&nbsp; 18 Feb – 28 Feb 2026 &nbsp;·&nbsp; <em style="color:rgba(255,255,255,0.4);">n = 88</em>
-        </div>
-      </div>
-    </details>
+    <!-- Cruises toggle — popup injected into body to escape header stacking context -->
+    <button id="cruiseToggle" onclick="toggleCruises()" style="display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,0.5);background:transparent;border:none;padding:8px 4px;font-family:inherit;">
+      Cruises included in this dataset
+      <svg id="cruiseChevron" width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><polyline points="2,3 5.5,7 9,3"/></svg>
+    </button>
     <script>
-      document.querySelector('.cruise-list').addEventListener('toggle', function() {
-        this.querySelector('.cruise-chevron').style.transform = this.open ? 'rotate(180deg)' : '';
-      });
+      var _cruiseOpen = false;
+      function toggleCruises() {
+        _cruiseOpen ? closeCruisePopup() : openCruisePopup();
+      }
+      function openCruisePopup() {
+        _cruiseOpen = true;
+        document.getElementById('cruiseChevron').style.transform = 'rotate(180deg)';
+        var btn = document.getElementById('cruiseToggle');
+        var r = btn.getBoundingClientRect();
+        var pop = document.createElement('div');
+        pop.id = 'cruisePopup';
+        pop.style.cssText = 'position:fixed;top:'+(r.bottom+8)+'px;left:'+r.left+'px;z-index:99999;min-width:460px;padding:14px 18px;background:#1c2033;border-radius:10px;border:1px solid rgba(255,255,255,0.2);box-shadow:0 16px 48px rgba(0,0,0,0.85);';
+        pop.innerHTML = '<div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">1 cruise &middot; 88 respondents</div>'
+          +'<div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.7;">'
+          +'<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#4a9070;margin-right:9px;vertical-align:middle;"></span>'
+          +'Highlights of Antarctica &mdash; MS Fridtjof Nansen &nbsp;&middot;&nbsp; 18 Feb &ndash; 28 Feb 2026 &nbsp;&middot;&nbsp; <em style="color:rgba(255,255,255,0.4);">n = 88</em>'
+          +'</div>';
+        document.body.appendChild(pop);
+        setTimeout(function(){ document.addEventListener('click', cruiseOutsideClick); }, 50);
+      }
+      function closeCruisePopup() {
+        _cruiseOpen = false;
+        document.getElementById('cruiseChevron').style.transform = '';
+        document.removeEventListener('click', cruiseOutsideClick);
+        var p = document.getElementById('cruisePopup');
+        if (p) p.remove();
+      }
+      function cruiseOutsideClick(e) {
+        var btn = document.getElementById('cruiseToggle');
+        var pop = document.getElementById('cruisePopup');
+        if (btn && !btn.contains(e.target) && pop && !pop.contains(e.target)) closeCruisePopup();
+      }
     </script>
 
     </div>
@@ -387,8 +407,8 @@ document.addEventListener('click',function(e){
 <div class="grid-1" style="margin-bottom:24px;">
   <div class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
     <div>
-      <div class="card-q">Q1 — Key finding</div>
-      <div class="card-title" style="font-size:21px;margin-bottom:12px;">How do respondents view climate change?</div>
+      <div class="card-q\">Q1 — Key finding</div>
+      <div class="card-title" style="font-size:21px;margin-bottom:12px;">What is your view on climate change?</div>
       <div class="card-note" style="margin-bottom:24px;">Single choice · 88 respondents</div>
       <div style="background:var(--paper);border-radius:12px;padding:20px 24px;border:1px solid var(--rule);margin-bottom:16px;">
         <div style="font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;">Most common response</div>
@@ -435,13 +455,13 @@ document.addEventListener('click',function(e){
 <div class="grid-2">
   <div class="card">
     <div class="card-q">Q2</div>
-    <div class="card-title">Emotional reaction</div>
+    <div class="card-title">How do you feel emotionally about climate change?</div>
     <div class="card-note">Single choice · 88 respondents</div>
     <div class="h-donut"><canvas id="q2Chart"></canvas></div>
   </div>
   <div class="card">
     <div class="card-q">Q3</div>
-    <div class="card-title">Outlook on climate change</div>
+    <div class="card-title">What is your outlook on climate change damage?</div>
     <div class="card-note">Single choice · 87 respondents</div>
     <div class="h-donut"><canvas id="q3Chart"></canvas></div>
   </div>
@@ -460,7 +480,7 @@ document.addEventListener('click',function(e){
   </div>
   <div class="card">
     <div class="card-q">Q5</div>
-    <div class="card-title">Feelings about the climate impact of travel &amp; tourism</div>
+    <div class="card-title">How do you feel about the climate impact of your travel?</div>
     <div class="card-note">Single choice · 86 respondents (B68, B86 excluded)</div>
     <div class="likert-bar" id="q5bar"></div>
     <div class="likert-legend" id="q5legend"></div>
@@ -473,7 +493,7 @@ document.addEventListener('click',function(e){
 <div class="grid-2">
   <div class="card">
     <div class="card-q">Q6</div>
-    <div class="card-title">Likelihood of large-scale societal change to address climate change</div>
+    <div class="card-title">How likely is large-scale societal change to address climate change?</div>
     <div class="card-note">Scale: 1 = Very unlikely → 5 = Very likely · 86 respondents (B68, B86 excluded)</div>
     <div class="likert-bar" id="q6bar"></div>
     <div class="likert-legend" id="q6legend"></div>
@@ -481,7 +501,7 @@ document.addEventListener('click',function(e){
   </div>
   <div class="card">
     <div class="card-q">Q7</div>
-    <div class="card-title">Personal willingness to make major lifestyle changes</div>
+    <div class="card-title">How willing are you to make major lifestyle changes to address climate change?</div>
     <div class="card-note">Scale: 1 = Very unwilling → 5 = Very willing · 86 respondents (B68, B86 excluded)</div>
     <div class="likert-bar" id="q7bar"></div>
     <div class="likert-legend" id="q7legend"></div>
@@ -639,14 +659,14 @@ document.addEventListener('click',function(e){
   </button>
   <div class="cluster-overlay-inner">
 
-    <div class="divider"><div class="divider-line"></div><div class="divider-text">Respondent Profiles — Cluster Analysis</div><div class="divider-line"></div></div>
+    <div class="divider" style="border-color:rgba(255,255,255,0.08);"><div class="divider-line" style="background:rgba(255,255,255,0.08);"></div><div class="divider-text" style="color:rgba(255,255,255,0.3);background:#0f1117;">Respondent Profiles — Cluster Analysis</div><div class="divider-line" style="background:rgba(255,255,255,0.08);"></div></div>
 
 <div class="grid-1" style="margin-bottom:24px;">
-  <div class="card" style="padding:0;overflow:hidden;">
+  <div class="card" style="padding:0;overflow:hidden;background:#0f1117;border-color:rgba(255,255,255,0.1);">
     <div style="padding:24px 28px 16px;">
-      <div class="card-q">Cluster Analysis</div>
-      <div class="card-title">Four respondent profiles emerge from the data</div>
-      <div class="card-note">2D projection via PCA · 53.7% of variance explained · hover over dots for respondent details · click legend to highlight a profile</div>
+      <div class="card-q" style="color:rgba(255,255,255,0.4);">Cluster Analysis</div>
+      <div class="card-title" style="color:#ffffff;">Four respondent profiles emerge from the data</div>
+      <div class="card-note" style="color:rgba(255,255,255,0.4);">Respondents were grouped using k-means clustering across all 10 survey dimensions (Q1–Q10), then the 10-dimensional space was reduced to 2D via PCA for visualisation · 53.7% of variance explained by these two axes · hover over dots for respondent details · click legend to highlight a profile</div>
     </div>
     <div class="cluster-embed">
       <style>
