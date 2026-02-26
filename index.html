@@ -78,7 +78,7 @@ document.addEventListener('click',function(e){
   .header-deco::after{content:'';position:absolute;bottom:-100px;left:240px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,0.025);}
   header>*:not(.header-deco){position:relative;z-index:1;}
   .header-eyebrow{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:14px;}
-  header h1{font-family:'Playfair Display',serif;font-size:clamp(26px,3.5vw,46px);font-weight:700;line-height:1.12;max-width:680px;margin-bottom:0;}
+  header h1{font-family:'Playfair Display',serif;font-size:clamp(32px,4.5vw,58px);font-weight:700;line-height:1.12;max-width:680px;margin-bottom:0;}
   header h1 em{font-style:italic;color:#9ecfbb;}
 
   /* header title block */
@@ -87,7 +87,7 @@ document.addEventListener('click',function(e){
   .header-intro-method{display:block;margin-top:8px;font-size:11px;font-style:normal;color:rgba(255,255,255,0.35);line-height:1.65;}
 
   /* demographics toggle button */
-  .demo-toggle-btn{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:8px 16px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);border-radius:8px;color:rgba(255,255,255,0.75);font-size:12px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:background .2s,color .2s;user-select:none;}
+  .demo-toggle-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);border-radius:8px;color:rgba(255,255,255,0.75);font-size:12px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:background .2s,color .2s;user-select:none;}
   .demo-toggle-btn:hover{background:rgba(255,255,255,0.15);color:white;}
   .demo-toggle-btn svg{transition:transform .3s;}
   .demo-toggle-btn.open svg{transform:rotate(180deg);}
@@ -287,14 +287,39 @@ document.addEventListener('click',function(e){
   <div class="header-body">
     <h1>How do you feel about <em>climate change?</em></h1>
 
-    <p class="header-intro">This survey was conducted aboard the Fridtjof Nansen, an HX expedition vessel, during Antarctic voyages. Questionnaires were available in English and Chinese. Results below represent the answers of guests who chose to participate — a self-selected group with an interest in science, nature, and polar environments.<br><span class="header-intro-method">Methodology — Surveys were transcribed manually by a single analyst (Jeanne de Lépinay). Where a respondent ticked two answers to a single-choice question, each was counted as 0.5. Unmarked scale items were excluded from that question's denominator (n&nbsp;=&nbsp;85–86 for select questions). Participation bias, language barriers, question phrasing and single-analyst transcription may influence results.</span></p>
+    <p class="header-intro">This survey is conducted on HX expedition vessels to Antarctica &amp; Arctic regions. It is an ongoing study on our ships' microcosm and will continue to evolve as more answers are added to the database. Questionnaires are available in English and Chinese. Results below represent the answers of guests who chose to participate — a self-selected group with an interest in science, nature, and polar environments.<br><span class="header-intro-method">Methodology — Surveys were distributed as paper forms and via QR code (online version) and transcribed by a single analyst (Jeanne de Lépinay). Where a respondent ticked two answers to a single-choice question, each was counted as 0.5. Unmarked scale items were excluded from that question's denominator (n&nbsp;=&nbsp;85–86 for select questions). Participation bias, language barriers, question phrasing and single-analyst transcription may influence results.</span></p>
+
+    <!-- Cruises + Demographics on same row -->
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px;">
+
+    <!-- Cruises dropdown -->
+    <details class="cruise-list" style="margin-bottom:0;">
+      <summary style="display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,0.5);list-style:none;user-select:none;padding:8px 16px;background:transparent;border:1px solid transparent;border-radius:8px;">
+        Cruises included in this dataset
+        <svg class="cruise-chevron" width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><polyline points="2,3 5.5,7 9,3"/></svg>
+      </summary>
+      <div style="margin-top:8px;padding:10px 14px;background:rgba(255,255,255,0.07);border-radius:8px;border:1px solid rgba(255,255,255,0.12);">
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">1 cruise · 88 respondents</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;">
+          <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-right:8px;vertical-align:middle;"></span>
+          Highlights of Antarctica — MS Fridtjof Nansen &nbsp;·&nbsp; 18 Feb – 28 Feb 2026 &nbsp;·&nbsp; <em style="color:rgba(255,255,255,0.4);">n = 88</em>
+        </div>
+      </div>
+    </details>
+    <script>
+      document.querySelector('.cruise-list').addEventListener('toggle', function() {
+        this.querySelector('.cruise-chevron').style.transform = this.open ? 'rotate(180deg)' : '';
+      });
+    </script>
 
     <!-- Demographics toggle -->
-    <button class="demo-toggle-btn" id="demoToggle" onclick="toggleDemo()">
+    <button class="demo-toggle-btn" id="demoToggle" onclick="toggleDemo()" style="margin-bottom:0;">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="5" r="2"/><path d="M7 8v2M4 11a3 3 0 016 0"/></svg>
       Respondent demographics
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 6,8 10,4"/></svg>
     </button>
+
+    </div>
 
 
 <!-- Dropdown panel -->
@@ -563,12 +588,12 @@ document.addEventListener('click',function(e){
     <div class="cluster-teaser-card" style="--c:#2d6a8f">
       <div class="ctc-count">20</div>
       <div class="ctc-name">Cool-Headed Moderate</div>
-      <div class="ctc-desc">Uncertain on causes · Calm · Emotionally detached · Heavily Chinese respondents</div>
+      <div class="ctc-desc">Uncertain on causes · Calm · Emotionally detached · Low personal worry (6.1)</div>
     </div>
     <div class="cluster-teaser-card" style="--c:#6b3fa0">
       <div class="ctc-count">10</div>
       <div class="ctc-name">Disengaged Skeptic</div>
-      <div class="ctc-desc">Doubts or denies CC · Near-zero willingness (1.7) · Mostly older Australians</div>
+      <div class="ctc-desc">Doubts or denies CC · Near-zero willingness (1.7) · Oldest cluster (avg 67)</div>
     </div>
     <div class="cluster-teaser-card" style="--c:#1e7a52">
       <div class="ctc-count">29</div>
@@ -708,8 +733,8 @@ document.addEventListener('click',function(e){
 // ── CLUSTER MAP ──────────────────────────────────────────────────────────────
 const PROFILES = [
   { id: 0, name: 'Strained Believer',    color: '#c1440e', bg: 'rgba(193,68,14,0.15)', desc: '100% accept CC · High worry (8.9) · Low societal hope (Q6 avg 1.7)' },
-  { id: 1, name: 'Cool-Headed Moderate', color: '#2d6a8f', bg: 'rgba(45,106,143,0.15)', desc: 'Uncertain on causes · Calm · 70% hold "real but uncertain" view' },
-  { id: 2, name: 'Disengaged Skeptic',   color: '#6b3fa0', bg: 'rgba(107,63,160,0.15)', desc: 'Doubts or denies CC · Near-zero willingness (1.7) · Oldest cluster' },
+  { id: 1, name: 'Cool-Headed Moderate', color: '#2d6a8f', bg: 'rgba(45,106,143,0.15)', desc: 'Uncertain on causes · Calm · Low personal worry (6.1) · 70% hold "real but uncertain" view' },
+  { id: 2, name: 'Disengaged Skeptic',   color: '#6b3fa0', bg: 'rgba(107,63,160,0.15)', desc: 'Doubts or denies CC · Near-zero willingness (1.7) · Oldest cluster (avg 67)' },
   { id: 3, name: 'Hopeful Pragmatist',   color: '#1e7a52', bg: 'rgba(30,122,82,0.15)',  desc: 'Accept CC · High worry (8.2) · Believes change is possible (Q6 avg 3.2)' },
 ];
 
@@ -934,7 +959,7 @@ window.addEventListener('resize', () => { if(_clusterInited){ setupCanvas(); dra
   </div><!-- /cluster-overlay-inner -->
 </div><!-- /cluster-overlay -->
 
-<footer>Survey: "How do you feel about climate change?" · 88 respondents · Handwritten surveys in English and Chinese</footer>
+<footer>Survey: "How do you feel about climate change?" · 88 respondents · Paper &amp; online surveys in English and Chinese · HX Expeditions</footer>
 
 <script>
 const C={
