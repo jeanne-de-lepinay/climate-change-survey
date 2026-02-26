@@ -287,7 +287,7 @@ document.addEventListener('click',function(e){
   <div class="header-body">
     <h1>How do you feel about <em>climate change?</em></h1>
 
-    <p class="header-intro">This survey was conducted aboard the Fridtjof Nansen, an HX expedition vessel, during Antarctic voyages. Questionnaires were available in English and Chinese. Results below represent the answers of guests who chose to participate — a self-selected group with an interest in science, nature, and polar environments.<br><span class="header-intro-method">Methodology — Surveys were transcribed manually by a single analyst (Jeanne de Lépinay). Where a respondent ticked two answers to a single-choice question, each was counted as 0.5. Unmarked scale items were excluded from that question's denominator (n&nbsp;=&nbsp;66 for Q3, Q4, Q9, Q10). Participation bias, language barriers, question phrasing and single-analyst transcription may influence results.</span></p>
+    <p class="header-intro">This survey was conducted aboard the Fridtjof Nansen, an HX expedition vessel, during Antarctic voyages. Questionnaires were available in English and Chinese. Results below represent the answers of guests who chose to participate — a self-selected group with an interest in science, nature, and polar environments.<br><span class="header-intro-method">Methodology — Surveys were transcribed manually by a single analyst (Jeanne de Lépinay). Where a respondent ticked two answers to a single-choice question, each was counted as 0.5. Unmarked scale items were excluded from that question's denominator (n&nbsp;=&nbsp;85–86 for select questions). Participation bias, language barriers, question phrasing and single-analyst transcription may influence results.</span></p>
 
     <!-- Demographics toggle -->
     <button class="demo-toggle-btn" id="demoToggle" onclick="toggleDemo()">
@@ -296,10 +296,47 @@ document.addEventListener('click',function(e){
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 6,8 10,4"/></svg>
     </button>
 
+
+<!-- Dropdown panel -->
+    <div class="demo-dropdown" id="demoDropdown">
+      <div class="demo-dropdown-title">Respondent demographics · n = 88</div>
+
+      <!-- Gender -->
+      <div class="demo-panel" style="min-width:170px;max-width:200px;">
+        <div class="demo-panel-title">Gender</div>
+        <div class="gender-row" style="margin-top:8px;">
+          <div class="gender-item">
+            <div class="gender-bar-track"><div class="gender-bar-fill" style="width:60%;background:#4a9070;"></div></div>
+            <div class="gender-label">Female</div><div class="gender-pct">60%</div>
+          </div>
+          <div class="gender-item">
+            <div class="gender-bar-track"><div class="gender-bar-fill" style="width:38%;background:#5a80b5;"></div></div>
+            <div class="gender-label">Male</div><div class="gender-pct">38%</div>
+          </div>
+          <div class="gender-item">
+            <div class="gender-bar-track"><div class="gender-bar-fill" style="width:2%;background:#c8c4be;"></div></div>
+            <div class="gender-label">Not stated</div><div class="gender-pct">1%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Age -->
+      <div class="demo-panel" style="min-width:190px;">
+        <div class="demo-panel-title">Age group (2026)</div>
+        <div class="demo-chart-wrap"><canvas id="demoAge"></canvas></div>
+      </div>
+
+      <!-- Region -->
+      <div class="demo-panel" style="min-width:260px;flex:2;">
+        <div class="demo-panel-title">Region of origin</div>
+        <div class="demo-chart-wrap tall"><canvas id="demoRegion"></canvas></div>
+      </div>
+    </div>
+
   </div>
 
   <div class="header-meta">
-    <div><div class="meta-label">Respondents</div><div class="meta-value">67</div></div>
+    <div><div class="meta-label">Respondents</div><div class="meta-value">88</div></div>
     <div><div class="meta-label">Questions</div><div class="meta-value">Q1 – Q11</div></div>
     <div><div class="meta-label">Languages</div><div class="meta-value">English · Chinese</div></div>
     <div><div class="meta-label">Nationalities</div><div class="meta-value">15+ countries</div></div>
@@ -312,11 +349,11 @@ document.addEventListener('click',function(e){
 <!-- AT A GLANCE -->
 <div style="margin-top:4px"><div class="section-label">At a glance</div></div>
 <div class="stat-row">
-  <div class="stat-box"><div class="stat-num c-teal">71.6%</div><div class="stat-desc">believe climate change is a serious human-caused problem</div></div>
-  <div class="stat-box"><div class="stat-num c-amber">50%</div><div class="stat-desc">feel "concerned but hopeful" when hearing about climate change</div></div>
-  <div class="stat-box"><div class="stat-num c-teal">78%</div><div class="stat-desc">see some or significant damage as unavoidable, but still support action</div></div>
-  <div class="stat-box"><div class="stat-num c-red">7.5</div><div class="stat-desc">average personal worry score out of 10 — vs 4.7 perceived for the public</div></div>
-  <div class="stat-box"><div class="stat-num c-blue">53%</div><div class="stat-desc">are willing or very willing to make major lifestyle changes</div></div>
+  <div class="stat-box"><div class="stat-num c-teal">64.8%</div><div class="stat-desc">believe climate change is a serious human-caused problem</div></div>
+  <div class="stat-box"><div class="stat-num c-amber">54%</div><div class="stat-desc">feel "concerned but hopeful" when hearing about climate change</div></div>
+  <div class="stat-box"><div class="stat-num c-teal">79%</div><div class="stat-desc">see some damage as unavoidable but still believe meaningful action matters (Q3)</div></div>
+  <div class="stat-box"><div class="stat-num c-red">7.3</div><div class="stat-desc">average personal worry score out of 10 — vs 4.5 perceived for the general public</div></div>
+  <div class="stat-box"><div class="stat-num c-blue">76%</div><div class="stat-desc">are willing or very willing to make major lifestyle changes (Q7 scores 4–5)</div></div>
 </div>
 
 <div class="divider"><div class="divider-line"></div><div class="divider-text">Views &amp; Reactions — Q1 · Q2 · Q3</div><div class="divider-line"></div></div>
@@ -327,16 +364,44 @@ document.addEventListener('click',function(e){
     <div>
       <div class="card-q">Q1 — Key finding</div>
       <div class="card-title" style="font-size:21px;margin-bottom:12px;">How do respondents view climate change?</div>
-      <div class="card-note" style="margin-bottom:24px;">Single choice · 67 respondents</div>
+      <div class="card-note" style="margin-bottom:24px;">Single choice · 88 respondents</div>
       <div style="background:var(--paper);border-radius:12px;padding:20px 24px;border:1px solid var(--rule);margin-bottom:16px;">
         <div style="font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;">Most common response</div>
-        <div style="font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:var(--teal);line-height:1;">71.6%</div>
+        <div style="font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:var(--teal);line-height:1;">64.8%</div>
         <div style="font-size:14px;color:var(--ink-mid);margin-top:8px;line-height:1.5;">consider climate change a <strong style="color:var(--ink)">serious problem caused by humans</strong> — the single most selected response by a wide margin.</div>
       </div>
-      <div style="font-size:12px;color:var(--ink-light);line-height:1.6;">Only 4 respondents (6%) questioned human causation or the scale of the problem. The remaining 22% acknowledge climate change as real but express uncertainty about its causes or impacts.</div>
+      <div style="font-size:12px;color:var(--ink-light);line-height:1.6;">Only 5 respondents (5.7%) outright deny or minimise climate change ("overstated" or "not happening"). A further 24% — 26 respondents — acknowledge climate change as real but express uncertainty about its human causes or scale. The remaining 65% are unambiguous: a serious, human-caused problem.</div>
     </div>
     <div style="width:100%;max-width:400px;margin:0 auto;">
       <canvas id="q1Chart" style="max-height:400px;"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- IPCC resource panel -->
+<div style="margin-bottom:28px;">
+  <div style="background:linear-gradient(135deg,#f0f6f2 0%,#e8f1f5 100%);border:1px solid #c8ddd4;border-left:4px solid var(--teal);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;">
+    <div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">Further reading</div>
+      <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.4;">Want to explore the science behind these questions?</div>
+      <div style="font-size:12.5px;color:var(--ink-mid);line-height:1.7;max-width:640px;">
+        The <strong style="color:var(--ink);">IPCC</strong> — Intergovernmental Panel on Climate Change — is the United Nations body that synthesises peer-reviewed published climate science from thousands of independent researchers worldwide — assessing evidence, not advocating policy. Its conclusions account for the full span of Earth's climate history, including periods several millions of years ago when the planet was warmer, and for every known natural driver of variability: solar cycles, volcanic activity, orbital shifts. All have been scientifically measured and modelled and all data and methodologies are publicly available.
+        <span style="display:inline-block;margin-top:6px;">The <strong style="color:var(--ink);">Sixth Assessment Report (AR6)</strong>, published 2021–2023, is their most recent.</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;min-width:160px;text-align:center;">
+      <a href="https://www.ipcc.ch/" target="_blank" rel="noopener" style="display:block;padding:10px 16px;background:var(--teal);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.04em;line-height:1.4;">
+        Visit the IPCC website
+        <div style="font-weight:400;opacity:.85;margin-top:2px;">ipcc.ch</div>
+      </a>
+      <a href="https://www.ipcc.ch/report/ar6/wg1/downloads/faqs/IPCC_AR6_WGI_FAQ_Chapter_01.pdf" target="_blank" rel="noopener" style="display:block;padding:10px 16px;background:#fff;color:var(--teal);border:1.5px solid var(--teal);border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.04em;line-height:1.4;">
+        Read the AR6 FAQ
+        <div style="font-weight:400;opacity:.75;margin-top:2px;">PDF · common questions</div>
+      </a>
+      <a href="https://www.ipcc.ch/report/ar6/syr/downloads/report/IPCC_AR6_SYR_SPM.pdf" target="_blank" rel="noopener" style="display:block;padding:10px 16px;background:#fff;color:var(--teal);border:1.5px solid var(--teal);border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.04em;line-height:1.4;">
+        Read the AR6 Summary
+        <div style="font-weight:400;opacity:.75;margin-top:2px;">PDF · for policymakers</div>
+      </a>
     </div>
   </div>
 </div>
@@ -346,13 +411,13 @@ document.addEventListener('click',function(e){
   <div class="card">
     <div class="card-q">Q2</div>
     <div class="card-title">Emotional reaction</div>
-    <div class="card-note">Single choice · 67 respondents</div>
+    <div class="card-note">Single choice · 88 respondents</div>
     <div class="h-donut"><canvas id="q2Chart"></canvas></div>
   </div>
   <div class="card">
     <div class="card-q">Q3</div>
     <div class="card-title">Outlook on climate change</div>
-    <div class="card-note">Single choice · 66 respondents</div>
+    <div class="card-note">Single choice · 87 respondents</div>
     <div class="h-donut"><canvas id="q3Chart"></canvas></div>
   </div>
 </div>
@@ -363,7 +428,7 @@ document.addEventListener('click',function(e){
   <div class="card">
     <div class="card-q">Q4</div>
     <div class="card-title">How often do you intentionally avoid climate-related information?</div>
-    <div class="card-note">Scale: 1 = Never → 5 = Always · 66 respondents</div>
+    <div class="card-note">Scale: 1 = Never → 5 = Always · 85 respondents</div>
     <div class="likert-bar" id="q4bar"></div>
     <div class="likert-legend" id="q4legend"></div>
     <div class="h-sm"><canvas id="q4Chart"></canvas></div>
@@ -371,7 +436,7 @@ document.addEventListener('click',function(e){
   <div class="card">
     <div class="card-q">Q5</div>
     <div class="card-title">Feelings about the climate impact of travel &amp; tourism</div>
-    <div class="card-note">Single choice · 67 respondents</div>
+    <div class="card-note">Single choice · 86 respondents (B68, B86 excluded)</div>
     <div class="likert-bar" id="q5bar"></div>
     <div class="likert-legend" id="q5legend"></div>
     <div class="h-sm"><canvas id="q5Chart"></canvas></div>
@@ -384,7 +449,7 @@ document.addEventListener('click',function(e){
   <div class="card">
     <div class="card-q">Q6</div>
     <div class="card-title">Likelihood of large-scale societal change to address climate change</div>
-    <div class="card-note">Scale: 1 = Very unlikely → 5 = Very likely · 67 respondents</div>
+    <div class="card-note">Scale: 1 = Very unlikely → 5 = Very likely · 86 respondents (B68, B86 excluded)</div>
     <div class="likert-bar" id="q6bar"></div>
     <div class="likert-legend" id="q6legend"></div>
     <div class="h-sm"><canvas id="q6Chart"></canvas></div>
@@ -392,7 +457,7 @@ document.addEventListener('click',function(e){
   <div class="card">
     <div class="card-q">Q7</div>
     <div class="card-title">Personal willingness to make major lifestyle changes</div>
-    <div class="card-note">Scale: 1 = Very unwilling → 5 = Very willing · 67 respondents</div>
+    <div class="card-note">Scale: 1 = Very unwilling → 5 = Very willing · 86 respondents (B68, B86 excluded)</div>
     <div class="likert-bar" id="q7bar"></div>
     <div class="likert-legend" id="q7legend"></div>
     <div class="h-sm"><canvas id="q7Chart"></canvas></div>
@@ -406,16 +471,16 @@ document.addEventListener('click',function(e){
   <div class="card">
     <div class="card-q">Q8</div>
     <div class="card-title">How worried are <span style="font-style:italic;color:var(--teal)">you personally</span> about climate change?</div>
-    <div class="card-note">Scale: 1 = Not at all worried → 10 = Extremely worried · 67 respondents</div>
+    <div class="card-note">Scale: 1 = Not at all worried → 10 = Extremely worried · 86 respondents (B68, B86 excluded)</div>
     <div class="stat-strip">
-      <div class="stat-strip-item"><div class="stat-strip-label">Mean</div><div class="stat-strip-val c-teal">7.49</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Mean</div><div class="stat-strip-val c-teal">7.34</div></div>
       <div class="stat-strip-item"><div class="stat-strip-label">Median</div><div class="stat-strip-val c-teal">8.0</div></div>
-      <div class="stat-strip-item"><div class="stat-strip-label">Std Dev</div><div class="stat-strip-val" style="color:var(--ink-mid)">2.39</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Std Dev</div><div class="stat-strip-val" style="color:var(--ink-mid)">2.36</div></div>
       <div class="stat-strip-item"><div class="stat-strip-label">Mode</div><div class="stat-strip-val" style="color:var(--ink-mid)">9</div></div>
-      <div class="stat-strip-item"><div class="stat-strip-label">Skewness</div><div class="stat-strip-val" style="color:var(--ink-mid)">−1.07</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Shape</div><div class="stat-strip-val" style="color:var(--ink-mid)">High-end</div></div>
     </div>
     <div class="h-hist"><canvas id="q8Chart"></canvas></div>
-    <div class="dist-note"><strong>Strongly left-skewed.</strong> Respondents cluster at the high end — 46% scored 9 or 10. The bell curve shows how far this distribution departs from a normal shape, reflecting the high personal concern of those who chose to travel to Antarctica.</div>
+    <div class="dist-note"><strong>Responses cluster strongly at the high end.</strong> 42% scored 9 or 10, and the tail extends far to the left — very few respondents reported low concern. The fitted curve shows how far this distribution departs from a symmetric bell shape, reflecting the intense personal concern of those who chose to travel to Antarctica.</div>
   </div>
 </div>
 
@@ -423,16 +488,16 @@ document.addEventListener('click',function(e){
   <div class="card">
     <div class="card-q">Q9</div>
     <div class="card-title">How worried do you think the <span style="font-style:italic;color:var(--blue)">general public</span> is about climate change?</div>
-    <div class="card-note">Scale: 1 = Not at all worried → 10 = Extremely worried · 66 respondents</div>
+    <div class="card-note">Scale: 1 = Not at all worried → 10 = Extremely worried · 85 respondents (B15, B68, B86 excluded)</div>
     <div class="stat-strip">
-      <div class="stat-strip-item"><div class="stat-strip-label">Mean</div><div class="stat-strip-val c-blue">4.68</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Mean</div><div class="stat-strip-val c-blue">4.54</div></div>
       <div class="stat-strip-item"><div class="stat-strip-label">Median</div><div class="stat-strip-val c-blue">4.0</div></div>
-      <div class="stat-strip-item"><div class="stat-strip-label">Std Dev</div><div class="stat-strip-val" style="color:var(--ink-mid)">1.83</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Std Dev</div><div class="stat-strip-val" style="color:var(--ink-mid)">1.85</div></div>
       <div class="stat-strip-item"><div class="stat-strip-label">Mode</div><div class="stat-strip-val" style="color:var(--ink-mid)">4</div></div>
-      <div class="stat-strip-item"><div class="stat-strip-label">Skewness</div><div class="stat-strip-val" style="color:var(--ink-mid)">+0.32</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Shape</div><div class="stat-strip-val" style="color:var(--ink-mid)">Balanced</div></div>
     </div>
     <div class="h-hist"><canvas id="q9Chart"></canvas></div>
-    <div class="dist-note"><strong>Roughly normal,</strong> and the best fit to a bell curve of all three questions. Respondents perceive the general public as considerably less concerned than they are themselves — a gap of 2.8 points on average.</div>
+    <div class="dist-note"><strong>The most balanced distribution of the three.</strong> Responses spread relatively evenly around the middle — mean and median both at 4.0–4.5 — with no strong pull toward either end. Respondents perceive the general public as considerably less concerned than themselves: a gap of 2.8 points on average.</div>
   </div>
 </div>
 
@@ -440,16 +505,16 @@ document.addEventListener('click',function(e){
   <div class="card">
     <div class="card-q">Q10</div>
     <div class="card-title">How worried do you think <span style="font-style:italic;color:var(--amber)">fellow guests onboard</span> are about climate change?</div>
-    <div class="card-note">Scale: 1 = Not at all worried → 10 = Extremely worried · 66 respondents</div>
+    <div class="card-note">Scale: 1 = Not at all worried → 10 = Extremely worried · 85 respondents (B15, B68, B86 excluded)</div>
     <div class="stat-strip">
-      <div class="stat-strip-item"><div class="stat-strip-label">Mean</div><div class="stat-strip-val c-amber">6.26</div></div>
-      <div class="stat-strip-item"><div class="stat-strip-label">Median</div><div class="stat-strip-val c-amber">7.0</div></div>
-      <div class="stat-strip-item"><div class="stat-strip-label">Std Dev</div><div class="stat-strip-val" style="color:var(--ink-mid)">2.00</div></div>
-      <div class="stat-strip-item"><div class="stat-strip-label">Mode</div><div class="stat-strip-val" style="color:var(--ink-mid)">7</div></div>
-      <div class="stat-strip-item"><div class="stat-strip-label">Skewness</div><div class="stat-strip-val" style="color:var(--ink-mid)">−0.56</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Mean</div><div class="stat-strip-val c-amber">6.04</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Median</div><div class="stat-strip-val c-amber">6.0</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Std Dev</div><div class="stat-strip-val" style="color:var(--ink-mid)">2.07</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Mode</div><div class="stat-strip-val" style="color:var(--ink-mid)">6</div></div>
+      <div class="stat-strip-item"><div class="stat-strip-label">Shape</div><div class="stat-strip-val" style="color:var(--ink-mid)">High-leaning</div></div>
     </div>
     <div class="h-hist"><canvas id="q10Chart"></canvas></div>
-    <div class="dist-note"><strong>Moderately left-skewed,</strong> peaking at 7. Fellow guests are rated as more engaged than the public (+1.6 points), yet still 1.2 points below respondents' own worry level.</div>
+    <div class="dist-note"><strong>Responses lean toward the higher end,</strong> peaking at 6 with a longer tail toward low scores. Fellow guests are rated as more climate-aware than the general public (+1.5 points on average), yet still 1.3 points below respondents' own worry level — placing perceived guest concern as the intermediate group.</div>
   </div>
 </div>
 
@@ -460,7 +525,7 @@ document.addEventListener('click',function(e){
     <div class="card-title">The worry gap: self vs. fellow guests vs. general public</div>
     <div class="card-note">All three distributions plotted as smoothed frequency curves on the same axis (% of respondents) · hover for values</div>
     <div class="h-overlap"><canvas id="overlapChart"></canvas></div>
-    <div class="dist-note">A clear <strong>worry gap</strong> emerges across the three groups. Personal concern (teal) clusters heavily at the high end. Perceived public concern (blue) sits 2.8 points lower and forms the most symmetrical bell shape. Perceived guest concern (amber) falls in between — respondents see their fellow travellers as more climate-aware than the average person, but not as intensely concerned as themselves.</div>
+    <div class="dist-note">A clear <strong>worry gap</strong> emerges across the three groups. Personal concern (teal) clusters heavily at the high end, peaking at 9. Perceived public concern (blue) sits 2.8 points lower and is the most symmetrical distribution. Perceived guest concern (amber) falls in between — respondents see their fellow travellers as more climate-aware than the average person (+1.5 points), but not as intensely concerned as themselves (−1.3 points).</div>
   </div>
 </div>
 
@@ -483,32 +548,32 @@ document.addEventListener('click',function(e){
   <div class="cluster-teaser-left">
     <div class="cluster-teaser-label">Going deeper</div>
     <h2 class="cluster-teaser-title">Four respondent profiles emerge from the data</h2>
-    <p class="cluster-teaser-intro">A cluster analysis groups respondents into four distinct profiles based on their answers across all questions. Each profile reflects a coherent set of beliefs, emotions, and behaviours — from the highly engaged to the sceptical.</p>
+    <p class="cluster-teaser-intro">A cluster analysis groups respondents into four distinct profiles based on their answers across all questions. The key finding: two groups share almost identical beliefs and worry levels — the only thing separating them is whether they think society can actually change.</p>
     <button class="cluster-teaser-btn" onclick="showPage('cluster')">
       <span>Explore respondent profiles</span>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
     </button>
   </div>
   <div class="cluster-teaser-profiles">
-    <div class="cluster-teaser-card" style="--c:#52c47a">
+    <div class="cluster-teaser-card" style="--c:#c1440e">
       <div class="ctc-count">29</div>
-      <div class="ctc-name">Engaged Optimist</div>
-      <div class="ctc-desc">Accept CC · Hopeful · Action-oriented · Largest group</div>
+      <div class="ctc-name">Strained Believer</div>
+      <div class="ctc-desc">100% accept CC · High worry (8.9) · Personally willing — but society won't follow (Q6 avg 1.7)</div>
     </div>
-    <div class="cluster-teaser-card" style="--c:#5b8ecc">
-      <div class="ctc-count">21</div>
-      <div class="ctc-name">Alarmed &amp; Overwhelmed</div>
-      <div class="ctc-desc">Highest personal worry · Feels helpless despite full acceptance</div>
+    <div class="cluster-teaser-card" style="--c:#2d6a8f">
+      <div class="ctc-count">20</div>
+      <div class="ctc-name">Cool-Headed Moderate</div>
+      <div class="ctc-desc">Uncertain on causes · Calm · Emotionally detached · Heavily Chinese respondents</div>
     </div>
-    <div class="cluster-teaser-card" style="--c:#a889d4">
-      <div class="ctc-count">9</div>
-      <div class="ctc-name">Measured Moderate</div>
-      <div class="ctc-desc">Mixed conviction · Emotionally detached · Youngest cluster</div>
+    <div class="cluster-teaser-card" style="--c:#6b3fa0">
+      <div class="ctc-count">10</div>
+      <div class="ctc-name">Disengaged Skeptic</div>
+      <div class="ctc-desc">Doubts or denies CC · Near-zero willingness (1.7) · Mostly older Australians</div>
     </div>
-    <div class="cluster-teaser-card" style="--c:#e05252">
-      <div class="ctc-count">8</div>
-      <div class="ctc-name">Skeptic / Doubter</div>
-      <div class="ctc-desc">Denies or minimises CC · Low worry · Low willingness</div>
+    <div class="cluster-teaser-card" style="--c:#1e7a52">
+      <div class="ctc-count">29</div>
+      <div class="ctc-name">Hopeful Pragmatist</div>
+      <div class="ctc-desc">Near-identical to P1 in belief &amp; worry — but believes change is possible (Q6 avg 3.2)</div>
     </div>
   </div>
 </div>
@@ -521,18 +586,18 @@ document.addEventListener('click',function(e){
     <div class="conclusion-grid">
 
       <div class="conclusion-card">
-        <div class="conclusion-card-title">Concern is near-universal — but uneven</div>
-        <p>Over 70% see climate change as a serious human-caused problem, and personal worry averages 7.5/10. Yet the cluster analysis reveals the group is not monolithic: 43% are <em>Engaged Optimists</em>, while 31% feel <em>Alarmed but Overwhelmed</em> — same beliefs, very different emotional states.</p>
+        <div class="conclusion-card-title">Concern is near-universal — but divided by hope</div>
+        <p>65% see climate change as a serious human-caused problem, and personal worry averages 7.3/10. But the cluster analysis reveals a sharper dividing line than emotional tone: what separates the <em>Strained Believers</em> from the <em>Hopeful Pragmatists</em> is not what they feel — it's whether they believe society will act.</p>
       </div>
 
       <div class="conclusion-card">
-        <div class="conclusion-card-title">Personal action, collective doubt</div>
-        <p>Respondents are willing to change their own behaviour (avg 3.9/5) but deeply sceptical that society will act at scale (avg 2.2/5). This tension cuts across all four profiles — even the most engaged don't believe the world will follow.</p>
+        <div class="conclusion-card-title">The defining split: societal hope</div>
+        <p>Two profiles — each 29 respondents — share near-identical worry (8.9 vs 8.2/10), conviction, and willingness to act personally. The only meaningful difference: <em>Strained Believers</em> rate the likelihood of large-scale societal change at 1.7/5; <em>Hopeful Pragmatists</em> rate it 3.2/5. Same beliefs, opposite outlook.</p>
       </div>
 
       <div class="conclusion-card">
         <div class="conclusion-card-title">The worry gap</div>
-        <p>Respondents rate public concern at just 4.7/10 — 2.8 points below their own. They perceive their fellow guests as closer to them, but still less alarmed. This gap suggests a widespread feeling of being an engaged minority in a disengaged world.</p>
+        <p>Respondents rate public concern at just 4.5/10 — 2.8 points below their own. They see their fellow guests as more aware (+1.5 points), but still not as alarmed as themselves. This gap suggests a widespread feeling of being an engaged minority in a disengaged world — which may itself fuel the low societal hope driving Strained Believers.</p>
       </div>
 
     </div>
@@ -556,7 +621,7 @@ document.addEventListener('click',function(e){
     <div style="padding:24px 28px 16px;">
       <div class="card-q">Cluster Analysis</div>
       <div class="card-title">Four respondent profiles emerge from the data</div>
-      <div class="card-note">2D projection via PCA · 61.8% of variance explained · hover over dots for respondent details · click legend to highlight a profile</div>
+      <div class="card-note">2D projection via PCA · 53.7% of variance explained · hover over dots for respondent details · click legend to highlight a profile</div>
     </div>
     <div class="cluster-embed">
       <style>
@@ -606,13 +671,13 @@ document.addEventListener('click',function(e){
     <hr>
     <div class="section-title">Axes (PCA)</div>
     <div class="axis-note">
-      <strong style="color:#aaa">→ Horizontal (PC1, 41.6%)</strong><br>
-      Driven mainly by <em>personal worry (Q8)</em>, climate view (Q1), outlook (Q3), and travel feeling (Q5). Right = high worry + strong belief.
+      <strong style="color:#aaa">→ Horizontal (PC1, 37.6%)</strong><br>
+      Driven mainly by <em>climate view (Q1)</em>, personal worry (Q8), outlook (Q3), and societal hope (Q6). Right = strong belief + high personal concern.
       <br><br>
-      <strong style="color:#aaa">↑ Vertical (PC2, 20.2%)</strong><br>
-      Driven by <em>guest worry (Q10)</em> and <em>public worry (Q9)</em>. Up = higher concern for others.
+      <strong style="color:#aaa">↑ Vertical (PC2, 16.1%)</strong><br>
+      Driven by <em>societal and guest worry (Q9/Q10)</em>. Up = higher outward-facing concern.
       <br><br>
-      Together these two axes explain <strong style="color:#aaa">61.8%</strong> of variance in the data.
+      Together these two axes explain <strong style="color:#aaa">53.7%</strong> of variance in the data.
     </div>
     <hr>
     <div class="section-title">Highlight</div>
@@ -626,11 +691,11 @@ document.addEventListener('click',function(e){
       <button class="btn" onclick="setHighlight('old', this)">60+</button>
       <div class="filter-group-label">Region</div>
       <button class="btn" onclick="setHighlight('region-anz', this)">Australia & NZ <span class="btn-count">(AU, NZ)</span></button>
-      <button class="btn" onclick="setHighlight('region-us', this)">United States</button>
+      <button class="btn" onclick="setHighlight('region-us', this)">North America <span class="btn-count">(US, CA)</span></button>
       <button class="btn" onclick="setHighlight('region-uk', this)">UK & Ireland <span class="btn-count">(UK, IE)</span></button>
       <button class="btn" onclick="setHighlight('region-europe', this)">Continental Europe <span class="btn-count">(DE, CH, NL, TR)</span></button>
       <button class="btn" onclick="setHighlight('region-china', this)">China</button>
-      <button class="btn" onclick="setHighlight('region-other', this)">Other <span class="btn-count">(CA, JO)</span></button>
+      <button class="btn" onclick="setHighlight('region-other', this)">Middle East <span class="btn-count">(JO)</span></button>
     </div>
   </div>
 </div>
@@ -642,15 +707,14 @@ document.addEventListener('click',function(e){
 (function() {
 // ── CLUSTER MAP ──────────────────────────────────────────────────────────────
 const PROFILES = [
-  { id: 0, name: 'Skeptic / Doubter', color: '#e05252', bg: 'rgba(224,82,82,0.15)', desc: 'Denies or minimises CC · Low worry · Low willingness' },
-  { id: 1, name: 'Alarmed & Overwhelmed', color: '#5b8ecc', bg: 'rgba(91,142,204,0.15)', desc: '100% accept CC · Highest personal worry · Feels helpless' },
-  { id: 2, name: 'Engaged Optimist', color: '#52c47a', bg: 'rgba(82,196,122,0.15)', desc: 'Accept CC · Hopeful · Action-oriented · Largest group' },
-  { id: 3, name: 'Measured Moderate', color: '#a889d4', bg: 'rgba(168,137,212,0.15)', desc: 'Mixed conviction · Detached emotion · Youngest cluster' },
+  { id: 0, name: 'Strained Believer',    color: '#c1440e', bg: 'rgba(193,68,14,0.15)', desc: '100% accept CC · High worry (8.9) · Low societal hope (Q6 avg 1.7)' },
+  { id: 1, name: 'Cool-Headed Moderate', color: '#2d6a8f', bg: 'rgba(45,106,143,0.15)', desc: 'Uncertain on causes · Calm · 70% hold "real but uncertain" view' },
+  { id: 2, name: 'Disengaged Skeptic',   color: '#6b3fa0', bg: 'rgba(107,63,160,0.15)', desc: 'Doubts or denies CC · Near-zero willingness (1.7) · Oldest cluster' },
+  { id: 3, name: 'Hopeful Pragmatist',   color: '#1e7a52', bg: 'rgba(30,122,82,0.15)',  desc: 'Accept CC · High worry (8.2) · Believes change is possible (Q6 avg 3.2)' },
 ];
 
-const DATA = {"points": [{"id": "B1", "x": -0.5676, "y": -1.507, "cluster": 3, "q8": 6.0, "nationality": "(blank - no nationality written)", "gender": "Female", "age": 56, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B2", "x": 0.1271, "y": 0.0063, "cluster": 1, "q8": 8.0, "nationality": "United States", "gender": "Male", "age": 85, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B3", "x": 3.4401, "y": 0.9414, "cluster": 2, "q8": 10.0, "nationality": "Australia", "gender": "Male", "age": 73, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B4", "x": -7.0515, "y": -0.5957, "cluster": 0, "q8": 2.0, "nationality": "Australia", "gender": "Female", "age": 74, "q1": "Climate change is overstated", "q2": "Skeptical / annoyed"}, {"id": "B5", "x": 3.7299, "y": 0.9752, "cluster": 2, "q8": 10.0, "nationality": "Australia", "gender": "Female", "age": 71, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B6", "x": 0.5722, "y": 0.5366, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 67, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done"}, {"id": "B7", "x": 0.7798, "y": 1.2688, "cluster": 2, "q8": 8.0, "nationality": "United Kingdom", "gender": "Male", "age": 73, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B8", "x": 1.1691, "y": 0.5082, "cluster": 2, "q8": 9.0, "nationality": "Ireland", "gender": "Female", "age": 64, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B9", "x": 2.2404, "y": 0.9092, "cluster": 2, "q8": 9.0, "nationality": "Ireland", "gender": "Female", "age": 65, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B10", "x": 1.9876, "y": -1.9631, "cluster": 1, "q8": 9.0, "nationality": "Ireland", "gender": "Female", "age": 64, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful / Concerned but overwhelmed "}, {"id": "B11", "x": 2.2425, "y": 3.797, "cluster": 2, "q8": 8.0, "nationality": "United States", "gender": "Female", "age": 84, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B12", "x": 1.5894, "y": 0.4153, "cluster": 2, "q8": 8.0, "nationality": "Australia", "gender": "Male", "age": 63, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B13", "x": -0.65, "y": -1.0378, "cluster": 1, "q8": 7.0, "nationality": "United Kingdom", "gender": "Female", "age": 69, "q1": "Climate change is a serious human-caused problem", "q2": "Skeptical / annoyed"}, {"id": "B14", "x": 1.9742, "y": 0.4621, "cluster": 2, "q8": 9.0, "nationality": "Canada", "gender": "Female", "age": 71, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B15", "x": 2.0091, "y": -0.3201, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 75, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B16", "x": 0.101, "y": 0.3625, "cluster": 2, "q8": 7.0, "nationality": "United States", "gender": "Female", "age": 74, "q1": "Climate change is real, but its causes or impacts ", "q2": "Concerned but hopeful"}, {"id": "B17", "x": 2.9052, "y": 1.5237, "cluster": 2, "q8": 10.0, "nationality": "Germany", "gender": "Female", "age": 65, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B18", "x": 1.6025, "y": -1.485, "cluster": 1, "q8": 9.0, "nationality": "Germany", "gender": "Female", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done"}, {"id": "B19", "x": 0.3489, "y": 0.515, "cluster": 2, "q8": 7.0, "nationality": "Jordan", "gender": "Male", "age": 74, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B20", "x": 0.3775, "y": -0.7672, "cluster": 1, "q8": 7.0, "nationality": "China", "gender": "Female", "age": 64, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B21", "x": -5.0283, "y": 2.6553, "cluster": 0, "q8": 2.0, "nationality": "China", "gender": "Male", "age": 43, "q1": "Climate change is real, but its causes or impacts", "q2": "Positive / Hopeful / not too concerned"}, {"id": "B22", "x": 1.4095, "y": -3.2569, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Male", "age": 55, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B23", "x": 0.2347, "y": 3.5886, "cluster": 2, "q8": 7.0, "nationality": "United States", "gender": "Female", "age": 58, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B24", "x": 0.652, "y": 0.4209, "cluster": 2, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 102, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B25", "x": 3.834, "y": 2.6995, "cluster": 2, "q8": 10.0, "nationality": "Australia", "gender": "Female", "age": 53, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B26", "x": -5.8075, "y": 1.3985, "cluster": 0, "q8": 3.0, "nationality": "Switzerland", "gender": "Male", "age": 63, "q1": "Climate change is happening regardless of human action", "q2": "Concerned but overwhelmed"}, {"id": "B27", "x": 1.69, "y": 3.3732, "cluster": 2, "q8": 8.0, "nationality": "Switzerland", "gender": "Female", "age": 62, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B28", "x": -0.1227, "y": 2.0349, "cluster": 2, "q8": 5.0, "nationality": "China", "gender": "Female", "age": 57, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B29", "x": -0.953, "y": 0.9918, "cluster": 2, "q8": 7.0, "nationality": "Germany", "gender": "Male", "age": 39, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B30", "x": 0.9412, "y": -1.4452, "cluster": 1, "q8": 10.0, "nationality": "Germany", "gender": "Female", "age": 36, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done"}, {"id": "B31", "x": -4.5133, "y": -2.2538, "cluster": 3, "q8": 4.0, "nationality": "China", "gender": "Male", "age": 25, "q1": "Climate change is real, but its causes or impacts", "q2": "Neutral or emotionally detached"}, {"id": "B32", "x": 2.4119, "y": 0.029, "cluster": 2, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 54, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B33", "x": -1.6071, "y": -1.6867, "cluster": 3, "q8": 6.0, "nationality": "China", "gender": "(not marked)", "age": 30, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B34", "x": 2.133, "y": -2.1481, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 50, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B35", "x": 2.0028, "y": -1.8292, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B36", "x": 1.7197, "y": 1.5609, "cluster": 2, "q8": 9.0, "nationality": "United Kingdom", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Positive / Hopeful / not too concerned"}, {"id": "B37", "x": -1.1145, "y": -4.1712, "cluster": 3, "q8": 9.0, "nationality": "The Netherlands", "gender": "Male", "age": 22, "q1": "Climate change is happening regardless of human action", "q2": "Concerned but hopeful"}, {"id": "B38", "x": 0.7906, "y": -2.2564, "cluster": 1, "q8": 9.0, "nationality": "Turkey", "gender": "Male", "age": 46, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B39", "x": 0.8281, "y": 0.0621, "cluster": 2, "q8": 8.0, "nationality": "United Kingdom", "gender": "Female", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B40", "x": 1.0059, "y": 0.6162, "cluster": 2, "q8": 8.0, "nationality": "United Kingdom", "gender": "Male", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B41", "x": 1.4158, "y": -0.7902, "cluster": 1, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 67, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B42", "x": 1.426, "y": 1.9331, "cluster": 2, "q8": 7.0, "nationality": "United States", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B43", "x": -7.5147, "y": 0.8557, "cluster": 0, "q8": 2.0, "nationality": "Australia", "gender": "Male", "age": 65, "q1": "Climate change is overstated", "q2": "Positive / Hopeful / not too concerned"}, {"id": "B44", "x": -6.2669, "y": 1.091, "cluster": 0, "q8": 3.0, "nationality": "Australia", "gender": "Female", "age": 65, "q1": "Climate change is overstated", "q2": "Concerned but hopeful"}, {"id": "B45", "x": 2.0136, "y": -1.3231, "cluster": 1, "q8": 9.0, "nationality": "United Kingdom", "gender": "Female", "age": 74, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B46", "x": -1.8867, "y": 2.7183, "cluster": 2, "q8": 6.0, "nationality": "Australia", "gender": "Male", "age": 97, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B47", "x": -1.4666, "y": -2.2908, "cluster": 3, "q8": 7.0, "nationality": "United States", "gender": "Female", "age": 58, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B48", "x": 1.924, "y": -3.5863, "cluster": 1, "q8": 10.0, "nationality": "United Kingdom", "gender": "Female", "age": 66, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B49", "x": -0.8874, "y": -0.2777, "cluster": 2, "q8": 7.0, "nationality": "United Kingdom", "gender": "Female", "age": 59, "q1": "Climate change is happening regardless of human action", "q2": "Concerned but hopeful"}, {"id": "B50", "x": -4.2851, "y": 5.7589, "cluster": 0, "q8": 3.0, "nationality": "United Kingdom", "gender": "Male", "age": 67, "q1": "Climate change is real, but its causes or impacts", "q2": "Skeptical / annoyed"}, {"id": "B51", "x": -0.0385, "y": 2.2818, "cluster": 2, "q8": 7.0, "nationality": "Switzerland", "gender": "Female", "age": 73, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B52", "x": 2.3042, "y": -1.4264, "cluster": 1, "q8": 10.0, "nationality": "Switzerland", "gender": "Female", "age": 39, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B53", "x": -7.4602, "y": -1.9342, "cluster": 0, "q8": 3.0, "nationality": "United Kingdom", "gender": "Female", "age": 58, "q1": "Climate change is happening regardless of human action", "q2": "Neutral or emotionally detached"}, {"id": "B54", "x": 3.9582, "y": 2.2117, "cluster": 2, "q8": 10.0, "nationality": "Australia", "gender": "Female", "age": 74, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B55", "x": -0.1894, "y": -0.5746, "cluster": 1, "q8": 7.0, "nationality": "United Kingdom", "gender": "Female", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done"}, {"id": "B56", "x": 3.529, "y": 0.7308, "cluster": 2, "q8": 10.0, "nationality": "United Kingdom", "gender": "Male", "age": 70, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B57", "x": 2.9718, "y": 1.6082, "cluster": 2, "q8": 9.0, "nationality": "China", "gender": "Female", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B58", "x": 0.6626, "y": -1.0158, "cluster": 1, "q8": 8.0, "nationality": "China", "gender": "Female", "age": 39, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B59", "x": -8.7659, "y": 4.2497, "cluster": 0, "q8": 1.0, "nationality": "Australia", "gender": "Male", "age": 70, "q1": "Climate change is not happening", "q2": "Positive / Hopeful / not too concerned"}, {"id": "B60", "x": 3.1042, "y": -1.6785, "cluster": 1, "q8": 10.0, "nationality": "United States", "gender": "Female", "age": 53, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B61", "x": 3.1671, "y": -1.5198, "cluster": 1, "q8": 10.0, "nationality": "United States", "gender": "Male", "age": 30, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B62", "x": 1.8302, "y": -2.1475, "cluster": 1, "q8": 10.0, "nationality": "New Zealand", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done"}, {"id": "B63", "x": 2.7875, "y": 2.887, "cluster": 2, "q8": 9.0, "nationality": "Australia", "gender": "Female", "age": 70, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed"}, {"id": "B64", "x": -2.8765, "y": -4.1115, "cluster": 3, "q8": 8.0, "nationality": "Germany", "gender": "Male", "age": 72, "q1": "Climate change is real, but its causes or impacts", "q2": "Hopeless / nothing can be done"}, {"id": "B65", "x": -4.7735, "y": -3.9548, "cluster": 3, "q8": 5.0, "nationality": "Germany", "gender": "Female", "age": 69, "q1": "Climate change is real, but its causes or impacts", "q2": "Concerned but hopeful"}, {"id": "B66", "x": -2.2293, "y": -2.898, "cluster": 3, "q8": 6.0, "nationality": "China", "gender": "Female", "age": 49, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful"}, {"id": "B67", "x": -1.8878, "y": -1.726, "cluster": 3, "q8": 5.0, "nationality": "China", "gender": "Male", "age": 62, "q1": "Climate change is a serious human-caused problem", "q2": "Positive / Hopeful / not too concerned"}],
-  "centers": [{"x": -6.5225, "y": 1.6849}, {"x": 1.4064, "y": -1.4299}, {"x": 1.5062, "y": 1.4189}, {"x": -2.3374, "y": -2.7333}]
-};
+const DATA = {"points": [{"id": "B1", "x": 1.2124, "y": 0.4815, "cluster": 3, "q8": 6.0, "nationality": "(blank - no nationality written)", "gender": "Female", "age": 56, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B2", "x": 0.0627, "y": 0.5894, "cluster": 1, "q8": 8.0, "nationality": "United States", "gender": "Male", "age": 85, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 3.0}, {"id": "B3", "x": 2.3196, "y": 0.0575, "cluster": 3, "q8": 10.0, "nationality": "Australia", "gender": "Male", "age": 73, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B4", "x": -4.8499, "y": -0.5817, "cluster": 2, "q8": 2.0, "nationality": "Australia", "gender": "Female", "age": 74, "q1": "Climate change is overstated", "q2": "Skeptical / annoyed", "q7": 2.0}, {"id": "B5", "x": 2.4498, "y": 0.113, "cluster": 3, "q8": 10.0, "nationality": "Australia", "gender": "Female", "age": 71, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B6", "x": -0.9374, "y": 0.0973, "cluster": 0, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 67, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done", "q7": 2.0}, {"id": "B7", "x": 0.6157, "y": 0.2143, "cluster": 0, "q8": 8.0, "nationality": "United Kingdom", "gender": "Male", "age": 73, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 4.0}, {"id": "B8", "x": -0.0445, "y": -0.5898, "cluster": 0, "q8": 9.0, "nationality": "Ireland", "gender": "Female", "age": 64, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 3.0}, {"id": "B9", "x": 1.5611, "y": 0.6863, "cluster": 3, "q8": 9.0, "nationality": "Ireland", "gender": "Female", "age": 65, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B10", "x": 1.2221, "y": -1.2499, "cluster": 0, "q8": 9.0, "nationality": "Ireland", "gender": "Female", "age": 64, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful / Concerned but overwhelmed", "q7": 5.0}, {"id": "B11", "x": 1.7259, "y": 1.739, "cluster": 3, "q8": 8.0, "nationality": "United States", "gender": "Female", "age": 84, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B12", "x": 1.4116, "y": -0.1613, "cluster": 3, "q8": 8.0, "nationality": "Australia", "gender": "Male", "age": 63, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B13", "x": -0.4509, "y": -1.5146, "cluster": 0, "q8": 7.0, "nationality": "United Kingdom", "gender": "Female", "age": 69, "q1": "Climate change is a serious human-caused problem", "q2": "Skeptical / annoyed", "q7": 4.0}, {"id": "B14", "x": 1.5508, "y": 0.7495, "cluster": 3, "q8": 9.0, "nationality": "Canada", "gender": "Female", "age": 71, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B15", "x": 1.129, "y": -0.575, "cluster": 0, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 75, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B16", "x": 0.6299, "y": 0.6965, "cluster": 3, "q8": 7.0, "nationality": "United States", "gender": "Female", "age": 74, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B17", "x": 1.3772, "y": 0.9224, "cluster": 3, "q8": 10.0, "nationality": "Germany", "gender": "Female", "age": 65, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B18", "x": 0.7242, "y": -1.9281, "cluster": 0, "q8": 9.0, "nationality": "Germany", "gender": "Female", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done", "q7": 5.0}, {"id": "B19", "x": 0.8845, "y": 0.6499, "cluster": 3, "q8": 7.0, "nationality": "Jordan", "gender": "Male", "age": 74, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B20", "x": 1.0332, "y": -0.5223, "cluster": 0, "q8": 7.0, "nationality": "China", "gender": "Female", "age": 64, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B21", "x": -2.0971, "y": 0.6586, "cluster": 1, "q8": 2.0, "nationality": "China", "gender": "Male", "age": 43, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Positive / Hopeful / not too concerned", "q7": 5.0}, {"id": "B22", "x": 1.2739, "y": -0.9522, "cluster": 0, "q8": 9.0, "nationality": "United States", "gender": "Male", "age": 55, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 4.0}, {"id": "B23", "x": 0.2181, "y": 1.142, "cluster": 3, "q8": 7.0, "nationality": "United States", "gender": "Female", "age": 58, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 4.0}, {"id": "B24", "x": -0.0316, "y": -0.3052, "cluster": 0, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 102, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 4.0}, {"id": "B25", "x": 2.3116, "y": 1.4023, "cluster": 3, "q8": 10.0, "nationality": "Australia", "gender": "Female", "age": 53, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 5.0}, {"id": "B26", "x": -3.6324, "y": 1.2387, "cluster": 2, "q8": 3.0, "nationality": "Switzerland", "gender": "Male", "age": 63, "q1": "Climate change is happening regardless of human action", "q2": "Concerned but overwhelmed", "q7": 2.0}, {"id": "B27", "x": 1.2453, "y": 1.8527, "cluster": 3, "q8": 8.0, "nationality": "Switzerland", "gender": "Female", "age": 62, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B28", "x": 1.0381, "y": 0.5986, "cluster": 3, "q8": 5.0, "nationality": "China", "gender": "Female", "age": 57, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 5.0}, {"id": "B29", "x": -0.2515, "y": 2.0894, "cluster": 3, "q8": 7.0, "nationality": "Germany", "gender": "Male", "age": 39, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B30", "x": -0.8684, "y": -1.747, "cluster": 0, "q8": 10.0, "nationality": "Germany", "gender": "Female", "age": 36, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done", "q7": 3.0}, {"id": "B31", "x": -2.4457, "y": -1.5478, "cluster": 1, "q8": 4.0, "nationality": "China", "gender": "Male", "age": 25, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Neutral or emotionally detached", "q7": 4.0}, {"id": "B32", "x": 1.4048, "y": -1.2908, "cluster": 0, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 54, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 5.0}, {"id": "B33", "x": -0.6775, "y": -0.8333, "cluster": 1, "q8": 6.0, "nationality": "China", "gender": "(not marked)", "age": 30, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 3.0}, {"id": "B34", "x": 1.4791, "y": -1.9461, "cluster": 0, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 50, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 5.0}, {"id": "B35", "x": 1.5864, "y": -0.8381, "cluster": 0, "q8": 9.0, "nationality": "United States", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B36", "x": 0.8426, "y": 0.3579, "cluster": 0, "q8": 9.0, "nationality": "United Kingdom", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Positive / Hopeful / not too concerned", "q7": 4.0}, {"id": "B37", "x": -0.7809, "y": -1.2154, "cluster": 1, "q8": 9.0, "nationality": "The Netherlands", "gender": "Male", "age": 22, "q1": "Climate change is happening regardless of human action", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B38", "x": 0.3513, "y": -1.1881, "cluster": 0, "q8": 9.0, "nationality": "Turkey", "gender": "Male", "age": 46, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 4.0}, {"id": "B39", "x": 1.0255, "y": 0.4544, "cluster": 3, "q8": 8.0, "nationality": "United Kingdom", "gender": "Female", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B40", "x": 0.9867, "y": 0.1041, "cluster": 3, "q8": 8.0, "nationality": "United Kingdom", "gender": "Male", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B41", "x": 1.3257, "y": 0.2504, "cluster": 3, "q8": 9.0, "nationality": "United States", "gender": "Female", "age": 67, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B42", "x": 1.9145, "y": 0.827, "cluster": 3, "q8": 7.0, "nationality": "United States", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B43", "x": -5.0232, "y": 0.7549, "cluster": 2, "q8": 2.0, "nationality": "Australia", "gender": "Male", "age": 65, "q1": "Climate change is overstated", "q2": "Positive / Hopeful / not too concerned", "q7": 1.0}, {"id": "B44", "x": -3.9333, "y": 0.8154, "cluster": 2, "q8": 3.0, "nationality": "Australia", "gender": "Female", "age": 65, "q1": "Climate change is overstated", "q2": "Concerned but hopeful", "q7": 2.0}, {"id": "B45", "x": 1.648, "y": -0.529, "cluster": 0, "q8": 9.0, "nationality": "United Kingdom", "gender": "Female", "age": 74, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B46", "x": -1.193, "y": 1.6628, "cluster": 1, "q8": 6.0, "nationality": "Australia", "gender": "Male", "age": 97, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 3.0}, {"id": "B47", "x": -0.1904, "y": -0.1247, "cluster": 1, "q8": 7.0, "nationality": "United States", "gender": "Female", "age": 58, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B48", "x": 1.0916, "y": -1.5562, "cluster": 0, "q8": 10.0, "nationality": "United Kingdom", "gender": "Female", "age": 66, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 4.0}, {"id": "B49", "x": -0.2207, "y": 0.6445, "cluster": 3, "q8": 7.0, "nationality": "United Kingdom", "gender": "Female", "age": 59, "q1": "Climate change is happening regardless of human action", "q2": "Concerned but hopeful", "q7": 3.0}, {"id": "B50", "x": -2.9221, "y": 3.541, "cluster": 2, "q8": 3.0, "nationality": "United Kingdom", "gender": "Male", "age": 67, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Skeptical / annoyed", "q7": 1.0}, {"id": "B51", "x": 0.4809, "y": 1.8411, "cluster": 3, "q8": 7.0, "nationality": "Switzerland", "gender": "Female", "age": 73, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B52", "x": 1.2377, "y": -0.3889, "cluster": 0, "q8": 10.0, "nationality": "Switzerland", "gender": "Female", "age": 39, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 4.0}, {"id": "B53", "x": -5.2263, "y": -1.1068, "cluster": 2, "q8": 3.0, "nationality": "United Kingdom", "gender": "Female", "age": 58, "q1": "Climate change is happening regardless of human action", "q2": "Neutral or emotionally detached", "q7": 1.0}, {"id": "B54", "x": 2.1773, "y": 1.5152, "cluster": 3, "q8": 10.0, "nationality": "Australia", "gender": "Female", "age": 74, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B55", "x": 0.1606, "y": -0.6733, "cluster": 0, "q8": 7.0, "nationality": "United Kingdom", "gender": "Female", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done", "q7": 4.0}, {"id": "B56", "x": 2.2578, "y": 0.6243, "cluster": 3, "q8": 10.0, "nationality": "United Kingdom", "gender": "Male", "age": 70, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B57", "x": 2.4313, "y": 1.4396, "cluster": 3, "q8": 9.0, "nationality": "China", "gender": "Female", "age": 60, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B58", "x": 1.1725, "y": -0.4874, "cluster": 0, "q8": 8.0, "nationality": "China", "gender": "Female", "age": 39, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B59", "x": -6.2296, "y": 1.9594, "cluster": 2, "q8": 1.0, "nationality": "Australia", "gender": "Male", "age": 70, "q1": "Climate change is not happening", "q2": "Positive / Hopeful / not too concerned", "q7": 1.0}, {"id": "B60", "x": 1.8915, "y": -1.7505, "cluster": 0, "q8": 10.0, "nationality": "United States", "gender": "Female", "age": 53, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 5.0}, {"id": "B61", "x": 2.0265, "y": -1.1793, "cluster": 0, "q8": 10.0, "nationality": "United States", "gender": "Male", "age": 30, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 5.0}, {"id": "B62", "x": 0.8204, "y": -2.2383, "cluster": 0, "q8": 10.0, "nationality": "New Zealand", "gender": "Male", "age": 61, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done", "q7": 5.0}, {"id": "B63", "x": 1.5951, "y": 1.1056, "cluster": 3, "q8": 9.0, "nationality": "Australia", "gender": "Female", "age": 70, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 4.0}, {"id": "B64", "x": -2.9916, "y": -2.4168, "cluster": 2, "q8": 8.0, "nationality": "Germany", "gender": "Male", "age": 72, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Hopeless / nothing can be done", "q7": 2.0}, {"id": "B65", "x": -2.4767, "y": -1.5887, "cluster": 1, "q8": 5.0, "nationality": "Germany", "gender": "Female", "age": 69, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B66", "x": -0.6033, "y": -0.7906, "cluster": 1, "q8": 6.0, "nationality": "China", "gender": "Female", "age": 49, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B67", "x": 0.5458, "y": -0.2043, "cluster": 1, "q8": 5.0, "nationality": "China", "gender": "Male", "age": 62, "q1": "Climate change is a serious human-caused problem", "q2": "Positive / Hopeful / not too concerned", "q7": 5.0}, {"id": "B68", "x": 0.4308, "y": -0.3452, "cluster": 0, "q8": null, "nationality": "Germany", "gender": "Male", "age": 67, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": null}, {"id": "B69", "x": -0.1863, "y": -1.1632, "cluster": 0, "q8": 9.0, "nationality": "Australia", "gender": "Female", "age": 67, "q1": "Climate change is a serious human-caused problem", "q2": "Skeptical / annoyed", "q7": 4.0}, {"id": "B70", "x": 1.4654, "y": 2.0005, "cluster": 3, "q8": 9.0, "nationality": "Australia", "gender": "Male", "age": 68, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 3.0}, {"id": "B71", "x": 0.2975, "y": 3.0026, "cluster": 3, "q8": 8.0, "nationality": "Finland", "gender": "Male", "age": 46, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B72", "x": -1.9607, "y": -0.156, "cluster": 1, "q8": 5.0, "nationality": "Germany", "gender": "Female", "age": 61, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Positive / Hopeful / not too concerned", "q7": 3.0}, {"id": "B73", "x": -2.0868, "y": -0.7229, "cluster": 1, "q8": 6.0, "nationality": "China", "gender": "Female", "age": 58, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 3.0}, {"id": "B74", "x": -0.3913, "y": 1.5844, "cluster": 1, "q8": 7.0, "nationality": "Australia", "gender": "Female", "age": 71, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B75", "x": 0.8287, "y": -0.9367, "cluster": 0, "q8": 7.0, "nationality": "China", "gender": "Female", "age": 58, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B76", "x": -0.802, "y": -0.0333, "cluster": 1, "q8": 6.0, "nationality": "United States", "gender": "Male", "age": 62, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B77", "x": -0.7393, "y": 0.0299, "cluster": 1, "q8": 7.0, "nationality": "China", "gender": "Female", "age": 78, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but overwhelmed", "q7": 4.0}, {"id": "B78", "x": -2.5255, "y": 1.5205, "cluster": 2, "q8": 1.0, "nationality": "Canada", "gender": "Female", "age": 66, "q1": "Climate change is happening regardless of human action", "q2": "Skeptical / annoyed", "q7": 3.0}, {"id": "B79", "x": -0.7527, "y": -0.2497, "cluster": 1, "q8": 7.0, "nationality": "China", "gender": "Male", "age": 61, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B80", "x": 2.0616, "y": 0.3959, "cluster": 3, "q8": 8.0, "nationality": "United Kingdom", "gender": "Female", "age": 63, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 5.0}, {"id": "B81", "x": -0.7868, "y": 0.9023, "cluster": 1, "q8": 7.0, "nationality": "Australia", "gender": "Male", "age": 62, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B82", "x": -0.3319, "y": -0.9536, "cluster": 1, "q8": 7.0, "nationality": "Australia", "gender": "Female", "age": 64, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B83", "x": -0.4344, "y": 1.2113, "cluster": 1, "q8": 6.0, "nationality": "United Kingdom", "gender": "Male", "age": 56, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 3.0}, {"id": "B84", "x": 0.415, "y": -2.9967, "cluster": 0, "q8": 9.0, "nationality": "United States", "gender": "Male", "age": 59, "q1": "Climate change is a serious human-caused problem", "q2": "Hopeless / nothing can be done", "q7": 5.0}, {"id": "B85", "x": -5.5182, "y": -1.2363, "cluster": 2, "q8": 2.0, "nationality": "Unknown", "gender": "Unknown", "age": null, "q1": "Climate change is overstated", "q2": "Positive / Hopeful / not too concerned", "q7": 2.0}, {"id": "B86", "x": -0.1011, "y": -0.0219, "cluster": 1, "q8": null, "nationality": "China", "gender": "Female", "age": 61, "q1": "Climate change is real, but its causes or impacts are uncertain", "q2": "Concerned but hopeful", "q7": null}, {"id": "B87", "x": 1.7026, "y": 0.9332, "cluster": 3, "q8": 9.0, "nationality": "China", "gender": "Female", "age": 30, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but hopeful", "q7": 4.0}, {"id": "B88", "x": 1.0427, "y": -2.6202, "cluster": 0, "q8": 9.0, "nationality": "China", "gender": "Female", "age": 53, "q1": "Climate change is a serious human-caused problem", "q2": "Concerned but overwhelmed", "q7": 5.0}], "centers": [{"x": 0.7555, "y": -1.0635}, {"x": -0.9122, "y": -0.0902}, {"x": -4.2852, "y": 0.4488}, {"x": 1.3512, "y": 0.971}]};
+
 
 const canvas = document.getElementById('clusterCanvas');
 const ctx = canvas.getContext('2d');
@@ -686,7 +750,7 @@ function toScreen(x, y) {
 }
 
 const ANGLOSPHERE = ['United States','United Kingdom','Australia','Canada','New Zealand','Ireland'];
-const CONT_EUROPE = ['Germany','Switzerland','The Netherlands','Turkey'];
+const CONT_EUROPE = ['Germany','Switzerland','The Netherlands','Turkey','Finland'];
 
 function isHighlighted(p) {
   if (highlight === 'all') return true;
@@ -695,11 +759,11 @@ function isHighlighted(p) {
   if (highlight === 'young') return p.age !== null && p.age < 50;
   if (highlight === 'old') return p.age !== null && p.age >= 60;
   if (highlight === 'region-anz') return ['Australia','New Zealand'].includes(p.nationality);
-  if (highlight === 'region-us') return p.nationality === 'United States';
+  if (highlight === 'region-us') return ['United States','Canada'].includes(p.nationality);
   if (highlight === 'region-uk') return ['United Kingdom','Ireland'].includes(p.nationality);
   if (highlight === 'region-europe') return CONT_EUROPE.includes(p.nationality);
   if (highlight === 'region-china') return p.nationality === 'China';
-  if (highlight === 'region-other') return !ANGLOSPHERE.includes(p.nationality) && !CONT_EUROPE.includes(p.nationality) && p.nationality !== 'China';
+  if (highlight === 'region-other') return p.nationality === 'Jordan';
   return true;
 }
 
@@ -797,23 +861,30 @@ function draw() {
   });
 }
 
-// Legend
-const legendEl = document.getElementById('clusterLegend');
-PROFILES.forEach((p, i) => {
-  const div = document.createElement('div');
-  div.className = 'legend-item active';
-  div.id = 'leg-' + i;
-  div.innerHTML = `<div class="legend-dot" style="background:${p.color}"></div>
-    <div class="legend-text"><strong>P${i+1}: ${p.name}</strong>${p.desc}<br><span class="count">${DATA.points.filter(x=>x.cluster===i).length} respondents</span></div>`;
-  div.onclick = () => {
-    activeCluster = (activeCluster === i) ? null : i;
-    document.querySelectorAll('.legend-item').forEach((el,j)=>{
-      el.classList.toggle('active', activeCluster === null || activeCluster === j);
-    });
-    draw();
-  };
-  legendEl.appendChild(div);
-});
+// Legend — built lazily on first open to avoid null getElementById on hidden overlay
+let _clusterInited = false;
+function initClusterIfNeeded() {
+  if (_clusterInited) return;
+  _clusterInited = true;
+  const legendEl = document.getElementById('clusterLegend');
+  PROFILES.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'legend-item active';
+    div.id = 'leg-' + i;
+    div.innerHTML = '<div class="legend-dot" style="background:'+p.color+'"></div><div class="legend-text"><strong>P'+(i+1)+': '+p.name+'</strong>'+p.desc+'<br><span class="count">'+DATA.points.filter(x=>x.cluster===i).length+' respondents</span></div>';
+    div.onclick = () => {
+      activeCluster = (activeCluster === i) ? null : i;
+      document.querySelectorAll('.legend-item').forEach((el,j)=>{
+        el.classList.toggle('active', activeCluster === null || activeCluster === j);
+      });
+      draw();
+    };
+    legendEl.appendChild(div);
+  });
+  setupCanvas();
+  draw();
+}
+window.initClusterIfNeeded = initClusterIfNeeded;
 
 // Tooltip
 canvas.addEventListener('mousemove', e => {
@@ -831,7 +902,7 @@ canvas.addEventListener('mousemove', e => {
     tip.innerHTML = `<div style="margin-bottom:6px"><span class="tid">${closest.id}</span> <span class="tcluster" style="background:${profile.color}22;color:${profile.color};border:1px solid ${profile.color}44">P${closest.cluster+1}</span></div>
       <div class="trow">Nationality: <span>${closest.nationality}</span></div>
       <div class="trow">Age: <span>${closest.age || '?'}</span> · Gender: <span>${closest.gender}</span></div>
-      <div class="trow">Personal Worry (Q8): <span>${closest.q8 || '?'}/10</span></div>
+      <div class="trow">Q8 – Personal worry: <span>${closest.q8 !== null ? closest.q8+'/10' : '?'}</span> · Q7 – Willingness: <span>${closest.q7 !== null ? closest.q7+'/5' : '?'}</span></div>
       <div class="trow" style="margin-top:5px;font-size:0.9em;color:#999">Q1: ${closest.q1.substring(0,60)}…</div>
       <div class="trow" style="font-size:0.9em;color:#999">Q2: ${closest.q2.substring(0,50)}</div>`;
     const tipW = 230, tipH = 140;
@@ -857,18 +928,13 @@ function setHighlight(h, btn) {
 }
 window.setHighlight = setHighlight;
 
-window.addEventListener('resize', () => { setupCanvas(); draw(); });
-setupCanvas();
-draw();
-// Init
-setupCanvas(); draw();
-window.addEventListener('resize', () => { setupCanvas(); draw(); });
+window.addEventListener('resize', () => { if(_clusterInited){ setupCanvas(); draw(); } });
 })();
 </script>
   </div><!-- /cluster-overlay-inner -->
 </div><!-- /cluster-overlay -->
 
-<footer>Survey: "How do you feel about climate change?" · 67 respondents · Handwritten surveys in English and Chinese</footer>
+<footer>Survey: "How do you feel about climate change?" · 88 respondents · Handwritten surveys in English and Chinese</footer>
 
 <script>
 const C={
@@ -890,7 +956,7 @@ new Chart(document.getElementById('demoAge'),{
   data:{
     labels:['Under 35','35–49','50–64','65–74','75+'],
     datasets:[{
-      data:[4,6,25,22,10],
+      data:[4,8,39,27,6],
       backgroundColor:['#7bbfa0','#4a9070','#2a6049','#5a80b5','#3a5e8b'],
       borderRadius:3,borderSkipped:false,borderWidth:0,
     }]
@@ -909,10 +975,10 @@ new Chart(document.getElementById('demoAge'),{
 new Chart(document.getElementById('demoRegion'),{
   type:'doughnut',
   data:{
-    labels:['North America','UK & Ireland','Australia & NZ','Continental Europe','China','Middle East','Unknown'],
+    labels:['North America','Australia & NZ','China','UK & Ireland','Continental Europe','Other'],
     datasets:[{
-      data:[17,15,12,12,9,1,1],
-      backgroundColor:['#5a80b5','#4a9070','#7bbfa0','#e09a5a','#c05a5a','#9b7cc0','#c8c4be'],
+      data:[20,17,16,17,14,4],
+      backgroundColor:['#5a80b5','#7bbfa0','#c05a5a','#4a9070','#e09a5a','#9b7cc0'],
       borderWidth:2,borderColor:'#ffffff',hoverOffset:6,
     }]
   },
@@ -937,7 +1003,7 @@ new Chart(document.getElementById('demoRegion'),{
           }
         }
       },
-      tooltip:{callbacks:{label:ctx=>` ${ctx.parsed} respondents (${Math.round(ctx.parsed/67*100)}%)`}}
+      tooltip:{callbacks:{label:ctx=>` ${ctx.parsed} respondents (${Math.round(ctx.parsed/88*100)}%)`}}
     }
   }
 });
@@ -994,19 +1060,19 @@ function makeDonut(id, labels, data, colors, n) {
 makeDonut('q1Chart',
   ['Serious human-caused problem','Real but causes/impacts uncertain',
    'Happening regardless of humans','Overstated','Not happening'],
-  [48,11,4,3,1],[C.teal,C.blue2,C.amber2,C.amber,C.red],67);
+  [57,21,5,4,1],[C.teal,C.blue2,C.amber2,C.amber,C.red],88);
 
 makeDonut('q2Chart',
   ['Concerned but hopeful','Concerned but overwhelmed',
    'Hopeless / nothing can be done','Positive / not too concerned',
    'Skeptical / annoyed','Neutral / Detached'],
-  [33.5,17.5,6,5,3,2],[C.teal,C.amber,C.red,C.teal3,C.amber2,C.grey],67);
+  [47.5,19.5,7,7,5,2],[C.teal,C.amber,C.red,C.teal3,C.amber2,C.grey],88);
 
 makeDonut('q3Chart',
-  ['Some damages unavoidable, action matters','Action can still reduce harm',
-   'Humans cannot affect climate','Already too late',
-   'Tech solutions will prevent damage'],
-  [30,20.5,7,5,3.5],[C.teal,C.teal2,C.red,C.red2,C.blue2],66);
+  ['Some damages unavoidable, action matters','Action can still meaningfully reduce harm',
+   'Humans cannot affect climate outcome','Already too late',
+   'Tech solutions will prevent damage','Not a significant problem'],
+  [41.33,27.33,7.0,6.0,4.33,1.0],[C.teal,C.teal2,C.red,C.red2,C.blue2,C.grey],87);
 
 // ── LIKERT + COLUMN ──────────────────────────────────────────────────────────
 function makeLikert(barId,legendId,segs){
@@ -1029,17 +1095,17 @@ function makeColumn(id,labels,data,colors,n){
   });
 }
 
-const q4s=[{label:'1 – Never',val:24,color:C.teal},{label:'2',val:23,color:C.teal3},{label:'3',val:10,color:C.amber2},{label:'4',val:5,color:C.amber},{label:'5 – Always',val:4,color:C.red}];
-makeLikert('q4bar','q4legend',q4s);makeColumn('q4Chart',['1 – Never','2','3','4','5 – Always'],[24,23,10,5,4],q4s.map(d=>d.color),66);
+const q4s=[{label:'1 – Never',val:32,color:C.teal},{label:'2',val:25,color:C.teal3},{label:'3',val:18,color:C.amber2},{label:'4',val:6,color:C.amber},{label:'5 – Always',val:4,color:C.red}];
+makeLikert('q4bar','q4legend',q4s);makeColumn('q4Chart',['1 – Never','2','3','4','5 – Always'],[32,25,18,6,4],q4s.map(d=>d.color),85);
 
-const q5s=[{label:'Concerned & reflective',val:35.5,color:C.teal},{label:'Concerned but separate',val:15,color:C.teal2},{label:'Uncomfortable / avoid',val:5,color:C.amber2},{label:'Neutral / detached',val:5,color:C.grey},{label:'Skeptical / irritated',val:3.5,color:C.amber},{label:'No particular feeling',val:2,color:C.grey2},{label:'Never thought about it',val:1,color:C.blue3}];
-makeLikert('q5bar','q5legend',q5s);makeColumn('q5Chart',['Concerned\n& reflective','Concerned\nbut separate','Uncomfortable','Neutral','Skeptical','No feeling','Never\nthought'],[35.5,15,5,5,3.5,2,1],q5s.map(d=>d.color),67);
+const q5s=[{label:'Concerned & reflective',val:40.5,color:C.teal},{label:'Concerned but separate',val:19,color:C.teal2},{label:'Uncomfortable / avoid',val:5,color:C.amber2},{label:'Neutral / detached',val:12,color:C.grey},{label:'Skeptical / irritated',val:3.5,color:C.amber},{label:'No particular feeling',val:4,color:C.grey2},{label:'Never thought about it',val:2,color:C.blue3}];
+makeLikert('q5bar','q5legend',q5s);makeColumn('q5Chart',['Concerned\n& reflective','Concerned\nbut separate','Uncomfortable','Neutral','Skeptical','No feeling','Never\nthought'],[40.5,19,5,12,3.5,4,2],q5s.map(d=>d.color),86);
 
-const q6s=[{label:'1 – Very unlikely',val:12,color:C.red},{label:'2',val:29,color:C.amber},{label:'3',val:19,color:C.amber2},{label:'4',val:5,color:C.teal3},{label:'5 – Very likely',val:2,color:C.teal}];
-makeLikert('q6bar','q6legend',q6s);makeColumn('q6Chart',['1','2','3','4','5'],[12,29,19,5,2],q6s.map(d=>d.color),67);
+const q6s=[{label:'1 – Very unlikely',val:16,color:C.red},{label:'2',val:36,color:C.amber},{label:'3',val:23,color:C.amber2},{label:'4',val:8,color:C.teal3},{label:'5 – Very likely',val:3,color:C.teal}];
+makeLikert('q6bar','q6legend',q6s);makeColumn('q6Chart',['1','2','3','4','5'],[16,36,23,8,3],q6s.map(d=>d.color),86);
 
-const q7s=[{label:'1 – Very unwilling',val:4,color:C.red},{label:'2',val:5,color:C.red3},{label:'3',val:6,color:C.amber2},{label:'4',val:32,color:C.teal3},{label:'5 – Very willing',val:20,color:C.teal}];
-makeLikert('q7bar','q7legend',q7s);makeColumn('q7Chart',['1','2','3','4','5'],[4,5,6,32,20],q7s.map(d=>d.color),67);
+const q7s=[{label:'1 – Very unwilling',val:4,color:C.red},{label:'2',val:6,color:C.red3},{label:'3',val:11,color:C.amber2},{label:'4',val:41,color:C.teal3},{label:'5 – Very willing',val:24,color:C.teal}];
+makeLikert('q7bar','q7legend',q7s);makeColumn('q7Chart',['1','2','3','4','5'],[4,6,11,41,24],q7s.map(d=>d.color),86);
 
 // ── HISTOGRAMS ────────────────────────────────────────────────────────────────
 function normalPDF(x,mean,sd){return(1/(sd*Math.sqrt(2*Math.PI)))*Math.exp(-0.5*Math.pow((x-mean)/sd,2));}
@@ -1087,9 +1153,9 @@ function makeHistogram(id,counts,mean,sd,n,color){
   });
 }
 
-makeHistogram('q8Chart',[1,3,4,1,3,4,11,9,19,12],7.493,2.389,67,C.teal);
-makeHistogram('q9Chart',[1,5,13,18,7,7,11,3,1,0],4.682,1.833,66,C.blue);
-makeHistogram('q10Chart',[1,2,5,4,9,11,15,10,9,0],6.258,1.995,66,C.amber);
+makeHistogram('q8Chart',[2,4,4,1,4,7,17,11,24,12],7.34,2.36,86,C.teal);
+makeHistogram('q9Chart',[2,9,17,20,8,13,12,3,1,0],4.54,1.85,85,C.blue);
+makeHistogram('q10Chart',[2,4,6,5,13,18,15,11,11,0],6.04,2.07,85,C.amber);
 
 // ── COMBINED VIEW: smoothed frequency curves ────────────────────────────────
 (function(){
@@ -1098,9 +1164,9 @@ makeHistogram('q10Chart',[1,2,5,4,9,11,15,10,9,0],6.258,1.995,66,C.amber);
   new Chart(document.getElementById('overlapChart'),{
     type:'line',
     data:{labels,datasets:[
-      {label:'Q8 – Personal worry (μ = 7.49)',data:pct([1,3,4,1,3,4,11,9,19,12],67),borderColor:C.teal,backgroundColor:C.teal+'22',borderWidth:3,fill:true,tension:0.45,pointRadius:5,pointBackgroundColor:'#fff',pointBorderColor:C.teal,pointBorderWidth:2,pointHoverRadius:7},
-      {label:'Q10 – Fellow guests (μ = 6.26)',data:pct([1,2,5,4,9,11,15,10,9,0],66),borderColor:C.amber,backgroundColor:C.amber+'1a',borderWidth:3,borderDash:[6,3],fill:true,tension:0.45,pointRadius:5,pointBackgroundColor:'#fff',pointBorderColor:C.amber,pointBorderWidth:2,pointHoverRadius:7},
-      {label:'Q9 – General public (μ = 4.68)',data:pct([1,5,13,18,7,7,11,3,1,0],66),borderColor:C.blue,backgroundColor:C.blue+'16',borderWidth:3,borderDash:[3,3],fill:true,tension:0.45,pointRadius:5,pointBackgroundColor:'#fff',pointBorderColor:C.blue,pointBorderWidth:2,pointHoverRadius:7},
+      {label:'Q8 – Personal worry (μ = 7.34)',data:pct([2,4,4,1,4,7,17,11,24,12],86),borderColor:C.teal,backgroundColor:C.teal+'22',borderWidth:3,fill:true,tension:0.45,pointRadius:5,pointBackgroundColor:'#fff',pointBorderColor:C.teal,pointBorderWidth:2,pointHoverRadius:7},
+      {label:'Q10 – Fellow guests (μ = 6.04)',data:pct([2,4,6,5,13,18,15,11,11,0],85),borderColor:C.amber,backgroundColor:C.amber+'1a',borderWidth:3,borderDash:[6,3],fill:true,tension:0.45,pointRadius:5,pointBackgroundColor:'#fff',pointBorderColor:C.amber,pointBorderWidth:2,pointHoverRadius:7},
+      {label:'Q9 – General public (μ = 4.54)',data:pct([2,9,17,20,8,13,12,3,1,0],85),borderColor:C.blue,backgroundColor:C.blue+'16',borderWidth:3,borderDash:[3,3],fill:true,tension:0.45,pointRadius:5,pointBackgroundColor:'#fff',pointBorderColor:C.blue,pointBorderWidth:2,pointHoverRadius:7},
     ]},
     options:{
       maintainAspectRatio:false,
@@ -1125,7 +1191,7 @@ new Chart(document.getElementById('q11Chart'),{
   type:'bar',
   data:{
     labels:['Call for awareness & collective action','Personal responsibility & behaviour change','Skepticism / natural-cycle framing','Political & leadership failure','Critique of green technology','Climate grief, distress & pessimism','Future generations & long-term thinking','Observed / local climate impacts'],
-    datasets:[{data:[14,7,6,5,5,5,4,2],backgroundColor:[C.teal,C.teal2,C.red,C.red2,C.amber,C.plum,C.blue,C.teal3],borderRadius:6,borderSkipped:false}]
+    datasets:[{data:[16,10,7,5,5,5,4,3],backgroundColor:[C.teal,C.teal2,C.red,C.red2,C.amber,C.plum,C.blue,C.teal3],borderRadius:6,borderSkipped:false}]
   },
   options:{
     maintainAspectRatio:false,
@@ -1143,12 +1209,11 @@ function showPage(name) {
     document.body.style.overflow = 'hidden';
     document.getElementById('nav-cluster').classList.add('active');
     document.getElementById('nav-survey').classList.remove('active');
-    // Trigger resize after overlay is visible so canvas gets correct dimensions
+    // Init canvas and legend lazily now that the overlay is visible
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        window.dispatchEvent(new Event('resize'));
-        // Extra fallback after CSS transition settles
-        setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+        window.initClusterIfNeeded();
+        setTimeout(() => { if(window._clusterInited){ window.dispatchEvent(new Event('resize')); } }, 100);
       });
     });
   } else {
@@ -1166,41 +1231,6 @@ function closeCluster() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCluster(); });
 </script>
 
-<!-- Dropdown panel -->
-    <div class="demo-dropdown" id="demoDropdown">
-      <div class="demo-dropdown-title">Respondent demographics · n = 67</div>
-
-      <!-- Gender -->
-      <div class="demo-panel" style="min-width:170px;max-width:200px;">
-        <div class="demo-panel-title">Gender</div>
-        <div class="gender-row" style="margin-top:8px;">
-          <div class="gender-item">
-            <div class="gender-bar-track"><div class="gender-bar-fill" style="width:61%;background:#4a9070;"></div></div>
-            <div class="gender-label">Female</div><div class="gender-pct">61%</div>
-          </div>
-          <div class="gender-item">
-            <div class="gender-bar-track"><div class="gender-bar-fill" style="width:37%;background:#5a80b5;"></div></div>
-            <div class="gender-label">Male</div><div class="gender-pct">37%</div>
-          </div>
-          <div class="gender-item">
-            <div class="gender-bar-track"><div class="gender-bar-fill" style="width:2%;background:#c8c4be;"></div></div>
-            <div class="gender-label">Not stated</div><div class="gender-pct">1%</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Age -->
-      <div class="demo-panel" style="min-width:190px;">
-        <div class="demo-panel-title">Age group (2026)</div>
-        <div class="demo-chart-wrap"><canvas id="demoAge"></canvas></div>
-      </div>
-
-      <!-- Region -->
-      <div class="demo-panel" style="min-width:260px;flex:2;">
-        <div class="demo-panel-title">Region of origin</div>
-        <div class="demo-chart-wrap tall"><canvas id="demoRegion"></canvas></div>
-      </div>
-    </div>
 
 </body>
 </html>
