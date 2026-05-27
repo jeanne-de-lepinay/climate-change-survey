@@ -6,28 +6,43 @@
 
 // ── Manual editorial config ────────────────────────────────────────────────
 // Edit CLUSTER_PROFILES when the cluster analysis is rerun and profiles shift.
+// CLUSTER_PROFILES — edit only the narrative fields (tagline, drive, resonates).
+// The desc field is generated automatically from SD.clustering.cluster_stats at render time.
+// Run generate_data.py to update n, q8_mean, pct_serious after new data.
 var CLUSTER_PROFILES = window.CLUSTER_PROFILES = [
   { id: 0, name: 'Committed Believer', color: '#1e7a52',
     tagline: 'Alarmed, hopeful, and ready to act',
-    desc: '95% serious believers · Very high worry (8.5/10) · Hopeful · Willing to act · Largest group (n=150)',
     drive: 'Their conviction and hope coexist — they have accepted the science and found a way to remain motivated rather than paralysed. They worry intensely, stay informed, and feel a genuine sense of personal agency.',
     resonates: 'Takes their concern seriously without preaching. Concrete actions, measurable commitments, and honest acknowledgement of the travel tension.' },
   { id: 1, name: 'Strained Believer', color: '#c1440e',
     tagline: 'Fully convinced — but emotionally exhausted',
-    desc: '92% serious believers · High worry (8.39/10) · Overwhelmed or hopeless · Less willing to act (n=76)',
     drive: 'Their conviction is as strong as any other profile, but it has become a weight. The perceived gap between their own alarm and the world around them is self-reinforcing and draining.',
     resonates: 'Solidarity before strategy. Show them others share their concern. Bounded, achievable actions matter most — not grand-scale calls.' },
   { id: 2, name: 'Uncertain Moderate', color: '#2d6a8f',
     tagline: 'Engaged and willing — but not fully convinced',
-    desc: '58% partial believers · Moderate worry (6.65/10) · Mixed on human causes · Open to action (n=93)',
     drive: 'Epistemically careful, not disengaged. Their uncertainty about causation is genuine and coexists with real personal concern.',
     resonates: 'Epistemic openness paired with a clear action rationale. Avoid claiming more certainty than they have reached.' },
   { id: 3, name: 'Disengaged Skeptic', color: '#6b3fa0',
     tagline: 'Unconvinced, unmoved, and not seeking engagement',
-    desc: 'No respondents selected "serious human-caused problem" · Very low worry (2.12/10) · Low willingness · Dismissive of human agency (n=26)',
     drive: 'A settled alternative worldview — climate is natural and cyclical. They are aware they are in the minority onboard but remain unswayed.',
     resonates: 'Direct persuasion is unlikely to land. Nature and biodiversity are entry points that work on their own terms.' },
 ];
+
+// Build desc dynamically from cluster_stats so it never goes stale
+(function() {
+  const stats = SD.clustering && SD.clustering.cluster_stats;
+  if (!stats) return;
+  CLUSTER_PROFILES.forEach(p => {
+    const s = stats[String(p.id)];
+    if (!s) return;
+    const serious = s.pct_serious;
+    const seriousLabel = serious >= 90 ? `${serious}% serious believers`
+                       : serious >= 50 ? `${serious}% partial believers`
+                       : serious > 0   ? `${serious}% consider climate change serious`
+                       :                 'No respondents selected "serious human-caused problem"';
+    p.desc = `${seriousLabel} · Worry ${s.q8_mean}/10 · Willingness ${s.q7_mean}/5 · n=${s.n}`;
+  });
+})();
 
 // Q11 open comments — category counts/labels updated manually after reading comments.
 // totalSubstantive and totalBlank are computed automatically from SD (data.js).
@@ -462,6 +477,8 @@ function renderAll() {
   renderHeader(d);
   renderGlance(d);
   renderRepresentativeness();
+  renderConclusions();
+  renderFooter();
   renderQ1(d);
   renderQ2Q3(d);
   renderQ4Q5(d);
@@ -477,6 +494,24 @@ function renderHeader(d) {
   const dm = getDemographics();
   setT('meta-nationalities', (dm.n_nationalities || SD.meta.n_nationalities) + '+ countries');
   setT('meta-meanage', (dm.mean_age || SD.meta.mean_age) + ' years');
+
+  // Languages: per-cruise when a cruise is selected, union of all when 'all'
+  const langEl = document.getElementById('meta-languages');
+  if (langEl) {
+    if (activeFilter === 'all') {
+      // Collect all unique language names across all cruises, preserving order
+      const seen = new Set();
+      const all  = [];
+      (SD.meta.cruises || []).forEach(c => {
+        if (!c.languages) return;
+        c.languages.split(' · ').forEach(l => { if (!seen.has(l)) { seen.add(l); all.push(l); } });
+      });
+      langEl.textContent = all.join(' · ') || (SD.meta.languages || 'English');
+    } else {
+      const cruise = (SD.meta.cruises || []).find(c => c.id === activeFilter);
+      langEl.textContent = (cruise && cruise.languages) || SD.meta.languages || 'English';
+    }
+  }
   const minN = Math.min(d.q4.stats.n, d.q8.stats.n, d.q9.stats.n, d.q10.stats.n);
   const maxN = Math.max(d.q4.stats.n, d.q8.stats.n);
   const mnEl = document.getElementById('method-n');
@@ -846,6 +881,98 @@ function renderRepresentativeness() {
     </div>`;
   }).join('');
 })();
+
+
+// ── Conclusions ────────────────────────────────────────────────────────────────
+function renderConclusions() {
+  const d    = SD.survey.all;
+  const g    = SD.glance;
+  const cs   = SD.clustering && SD.clustering.cluster_stats;
+  const q11  = d.q11 || {};
+  const n    = SD.meta.total_n;
+  const nCruises = SD.meta.cruises.length;
+
+  // Cluster shorthands
+  const c0 = cs && cs["0"], c1 = cs && cs["1"], c2 = cs && cs["2"], c3 = cs && cs["3"];
+  const c0pct = c0 ? Math.round(c0.n / n * 100) : 0;
+
+  // Worry gap values
+  const q8m  = d.q8.stats.mean ? d.q8.stats.mean.toFixed(2) : "—";
+  const q9m  = d.q9.stats.mean ? d.q9.stats.mean.toFixed(2) : "—";
+  const q10m = d.q10.stats.mean ? d.q10.stats.mean.toFixed(2) : "—";
+  const gapSP  = (d.q8.stats.mean && d.q9.stats.mean)  ? (d.q8.stats.mean  - d.q9.stats.mean).toFixed(2)  : "—";
+  const gapGP  = (d.q10.stats.mean && d.q9.stats.mean) ? (d.q10.stats.mean - d.q9.stats.mean).toFixed(2)  : "—";
+  const gapSG  = (d.q8.stats.mean && d.q10.stats.mean) ? (d.q8.stats.mean  - d.q10.stats.mean).toFixed(2) : "—";
+
+  // Top Q11 comment category (from hardcoded Q11 labels/counts)
+  const topCatCount = Q11.counts ? Math.max(...Q11.counts) : null;
+  const topCatLabel = (Q11.counts && Q11.labels)
+    ? Q11.labels[Q11.counts.indexOf(topCatCount)]
+    : null;
+
+  const cruiseWord = nCruises === 1 ? "cruise" : "cruises";
+
+  // ── Paragraph 1: Strong consensus
+  const p1el = document.getElementById("conclusion-1-text");
+  if (p1el && c0 && c1) {
+    p1el.innerHTML =
+      `With <strong>${n}</strong> respondents across <strong>${nCruises} ${cruiseWord}</strong>, ` +
+      `<strong>${g.pct_serious}%</strong> see climate change as a serious human-caused problem ` +
+      `and personal worry averages <strong>${q8m}/10</strong>. ` +
+      `The cluster analysis reveals the largest group (n=${c0.n}, ${c0pct}%) are ` +
+      `<em>${CLUSTER_PROFILES[0] ? CLUSTER_PROFILES[0].name : "Committed Believers"}</em> — ` +
+      `highly alarmed, hopeful and willing to act. ` +
+      `A smaller but intense group (n=${c1.n} <em>${CLUSTER_PROFILES[1] ? CLUSTER_PROFILES[1].name + "s" : "Strained Believers"}</em>) ` +
+      `shares equally high worry but skews overwhelmed or hopeless. ` +
+      `The line between them is not about belief — it is about whether they still see change as possible.`;
+  }
+
+  // ── Paragraph 2: Hope vs exhaustion
+  const p2el = document.getElementById("conclusion-2-text");
+  if (p2el && c0 && c1 && c2) {
+    p2el.innerHTML =
+      `Both the <em>${CLUSTER_PROFILES[0] ? CLUSTER_PROFILES[0].name : "Committed Believer"}</em> (n=${c0.n}) ` +
+      `and <em>${CLUSTER_PROFILES[1] ? CLUSTER_PROFILES[1].name : "Strained Believer"}</em> (n=${c1.n}) profiles ` +
+      `score above 8/10 on personal worry and include over 85% serious believers. ` +
+      `What separates them is outlook: ${CLUSTER_PROFILES[0] ? CLUSTER_PROFILES[0].name + "s" : "Committed Believers"} remain hopeful ` +
+      `and willing to act (Q7 mean: ${c0.q7_mean}/5), while ` +
+      `${CLUSTER_PROFILES[1] ? CLUSTER_PROFILES[1].name + "s" : "Strained Believers"} skew overwhelmed, hopeless or skeptical ` +
+      `(Q7 mean: ${c1.q7_mean}/5). ` +
+      `The <em>${CLUSTER_PROFILES[2] ? CLUSTER_PROFILES[2].name : "Uncertain Moderate"}</em> group (n=${c2.n}) ` +
+      `spans those uncertain about human causes alongside partial believers — ` +
+      `still registering substantial personal worry (${c2.q8_mean}/10) and openness to action, ` +
+      `a nuanced position that resists simple "denier" framing.`;
+  }
+
+  // ── Paragraph 3: Worry gap
+  const p3el = document.getElementById("conclusion-3-text");
+  if (p3el) {
+    const topCatStr = (topCatLabel && topCatCount)
+      ? ` ${topCatLabel.split("&")[0].trim()} is the top theme in open comments (${topCatCount} mentions), with` +
+        ` respondents highlighting the gap between personal alarm and collective response.`
+      : "";
+    p3el.innerHTML =
+      `Respondents place their own personal concern at <strong>${q8m}/10</strong> — ` +
+      `<strong>${gapSP}</strong> points above where they rate the general public (${q9m}/10). ` +
+      `Fellow guests are seen as more aware than the public (+${gapGP} points, ${q10m}/10), ` +
+      `but still ${gapSG} points below respondents' own alarm. ` +
+      `This three-tier structure is consistent across all ${nCruises} ${cruiseWord} and all ${n} respondents.` +
+      topCatStr;
+  }
+}
+
+// ── Footer ─────────────────────────────────────────────────────────────────────
+function renderFooter() {
+  const el = document.getElementById("site-footer");
+  if (!el) return;
+  const n        = SD.meta.total_n;
+  const nCruises = SD.meta.cruises.length;
+  const langs    = SD.meta.languages || "English";
+  const cruiseWord = nCruises === 1 ? "cruise" : "cruises";
+  el.textContent =
+    `Survey: "How do you feel about climate change?" · ${n} respondents across ${nCruises} ${cruiseWord} · ` +
+    `Paper & online surveys in ${langs} · HX Expeditions · Study conducted by Jeanne de Lépinay`;
+}
 
 // ── Initial render ─────────────────────────────────────────────────────────
 renderAll();
