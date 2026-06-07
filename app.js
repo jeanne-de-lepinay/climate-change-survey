@@ -49,16 +49,16 @@ var CLUSTER_PROFILES = window.CLUSTER_PROFILES = [
 const Q11 = {
   get totalSubstantive() { return SD.survey.all.q11 ? SD.survey.all.q11.substantive : 0; },
   get totalBlank()        { return SD.survey.all.q11 ? SD.survey.all.q11.blank        : 0; },
-  counts: [28, 21, 18, 17, 16, 12, 8, 7],
+  counts: [63, 47, 40, 38, 32, 18, 13, 12],
   labels: [
-    'Political inaction & government/corporate failure',
+    'Political inaction & need for government/corporate leadership',
     'Need for education, science literacy & awareness',
-    'Individual responsibility & lifestyle choices',
-    'Call for awareness & collective action',
-    'Skepticism or uncertainty — natural cycle framing',
+    'Individual responsibility, personal action & lifestyle choices',
+    'Skepticism or uncertainty — natural cycle, not (only) human-caused',
+    'Climate change is real & urgent — we must act now',
     'Concern for future generations',
-    'Personal conflict — travel, hypocrisy & individual limits',
-    'Doubts about green tech & unintended consequences',
+    'Personal conflict — travel, hypocrisy & the limits of individual impact',
+    'Doubts about green tech & unintended consequences (EVs, batteries, AI)',
   ],
 };
 
@@ -864,8 +864,8 @@ function renderRepresentativeness() {
 (function () {
   const wrap = document.getElementById('cluster-teaser-profiles'); if (!wrap) return;
   const stats = SD.clustering.cluster_stats;
-  const metricDefs  = [['8.5', 'Personal worry'], ['8.39', 'Personal worry'], ['6.65', 'Personal worry'], ['2.12', 'Personal worry']];
-  const willingDefs = ['4.35', '4.04', '3.92', '2.0'];
+  const metricDefs  = [['8.59', 'Personal worry'], ['8.31', 'Personal worry'], ['6.76', 'Personal worry'], ['3.11', 'Personal worry']];
+  const willingDefs = ['4.31', '4.19', '3.80', '2.56'];
   wrap.innerHTML = CLUSTER_PROFILES.map((p, i) => {
     const s = stats[String(p.id)] || {};
     const pct = s.n ? Math.round(s.n / SD.clustering.points.length * 100) + '%' : '';
