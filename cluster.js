@@ -98,9 +98,9 @@
     ctx.fillStyle = 'rgba(255,255,255,0.28)';
     ctx.font = '11px system-ui,sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('→ Worry + Belief', sx(9), sy(0) - 10);
+    ctx.fillText(t('cl.axis_x'), sx(9), sy(0) - 10);
     ctx.textAlign = 'left';
-    ctx.fillText('↑ Concern for others', sx(0) + 6, sy(7));
+    ctx.fillText(t('cl.axis_y'), sx(0) + 6, sy(7));
 
     // Cluster zone ellipses
     for (var ci = 0; ci < PROF.length; ci++) {
@@ -204,12 +204,13 @@
           '<div style="margin-bottom:5px"><span class="tid">' + closest.id + '</span>'
           + ' <span class="tcluster" style="background:' + hexToRgba(pf.color, 0.2) + ';color:' + pf.color
           + ';border:1px solid ' + hexToRgba(pf.color, 0.4) + '">P' + (closest.cluster + 1) + '</span></div>'
-          + '<div class="trow">Nationality: <span>' + (closest.nationality || '—') + '</span></div>'
-          + '<div class="trow">Age: <span>' + (closest.age || '?') + '</span> · Gender: <span>' + (closest.gender || '?') + '</span></div>'
-          + '<div class="trow">Q8 Personal worry: <span>' + (closest.q8 != null ? closest.q8 + '/10' : '?') + '</span>'
-          + ' · Q7 Willingness: <span>' + (closest.q7 != null ? closest.q7 + '/5' : '?') + '</span></div>'
-          + '<div class="trow" style="margin-top:4px;color:#888;font-size:0.9em">' + (closest.q1 || '').substring(0, 55) + '…</div>'
-          + '<div class="trow" style="color:#888;font-size:0.9em">' + (closest.q2 || '').substring(0, 50) + '</div>';
+          + '<div class="trow">' + t('cl.tt_nat') + ': <span>' + (tNationality(closest.nationality) || '—') + '</span></div>'
+          + '<div class="trow">' + t('cl.tt_age') + ': <span>' + (closest.age || '?') + '</span> · '
+          + t('cl.tt_gender') + ': <span>' + (tGender(closest.gender) || '?') + '</span></div>'
+          + '<div class="trow">' + t('cl.tt_q8') + ': <span>' + (closest.q8 != null ? closest.q8 + '/10' : '?') + '</span>'
+          + ' · ' + t('cl.tt_q7') + ': <span>' + (closest.q7 != null ? closest.q7 + '/5' : '?') + '</span></div>'
+          + '<div class="trow" style="margin-top:4px;color:#888;font-size:0.9em">' + tAnswer('q1', closest.q1) + '</div>'
+          + '<div class="trow" style="color:#888;font-size:0.9em">' + tAnswer('q2', closest.q2) + '</div>';
         var tipW = 230, tipH = 140;
         var tx = mx + 14, ty = my - 20;
         if (tx + tipW > W) tx = mx - tipW - 14;
@@ -241,7 +242,7 @@
       div.innerHTML =
         '<div class="legend-dot" style="background:' + p.color + '"></div>'
         + '<div class="legend-text"><strong>P' + (i + 1) + ': ' + p.name + '</strong>'
-        + '<br>' + p.desc + '<br><span class="count">' + n + ' respondents</span></div>';
+        + '<br>' + (p.desc || '') + '<br><span class="count">' + t('cl.respondents', { n: n }) + '</span></div>';
       div.addEventListener('click', function () {
         var wasActive = (activeCluster === i);
         activeCluster = wasActive ? null : i;
@@ -254,11 +255,11 @@
             panel.classList.remove('visible');
             panel.innerHTML = '';
           } else {
-            var cp = (window.CLUSTER_PROFILES || []).filter(function (x) { return x.name === p.name; })[0] || p;
+            var cp = (window.CLUSTER_PROFILES || [])[i] || p;
             panel.innerHTML =
               '<div class="profile-panel-name" style="color:' + p.color + '">' + (i + 1) + '. ' + p.name + '</div>'
               + (cp.tagline ? '<div class="profile-panel-tag">' + cp.tagline + '</div>' : '')
-              + (cp.drive ? '<div class="profile-panel-label">What drives them</div><div class="profile-panel-text">' + cp.drive + '</div>' : '');
+              + (cp.drive ? '<div class="profile-panel-label">' + t('cl.drives') + '</div><div class="profile-panel-text">' + cp.drive + '</div>' : '');
             panel.classList.add('visible');
           }
         }
@@ -273,6 +274,7 @@
     var wrap  = document.getElementById('clusterCruiseButtons');
     var label = document.getElementById('clusterCruiseFilterLabel');
     if (!wrap || !PTS.length) return;
+    wrap.innerHTML = '';   // clear so a language switch does not duplicate them
     var cruiseIds = [];
     PTS.forEach(function (p) { if (p.cruise && cruiseIds.indexOf(p.cruise) < 0) cruiseIds.push(p.cruise); });
     if (cruiseIds.length < 2 || !window.SD) return;
@@ -281,8 +283,8 @@
       var meta = (window.SD.meta.cruises || []).filter(function (c) { return c.id === cid; })[0] || { label: cid, dates: '' };
       var btn = document.createElement('button');
       btn.className = 'c-btn';
-      var shortLabel = meta.label.split('—')[0].trim();
-      var shortDate  = (meta.dates || '').split('–')[0].trim();
+      var shortLabel = tCruiseLabel(meta.label).split('—')[0].trim();
+      var shortDate  = tDates(meta.dates || '').split('–')[0].trim();
       btn.textContent = shortLabel + (shortDate ? ' (' + shortDate + '…)' : '');
       btn.addEventListener('click', function () { setHighlight('cruise-' + cid, btn); });
       wrap.appendChild(btn);
@@ -303,14 +305,8 @@
     if (inited) { resize(); return; }
     inited = true;
 
-    // Pull profiles from app.js editorial config
-    var _cp = window.CLUSTER_PROFILES || [
-      { id: 0, name: 'Committed Believer',  color: '#1e7a52', desc: '95% serious believers · Very high worry (8.5/10) · Hopeful · Willing to act · Largest group (n=150)' },
-      { id: 1, name: 'Strained Believer',   color: '#c1440e', desc: '92% serious believers · High worry (8.39/10) · Overwhelmed or hopeless · n=76' },
-      { id: 2, name: 'Uncertain Moderate',  color: '#2d6a8f', desc: '28% serious believers · Moderate worry (6.65/10) · Cautious but open to action · n=93' },
-      { id: 3, name: 'Disengaged Skeptic',  color: '#6b3fa0', desc: '4% serious believers · Very low worry (2.12/10) · Low personal willingness · Dismissive · n=26' },
-    ];
-    PROF = _cp.map(function (p) { return Object.assign({}, p); });
+    // Profiles come from app.js (names/taglines are translated there)
+    PROF = (window.CLUSTER_PROFILES || []).map(function (p) { return Object.assign({}, p); });
 
     var cl = window.SD.clustering;
     PTS  = cl.points;
@@ -322,5 +318,20 @@
     resize();
   }
   window.initCluster = initCluster;
+
+  // ── Public: rebuildCluster — called by setLang() ─────────────────────────
+  // Re-reads the (re-translated) profiles and redraws everything that holds
+  // text. Does nothing if the overlay has never been opened.
+  function rebuildCluster() {
+    if (!inited) return;
+    PROF = (window.CLUSTER_PROFILES || []).map(function (p) { return Object.assign({}, p); });
+    var panel = document.getElementById('profilePanel');
+    if (panel) { panel.classList.remove('visible'); panel.innerHTML = ''; }
+    activeCluster = null;
+    buildLegend();
+    buildCruiseButtons();
+    draw();
+  }
+  window.rebuildCluster = rebuildCluster;
 
 })();

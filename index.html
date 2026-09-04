@@ -21,18 +21,22 @@
 <header>
   <div class="header-deco"></div>
   <div class="header-top-nav">
-    <div class="header-eyebrow">Polar Expedition Survey</div>
+    <div class="header-brand">
+      <div class="header-eyebrow" data-i18n="hdr.eyebrow">Polar Expedition Survey</div>
+      <!-- Language switcher — flag buttons are injected by i18n.js -->
+      <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language"></div>
+    </div>
     <nav class="page-nav">
-      <button class="page-nav-btn active" id="nav-survey" onclick="showPage('survey')">Survey results</button>
-      <button class="page-nav-btn" id="nav-cluster" onclick="showPage('cluster')">Respondent profiles</button>
+      <button class="page-nav-btn active" id="nav-survey" onclick="showPage('survey')" data-i18n="nav.survey">Survey results</button>
+      <button class="page-nav-btn" id="nav-cluster" onclick="showPage('cluster')" data-i18n="nav.profiles">Respondent profiles</button>
     </nav>
   </div>
 
   <div class="header-body">
-    <h1>How do you feel about <em>climate change?</em></h1>
+    <h1 data-i18n-html="hdr.h1">How do you feel about <em>climate change?</em></h1>
     <p class="header-intro">
-      This survey is conducted on HX expedition vessels to Antarctica &amp; Arctic regions. It is an ongoing study on our ships' microcosm and will continue to evolve as more answers are added to the database. Results below represent the answers of guests who chose to participate — a self-selected group with an interest in science, nature, and polar environments.
-      <span class="header-intro-method">Methodology — Surveys were distributed as paper forms and via QR code (online version) and transcribed by a single analyst (Jeanne de Lépinay). Where a respondent ticked two answers to a single-choice question, each was counted as 0.5. Unmarked scale items were excluded from that question's denominator. Participation bias, language barriers, question phrasing and single-analyst transcription may influence results.</span>
+      <span data-i18n-html="hdr.intro">This survey is conducted on HX expedition vessels to Antarctica &amp; Arctic regions.</span>
+      <span class="header-intro-method" data-i18n-html="hdr.method">Methodology — Surveys were distributed as paper forms and via QR code.</span>
     </p>
 
     <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px;position:relative;overflow:visible;">
@@ -40,14 +44,14 @@
       <!-- Demographics toggle -->
       <button class="demo-toggle-btn" id="demoToggle" onclick="toggleDemo()">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="5" r="2"/><path d="M7 8v2M4 11a3 3 0 016 0"/></svg>
-        Respondent demographics
+        <span data-i18n="btn.demographics">Respondent demographics</span>
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 6,8 10,4"/></svg>
       </button>
 
       <!-- Cruise filter toggle -->
       <div id="filter-badge" style="display:none;"></div>
       <button id="cruiseToggle" onclick="toggleCruises()" style="display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,0.5);background:transparent;border:none;padding:8px 4px;font-family:inherit;">
-        Cruises included in this dataset
+        <span data-i18n="btn.cruises">Cruises included in this dataset</span>
         <svg id="cruiseChevron" width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><polyline points="2,3 5.5,7 9,3"/></svg>
       </button>
 
@@ -55,53 +59,53 @@
   </div>
 
   <div class="header-meta">
-    <div><div class="meta-label">Respondents</div><div class="meta-value" id="meta-n">362</div></div>
-    <div><div class="meta-label">Questions</div><div class="meta-value">Q1 – Q11</div></div>
-    <div><div class="meta-label">Languages</div><div class="meta-value" id="meta-languages">English · Chinese · German</div></div>
-    <div><div class="meta-label">Nationalities</div><div class="meta-value" id="meta-nationalities">25+ countries</div></div>
-    <div><div class="meta-label">Mean age</div><div class="meta-value" id="meta-meanage">64 years</div></div>
+    <div><div class="meta-label" data-i18n="meta.respondents">Respondents</div><div class="meta-value" id="meta-n">362</div></div>
+    <div><div class="meta-label" data-i18n="meta.questions">Questions</div><div class="meta-value" data-i18n="meta.questions_val">Q1 – Q11</div></div>
+    <div><div class="meta-label" data-i18n="meta.languages">Available languages</div><div class="meta-value" id="meta-languages">English · Chinese · German</div></div>
+    <div><div class="meta-label" data-i18n="meta.nationalities">Nationalities</div><div class="meta-value" id="meta-nationalities">25+ countries</div></div>
+    <div><div class="meta-label" data-i18n="meta.meanage">Mean age</div><div class="meta-value" id="meta-meanage">64 years</div></div>
   </div>
 </header>
 
 <main>
 
 <!-- AT A GLANCE -->
-<div style="margin-top:4px"><div class="section-label">At a glance</div></div>
+<div style="margin-top:4px"><div class="section-label" data-i18n="glance.label">At a glance</div></div>
 <div class="stat-row"></div>
 
 <div id="small-sample-warning" style="display:none;margin-bottom:20px;padding:12px 18px;background:#fff8ee;border:1px solid #e09a5a;border-left:4px solid #c8773a;border-radius:8px;font-size:12.5px;color:#7a4a15;line-height:1.6;">
-  ⚠️ <strong>Small sample size (n=<span id="small-sample-n">15</span>)</strong> — Results for a single cruise should be interpreted with caution. Percentages may shift significantly as more respondents are added.
+  ⚠️ <span id="small-sample-text"></span>
 </div>
 
 <div id="repr-card-slot"></div>
 
 <details id="methodology-details" class="intro-details">
-  <summary>Statistical methodology &amp; caveats</summary>
+  <summary data-i18n="meth.summary">Statistical methodology &amp; caveats</summary>
   <div class="intro-details-body">
-    <div class="intro-subhead">Sample</div>
-    <p>Self-selected convenience sample of HX expedition guests who chose to complete the survey. Not representative of the general public. Participation bias likely skews toward higher environmental concern.</p>
-    <div class="intro-subhead">Scale questions (Q4, Q6–Q10)</div>
-    <p>Distributions reported as raw counts, mean (μ), median, standard deviation (σ), and mode. For Q8–Q10, a fitted normal curve is shown alongside observed bars for reference — these are not a modelling claim, only a visual aid for assessing skew.</p>
-    <div class="intro-subhead">Cluster analysis</div>
-    <p>k-means clustering (k=4, 100 random initialisations, scikit-learn defaults) applied to <span id="method-n">n=345</span> respondents with complete responses across Q1–Q10 (Q11 excluded). Variables were standardised (z-score) before clustering. Four clusters selected by visual inspection of inertia elbow and silhouette scores. Cluster centres projected onto PCA space (2D) for visualisation.</p>
-    <div class="intro-subhead">Fractional counts</div>
-    <p>Where a respondent ticked two options for a single-choice question, each was assigned a weight of 0.5. This produces fractional totals (e.g. 248.0) which are displayed as-is rather than rounded to avoid introducing error.</p>
+    <div class="intro-subhead" data-i18n="meth.sample_h">Sample</div>
+    <p data-i18n="meth.sample_p">Self-selected convenience sample.</p>
+    <div class="intro-subhead" data-i18n="meth.scale_h">Scale questions (Q4, Q6–Q10)</div>
+    <p data-i18n="meth.scale_p">Distributions reported as raw counts, mean, median, standard deviation and mode.</p>
+    <div class="intro-subhead" data-i18n="meth.cluster_h">Cluster analysis</div>
+    <p data-i18n-html="meth.cluster_p">k-means clustering applied to <span id="method-n"></span> respondents.</p>
+    <div class="intro-subhead" data-i18n="meth.frac_h">Fractional counts</div>
+    <p data-i18n="meth.frac_p">Where a respondent ticked two options, each was assigned a weight of 0.5.</p>
   </div>
 </details>
 
-<div class="divider"><div class="divider-line"></div><div class="divider-text">Views &amp; Reactions — Q1 · Q2 · Q3</div><div class="divider-line"></div></div>
+<div class="divider"><div class="divider-line"></div><div class="divider-text" data-i18n-html="div.q123">Views &amp; Reactions — Q1 · Q2 · Q3</div><div class="divider-line"></div></div>
 
 <!-- Q1 -->
 <div class="grid-1" style="margin-bottom:24px;">
   <div class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
     <div>
-      <div class="card-q">Q1 — Key finding</div>
-      <div class="card-title" style="font-size:21px;margin-bottom:12px;">Which statement comes closest to your view about climate change?</div>
-      <div class="card-note" id="q1-note" style="margin-bottom:24px;">Single choice · 361 respondents</div>
+      <div class="card-q" data-i18n="q1.tag">Q1 — Key finding</div>
+      <div class="card-title" style="font-size:21px;margin-bottom:12px;" data-i18n="q1.title">Which statement comes closest to your view about climate change?</div>
+      <div class="card-note" id="q1-note"></div>
       <div style="background:var(--paper);border-radius:12px;padding:20px 24px;border:1px solid var(--rule);margin-bottom:16px;">
-        <div style="font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;">Most common response</div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;" data-i18n="q1.mostcommon">Most common response</div>
         <div id="q1-bignum" style="font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:var(--teal);line-height:1;">—</div>
-        <div style="font-size:14px;color:var(--ink-mid);margin-top:8px;line-height:1.5;">consider climate change a <strong style="color:var(--ink)">serious problem caused by humans</strong> — the single most selected response by a wide margin.</div>
+        <div style="font-size:14px;color:var(--ink-mid);margin-top:8px;line-height:1.5;" data-i18n-html="q1.bigdesc">consider climate change a serious problem caused by humans.</div>
       </div>
       <div id="q1-interp" style="font-size:12px;color:var(--ink-light);line-height:1.6;"></div>
     </div>
@@ -115,18 +119,18 @@
 <div style="margin-bottom:28px;">
   <div style="background:linear-gradient(135deg,#f0f6f2 0%,#e8f1f5 100%);border:1px solid #c8ddd4;border-left:4px solid var(--teal);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;" class="further-reading-wrap">
     <div>
-      <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">Further reading</div>
-      <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.4;">Want to explore the science behind these questions?</div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;" data-i18n="ipcc.eyebrow">Further reading</div>
+      <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.4;" data-i18n="ipcc.head">Want to explore the science behind these questions?</div>
       <div style="font-size:12.5px;color:var(--ink-mid);line-height:1.7;max-width:640px;">
-        The <strong style="color:var(--ink);">IPCC</strong> — Intergovernmental Panel on Climate Change — is the United Nations body that synthesises peer-reviewed published climate science from thousands of independent researchers worldwide — assessing evidence, not advocating policy. Its conclusions account for the full span of Earth's climate history, including periods several millions of years ago when the planet was warmer, and for every known natural driver of variability: solar cycles, volcanic activity, orbital shifts. All have been scientifically measured and modelled and all data and methodologies are publicly available.
-        <span style="display:inline-block;margin-top:6px;">The <strong style="color:var(--ink);">Sixth Assessment Report (AR6)</strong>, published 2021–2023, is their most recent.</span>
-        <span style="display:block;margin-top:10px;padding-top:10px;border-top:1px solid #c8ddd4;font-style:italic;">Do you have questions about how scientists reached these conclusions? The IPCC publishes a dedicated FAQ alongside every report — a good place to start if you want to do your own research scientifically.</span>
+        <span data-i18n-html="ipcc.body"></span>
+        <span style="display:inline-block;margin-top:6px;" data-i18n-html="ipcc.ar6"></span>
+        <span style="display:block;margin-top:10px;padding-top:10px;border-top:1px solid #c8ddd4;font-style:italic;" data-i18n="ipcc.faq"></span>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;min-width:160px;text-align:center;">
-      <a href="https://www.ipcc.ch/" target="_blank" rel="noopener" style="display:block;padding:10px 16px;background:var(--teal);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.04em;line-height:1.4;">Visit the IPCC website<div style="font-weight:400;opacity:.85;margin-top:2px;">ipcc.ch</div></a>
-      <a href="https://www.ipcc.ch/report/ar6/wg1/downloads/faqs/IPCC_AR6_WGI_FAQs_Compiled.pdf" target="_blank" rel="noopener" style="display:block;padding:10px 16px;background:#fff;color:var(--teal);border:1.5px solid var(--teal);border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.04em;line-height:1.4;">Read the AR6 FAQ<div style="font-weight:400;opacity:.75;margin-top:2px;">PDF · common questions</div></a>
-      <a href="https://www.ipcc.ch/report/ar6/syr/downloads/report/IPCC_AR6_SYR_SPM.pdf" target="_blank" rel="noopener" style="display:block;padding:10px 16px;background:#fff;color:var(--teal);border:1.5px solid var(--teal);border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.04em;line-height:1.4;">Read the AR6 Summary<div style="font-weight:400;opacity:.75;margin-top:2px;">PDF · for policymakers</div></a>
+      <a href="https://www.ipcc.ch/" target="_blank" rel="noopener" style="display:block;padding:10px 16px;background:var(--teal);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.04em;line-height:1.4;"><span data-i18n="ipcc.btn1">Visit the IPCC website</span><div style="font-weight:400;opacity:.85;margin-top:2px;">ipcc.ch</div></a>
+      <a href="https://www.ipcc.ch/report/ar6/wg1/downloads/faqs/IPCC_AR6_WGI_FAQs_Compiled.pdf" target="_blank" rel="noopener" style="display:block;padding:10px 16px;background:#fff;color:var(--teal);border:1.5px solid var(--teal);border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.04em;line-height:1.4;"><span data-i18n="ipcc.btn2">Read the AR6 FAQ</span><div style="font-weight:400;opacity:.75;margin-top:2px;" data-i18n="ipcc.btn2sub">PDF · common questions</div></a>
+      <a href="https://www.ipcc.ch/report/ar6/syr/downloads/report/IPCC_AR6_SYR_SPM.pdf" target="_blank" rel="noopener" style="display:block;padding:10px 16px;background:#fff;color:var(--teal);border:1.5px solid var(--teal);border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.04em;line-height:1.4;"><span data-i18n="ipcc.btn3">Read the AR6 Summary</span><div style="font-weight:400;opacity:.75;margin-top:2px;" data-i18n="ipcc.btn3sub">PDF · for policymakers</div></a>
     </div>
   </div>
 </div>
@@ -135,33 +139,33 @@
 <div class="grid-2">
   <div class="card">
     <div class="card-q">Q2</div>
-    <div class="card-title">When you hear about climate change, what best describes your reaction?</div>
-    <div class="card-note" id="q2-note">Single choice · 361 respondents</div>
+    <div class="card-title" data-i18n="q2.title">When you hear about climate change, what best describes your reaction?</div>
+    <div class="card-note" id="q2-note"></div>
     <div class="h-donut"><canvas id="q2Chart"></canvas></div>
   </div>
   <div class="card">
     <div class="card-q">Q3</div>
-    <div class="card-title">Which statement best matches your outlook on climate change?</div>
-    <div class="card-note" id="q3-note">Single choice · 361 respondents</div>
+    <div class="card-title" data-i18n="q3.title">Which statement best matches your outlook on climate change?</div>
+    <div class="card-note" id="q3-note"></div>
     <div class="h-donut"><canvas id="q3Chart"></canvas></div>
   </div>
 </div>
 
 <!-- Q4 Q5 -->
-<div class="divider"><div class="divider-line"></div><div class="divider-text">Behaviour &amp; Attitudes Towards Travel — Q4 · Q5</div><div class="divider-line"></div></div>
+<div class="divider"><div class="divider-line"></div><div class="divider-text" data-i18n-html="div.q45">Behaviour &amp; Attitudes Towards Travel — Q4 · Q5</div><div class="divider-line"></div></div>
 <div class="grid-2">
   <div class="card">
     <div class="card-q">Q4</div>
-    <div class="card-title">How often do you intentionally avoid climate-related information?</div>
-    <div class="card-note" id="q4-note">Scale: 1 = Never → 5 = Always · 353 respondents</div>
+    <div class="card-title" data-i18n="q4.title">How often do you intentionally avoid climate-related information?</div>
+    <div class="card-note" id="q4-note"></div>
     <div class="likert-bar" id="q4bar"></div>
     <div class="likert-legend" id="q4legend"></div>
     <div class="h-sm"><canvas id="q4Chart"></canvas></div>
   </div>
   <div class="card">
     <div class="card-q">Q5</div>
-    <div class="card-title">When you think about the climate impacts of travel and tourism, which best describes how you feel?</div>
-    <div class="card-note" id="q5-note">Single choice · 355 respondents</div>
+    <div class="card-title" data-i18n="q5.title">When you think about the climate impacts of travel and tourism, which best describes how you feel?</div>
+    <div class="card-note" id="q5-note"></div>
     <div class="likert-bar" id="q5bar"></div>
     <div class="likert-legend" id="q5legend"></div>
     <div class="h-sm"><canvas id="q5Chart"></canvas></div>
@@ -169,20 +173,20 @@
 </div>
 
 <!-- Q6 Q7 -->
-<div class="divider"><div class="divider-line"></div><div class="divider-text">Societal Views &amp; Personal Willingness — Q6 · Q7</div><div class="divider-line"></div></div>
+<div class="divider"><div class="divider-line"></div><div class="divider-text" data-i18n-html="div.q67">Societal Views &amp; Personal Willingness — Q6 · Q7</div><div class="divider-line"></div></div>
 <div class="grid-2">
   <div class="card">
     <div class="card-q">Q6</div>
-    <div class="card-title">How likely do you think large-scale societal changes to address climate change are, given the current social and political realities?</div>
-    <div class="card-note" id="q6-note">Scale: 1 = Very unlikely → 5 = Very likely · 354 respondents</div>
+    <div class="card-title" data-i18n="q6.title">How likely do you think large-scale societal changes are?</div>
+    <div class="card-note" id="q6-note"></div>
     <div class="likert-bar" id="q6bar"></div>
     <div class="likert-legend" id="q6legend"></div>
     <div class="h-sm"><canvas id="q6Chart"></canvas></div>
   </div>
   <div class="card">
     <div class="card-q">Q7</div>
-    <div class="card-title">If such large-scale changes were required, how willing would you personally be to make major changes to your way of life?</div>
-    <div class="card-note" id="q7-note">Scale: 1 = Very unwilling → 5 = Very willing · 357 respondents</div>
+    <div class="card-title" data-i18n="q7.title">How willing would you personally be to make major changes to your way of life?</div>
+    <div class="card-note" id="q7-note"></div>
     <div class="likert-bar" id="q7bar"></div>
     <div class="likert-legend" id="q7legend"></div>
     <div class="h-sm"><canvas id="q7Chart"></canvas></div>
@@ -190,13 +194,13 @@
 </div>
 
 <!-- Q8 Q9 Q10 -->
-<div class="divider"><div class="divider-line"></div><div class="divider-text">Worry Scales — Q8 · Q9 · Q10</div><div class="divider-line"></div></div>
+<div class="divider"><div class="divider-line"></div><div class="divider-text" data-i18n-html="div.q8910">Worry Scales — Q8 · Q9 · Q10</div><div class="divider-line"></div></div>
 
 <div class="grid-1">
   <div class="card">
     <div class="card-q">Q8</div>
-    <div class="card-title">How worried are <span style="font-style:italic;color:var(--teal)">you personally</span> about climate change?</div>
-    <div class="card-note" id="q8-cardnote">Scale: 1 = Not at all worried → 10 = Extremely worried · 356 respondents</div>
+    <div class="card-title" data-i18n-html="q8.title">How worried are you personally about climate change?</div>
+    <div class="card-note" id="q8-cardnote"></div>
     <div class="stat-strip" id="q8-strip"></div>
     <div class="h-hist"><canvas id="q8Chart"></canvas></div>
     <div class="dist-note" id="q8-note"></div>
@@ -206,8 +210,8 @@
 <div class="grid-1">
   <div class="card">
     <div class="card-q">Q9</div>
-    <div class="card-title">How worried do you think the <span style="font-style:italic;color:var(--blue)">general public</span> is about climate change?</div>
-    <div class="card-note" id="q9-cardnote">Scale: 1 = Not at all worried → 10 = Extremely worried · 353 respondents</div>
+    <div class="card-title" data-i18n-html="q9.title">How worried do you think the general public is about climate change?</div>
+    <div class="card-note" id="q9-cardnote"></div>
     <div class="stat-strip" id="q9-strip"></div>
     <div class="h-hist"><canvas id="q9Chart"></canvas></div>
     <div class="dist-note" id="q9-note"></div>
@@ -217,8 +221,8 @@
 <div class="grid-1">
   <div class="card">
     <div class="card-q">Q10</div>
-    <div class="card-title">How worried do you think <span style="font-style:italic;color:var(--amber)">fellow guests onboard</span> are about climate change?</div>
-    <div class="card-note" id="q10-cardnote">Scale: 1 = Not at all worried → 10 = Extremely worried · 352 respondents</div>
+    <div class="card-title" data-i18n-html="q10.title">How worried do you think fellow guests onboard are about climate change?</div>
+    <div class="card-note" id="q10-cardnote"></div>
     <div class="stat-strip" id="q10-strip"></div>
     <div class="h-hist"><canvas id="q10Chart"></canvas></div>
     <div class="dist-note" id="q10-note"></div>
@@ -228,21 +232,21 @@
 <!-- Combined overlap chart -->
 <div class="grid-1">
   <div class="card">
-    <div class="card-q">Q8 · Q9 · Q10 — Combined View</div>
-    <div class="card-title">The worry gap: self vs. fellow guests vs. general public</div>
-    <div class="card-note">All three distributions plotted as smoothed frequency curves on the same axis (% of respondents) · hover for values</div>
+    <div class="card-q" data-i18n="comb.tag">Q8 · Q9 · Q10 — Combined View</div>
+    <div class="card-title" data-i18n="comb.title">The worry gap: self vs. fellow guests vs. general public</div>
+    <div class="card-note" data-i18n="comb.note">All three distributions plotted as smoothed frequency curves.</div>
     <div class="h-overlap"><canvas id="overlapChart"></canvas></div>
     <div class="dist-note" id="overlap-note"></div>
   </div>
 </div>
 
 <!-- Q11 -->
-<div class="divider"><div class="divider-line"></div><div class="divider-text">Q11 · Open Comments — Thematic Categories</div><div class="divider-line"></div></div>
+<div class="divider"><div class="divider-line"></div><div class="divider-text" data-i18n-html="div.q11">Q11 · Open Comments — Thematic Categories</div><div class="divider-line"></div></div>
 <div class="grid-1">
   <div class="card">
     <div class="card-q">Q11</div>
-    <div class="card-title">What themes emerge from the open comments?</div>
-    <div class="card-note" id="q11-note">Substantive comments · some span multiple categories · full dataset only</div>
+    <div class="card-title" data-i18n="q11.title">What themes emerge from the open comments?</div>
+    <div class="card-note" id="q11-note"></div>
     <div class="h-tall"><canvas id="q11Chart"></canvas></div>
   </div>
 </div>
@@ -250,25 +254,22 @@
 <!-- CLUSTER TEASER -->
 <div class="cluster-teaser">
   <div class="cluster-teaser-left">
-    <div class="cluster-teaser-label">Going deeper</div>
+    <div class="cluster-teaser-label" data-i18n="teaser.label">Going deeper</div>
     <h2 class="cluster-teaser-title" style="display:flex;align-items:center;gap:10px;">
-      Four respondent profiles emerge from the data
+      <span data-i18n="teaser.title">Four respondent profiles emerge from the data</span>
       <span class="ctc-info-wrap">
         <button class="ctc-info-btn" onclick="toggleClusterInfo(event)" aria-label="How profiles were built">i</button>
         <div class="ctc-info-popup" id="ctcInfoPopup">
-          <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--rule);">How these profiles were built</div>
-          A <strong>k-means clustering</strong> (k=4, 100 initialisations) was applied to all respondents with complete data across 8 variables: climate view, emotional reaction, outlook on action, societal change realism, willingness to act, personal worry, perceived public worry, and perceived guest worry.<br><br>
-          Profiles are not pre-defined archetypes — they emerged from the data. Together they explain <strong>49.9% of total variance</strong> (PC1: 29.7%, PC2: 20.2%).<br><br>
-          <div style="background:#f9f8f5;border-radius:6px;padding:9px 11px;font-size:11.5px;color:var(--ink-mid);line-height:1.65;">
-            <strong style="color:var(--ink);">What does "% serious believers" mean?</strong><br>
-            Q1 asked respondents to choose the statement that best matched their view. Respondents who selected <em>"Climate change is a serious human-caused problem"</em> are counted as "serious believers." A profile showing <strong>0%</strong> means none of its members chose that answer.
-          </div>
+          <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--rule);" data-i18n="teaser.info_title">How these profiles were built</div>
+          <span data-i18n-html="teaser.info_p1"></span><br><br>
+          <span data-i18n-html="teaser.info_p2"></span><br><br>
+          <div style="background:#f9f8f5;border-radius:6px;padding:9px 11px;font-size:11.5px;color:var(--ink-mid);line-height:1.65;" data-i18n-html="teaser.info_box"></div>
         </div>
       </span>
     </h2>
-    <p class="cluster-teaser-intro">A cluster analysis is a statistical method that groups respondents based on the similarity of their answers across all survey questions — without any prior assumptions about what those groups should look like. The algorithm identifies four natural profiles by finding patterns that minimise the difference within each group and maximise it between groups. Profiles are not mutually exclusive types: they represent regions of a continuous landscape. The clearest finding: nearly half of respondents (n=150) are high-belief, high-worry Committed Believers — the dividing line between them and the Strained Believers (n=76) is not belief intensity, but whether they still see collective change as possible.</p>
+    <p class="cluster-teaser-intro" id="cluster-teaser-intro"></p>
     <button class="cluster-teaser-btn" onclick="showPage('cluster')">
-      <span>Explore respondent profiles</span>
+      <span data-i18n="teaser.btn">Explore respondent profiles</span>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
     </button>
   </div>
@@ -278,23 +279,23 @@
 <!-- CONCLUSION -->
 <div class="conclusion-section">
   <div class="conclusion-inner">
-    <div class="conclusion-label">Key findings</div>
-    <h2 class="conclusion-title">What this survey tells us</h2>
-    <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:28px;font-style:italic;">Conclusions are drawn from the complete dataset across all cruises.</p>
+    <div class="conclusion-label" data-i18n="concl.label">Key findings</div>
+    <h2 class="conclusion-title" data-i18n="concl.title">What this survey tells us</h2>
+    <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:28px;font-style:italic;" data-i18n="concl.note">Conclusions are drawn from the complete dataset across all cruises.</p>
     <div class="conclusion-grid">
 
       <div class="conclusion-card" id="conclusion-1">
-        <div class="conclusion-card-title">Strong consensus — but not uniformity</div>
+        <div class="conclusion-card-title" data-i18n="concl.t1">Strong consensus — but not uniformity</div>
         <p id="conclusion-1-text"></p>
       </div>
 
       <div class="conclusion-card" id="conclusion-2">
-        <div class="conclusion-card-title">The defining split: hope vs. exhaustion</div>
+        <div class="conclusion-card-title" data-i18n="concl.t2">The defining split: hope vs. exhaustion</div>
         <p id="conclusion-2-text"></p>
       </div>
 
       <div class="conclusion-card" id="conclusion-3">
-        <div class="conclusion-card-title">The worry gap — a consistent three-tier structure</div>
+        <div class="conclusion-card-title" data-i18n="concl.t3">The worry gap — a consistent three-tier structure</div>
         <p id="conclusion-3-text"></p>
       </div>
 
@@ -307,9 +308,9 @@
 
 <!-- ── CLUSTER OVERLAY (full-screen scatter plot) ────────────────────────── -->
 <div id="page-cluster" class="cluster-overlay" style="display:none;" aria-modal="true">
-  <button class="cluster-close-btn" onclick="closeCluster()" title="Back to survey results">
+  <button class="cluster-close-btn" onclick="closeCluster()" data-i18n-title="cl.back" title="Back to survey results">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="2" y1="2" x2="14" y2="14"/><line x1="14" y1="2" x2="2" y2="14"/></svg>
-    Back to survey
+    <span data-i18n="cl.back">Back to survey</span>
   </button>
   <div class="cluster-overlay-inner">
     <div class="cluster-layout">
@@ -318,55 +319,50 @@
         <div class="cluster-tooltip" id="clusterTip"></div>
       </div>
       <div class="cluster-sidebar">
-        <div class="c-section-title">Profiles</div>
+        <div class="c-section-title" data-i18n="cl.profiles">Profiles</div>
         <div class="cluster-legend" id="clusterLegend"></div>
         <div class="profile-panel" id="profilePanel"></div>
         <hr>
-        <div class="c-section-title">Axes (PCA)</div>
-        <div class="c-axis-note">
-          <strong style="color:#aaa">→ Horizontal (PC1, 29.7%)</strong><br>
-          Driven mainly by <em>climate view (Q1)</em>, personal worry (Q8), outlook (Q3), and societal hope (Q6). Right = strong belief + high personal concern.
-          <br><br>
-          <strong style="color:#aaa">↑ Vertical (PC2, 20.2%)</strong><br>
-          Driven by <em>societal and guest worry (Q9/Q10)</em>. Up = higher outward-facing concern.
-          <br><br>
-          Together these two axes explain <strong style="color:#aaa">49.9%</strong> of variance in the data.
-        </div>
+        <div class="c-section-title" data-i18n="cl.axes">Axes (PCA)</div>
+        <div class="c-axis-note" data-i18n-html="cl.axis_note"></div>
         <hr>
-        <div class="c-section-title">Highlight</div>
+        <div class="c-section-title" data-i18n="cl.highlight">Highlight</div>
         <div class="c-controls" id="clusterControls">
-          <button class="c-btn active" id="clusterBtnAll" onclick="setHighlight('all', this)">Show all</button>
-          <div class="c-filter-label" id="clusterCruiseFilterLabel" style="display:none;">Cruise</div>
+          <button class="c-btn active" id="clusterBtnAll" onclick="setHighlight('all', this)" data-i18n="cl.showall">Show all</button>
+          <div class="c-filter-label" id="clusterCruiseFilterLabel" style="display:none;" data-i18n="cl.f_cruise">Cruise</div>
           <div id="clusterCruiseButtons"></div>
-          <div class="c-filter-label">Gender</div>
-          <button class="c-btn" onclick="setHighlight('female', this)">Female respondents</button>
-          <button class="c-btn" onclick="setHighlight('male', this)">Male respondents</button>
-          <div class="c-filter-label">Age</div>
-          <button class="c-btn" onclick="setHighlight('young', this)">Under 50</button>
-          <button class="c-btn" onclick="setHighlight('old', this)">60+</button>
-          <div class="c-filter-label">Region</div>
-          <button class="c-btn" onclick="setHighlight('region-anz', this)">Australia &amp; NZ</button>
-          <button class="c-btn" onclick="setHighlight('region-europe', this)">Continental Europe</button>
-          <button class="c-btn" onclick="setHighlight('region-us', this)">North America</button>
-          <button class="c-btn" onclick="setHighlight('region-uk', this)">UK &amp; Ireland</button>
-          <button class="c-btn" onclick="setHighlight('region-china', this)">China</button>
-          <button class="c-btn" onclick="setHighlight('region-other', this)">Asia &amp; Middle East</button>
+          <div class="c-filter-label" data-i18n="cl.f_gender">Gender</div>
+          <button class="c-btn" onclick="setHighlight('female', this)" data-i18n="cl.f_female">Female respondents</button>
+          <button class="c-btn" onclick="setHighlight('male', this)" data-i18n="cl.f_male">Male respondents</button>
+          <div class="c-filter-label" data-i18n="cl.f_age">Age</div>
+          <button class="c-btn" onclick="setHighlight('young', this)" data-i18n="cl.f_under50">Under 50</button>
+          <button class="c-btn" onclick="setHighlight('old', this)" data-i18n="cl.f_60plus">60+</button>
+          <div class="c-filter-label" data-i18n="cl.f_region">Region</div>
+          <button class="c-btn" onclick="setHighlight('region-anz', this)" data-i18n="region.anz">Australia &amp; NZ</button>
+          <button class="c-btn" onclick="setHighlight('region-europe', this)" data-i18n="region.europe">Continental Europe</button>
+          <button class="c-btn" onclick="setHighlight('region-us', this)" data-i18n="region.na">North America</button>
+          <button class="c-btn" onclick="setHighlight('region-uk', this)" data-i18n="region.uk">UK &amp; Ireland</button>
+          <button class="c-btn" onclick="setHighlight('region-china', this)" data-i18n="region.china">China</button>
+          <button class="c-btn" onclick="setHighlight('region-other', this)" data-i18n="region.asia">Asia &amp; Middle East</button>
         </div>
       </div>
     </div>
   </div>
 </div><!-- /page-cluster -->
 
-<footer id="site-footer">Survey: "How do you feel about climate change?" · HX Expeditions · Study conducted by Jeanne de Lépinay</footer>
+<footer id="site-footer"></footer>
 
-<!-- Method note (inside main, after cluster teaser — kept here to avoid cluttering the main HTML) -->
-
-
-<!-- Scripts: data first, then Chart.js, then app logic, then cluster -->
+<!-- Scripts: data first, then translations, then Chart.js, app logic, cluster -->
 <script src="data.js"></script>
+<script src="i18n.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="app.js"></script>
 <script src="cluster.js"></script>
+<script>
+  // Build the flag switcher, then apply the chosen language to the static HTML.
+  buildLangSwitcher();
+  setLang(getLang(), { silent: true });
+</script>
 
 </body>
 </html>
