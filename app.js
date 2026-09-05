@@ -1014,7 +1014,7 @@ function renderFooter() {
   });
   const langs = langList.join(' · ') || SD.meta.languages || "English";
   const cruiseWord = t(nCruises === 1 ? 'word.cruise_one' : 'word.cruise_many');
-  el.textContent = t('footer.text', {
+  el.innerHTML = t('footer.text', {
     n: n, nc: nCruises, cruiseWord: cruiseWord, langs: tLanguages(langs),
   });
 }

@@ -672,3 +672,14 @@ body[data-lang="de"] .page-nav-btn {
 }
 body[data-lang="de"] .meta-label,
 body[data-lang="de"] .header-eyebrow { letter-spacing: .12em; }
+
+/* Author credit link (name → personal site), used in the methodology note
+   and the footer. Both sit on dark/tinted backgrounds, so it inherits the
+   surrounding text colour rather than using a fixed link colour. */
+.author-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+}
+.author-link:hover { text-decoration-color: currentColor; }

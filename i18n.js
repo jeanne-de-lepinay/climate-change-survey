@@ -36,7 +36,7 @@ T.en = {
   'nav.profiles': 'Respondent profiles',
   'hdr.h1': 'How do you feel about <em>climate change?</em>',
   'hdr.intro': 'This survey is conducted on HX expedition vessels to Antarctica &amp; Arctic regions. It is an ongoing study on our ships\' microcosm and will continue to evolve as more answers are added to the database. Results below represent the answers of guests who chose to participate — a self-selected group with an interest in science, nature, and polar environments.',
-  'hdr.method': 'Methodology — Surveys were distributed as paper forms and via QR code (online version) and transcribed by a single analyst (Jeanne de Lépinay). Where a respondent ticked two answers to a single-choice question, each was counted as 0.5. Unmarked scale items were excluded from that question\'s denominator. Participation bias, language barriers, question phrasing and single-analyst transcription may influence results.',
+  'hdr.method': 'Methodology — Surveys were distributed as paper forms and via QR code (online version) and transcribed by a single analyst (<a href="https://jeanne-de-lepinay.github.io/en/" target="_blank" rel="noopener" class="author-link">Jeanne de Lépinay</a>). Where a respondent ticked two answers to a single-choice question, each was counted as 0.5. Unmarked scale items were excluded from that question\'s denominator. Participation bias, language barriers, question phrasing and single-analyst transcription may influence results.',
   'btn.demographics': 'Respondent demographics',
   'btn.cruises': 'Cruises included in this dataset',
 
@@ -319,7 +319,7 @@ T.en = {
   'cl.drives': 'What drives them',
 
   // ── Footer ───────────────────────────────────────────────────────────────
-  'footer.text': 'Survey: "How do you feel about climate change?" · {n} respondents across {nc} {cruiseWord} · Paper & online surveys in {langs} · HX Expeditions · Study conducted by Jeanne de Lépinay',
+  'footer.text': 'Survey: "How do you feel about climate change?" · {n} respondents across {nc} {cruiseWord} · Paper & online surveys in {langs} · HX Expeditions · Study conducted by <a href="https://jeanne-de-lepinay.github.io/en/" target="_blank" rel="noopener" class="author-link">Jeanne de Lépinay</a>',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -332,7 +332,7 @@ T.de = {
   'nav.profiles': 'Teilnehmerprofile',
   'hdr.h1': 'Wie denken Sie über den <em>Klimawandel?</em>',
   'hdr.intro': 'Diese Umfrage wird an Bord der HX-Expeditionsschiffe in der Antarktis &amp; der Arktis durchgeführt. Sie ist eine laufende Studie über den Mikrokosmos unserer Schiffe und wird sich weiterentwickeln, sobald weitere Antworten in die Datenbank aufgenommen werden. Die folgenden Ergebnisse geben die Antworten jener Gäste wieder, die freiwillig teilgenommen haben — eine selbstgewählte Gruppe mit Interesse an Wissenschaft, Natur und Polarregionen.',
-  'hdr.method': 'Methodik — Die Fragebögen wurden in Papierform und per QR-Code (Online-Version) verteilt und von einer einzigen Person ausgewertet (Jeanne de Lépinay). Wenn Teilnehmende bei einer Einfachauswahl zwei Antworten ankreuzten, wurde jede mit 0,5 gewertet. Nicht ausgefüllte Skalenfragen wurden aus dem Nenner der jeweiligen Frage ausgeschlossen. Teilnahmeverzerrung, Sprachbarrieren, Fragenformulierung und die Übertragung durch eine einzelne Person können die Ergebnisse beeinflussen.',
+  'hdr.method': 'Methodik — Die Fragebögen wurden in Papierform und per QR-Code (Online-Version) verteilt und von einer einzigen Person ausgewertet (<a href="https://jeanne-de-lepinay.github.io/en/" target="_blank" rel="noopener" class="author-link">Jeanne de Lépinay</a>). Wenn Teilnehmende bei einer Einfachauswahl zwei Antworten ankreuzten, wurde jede mit 0,5 gewertet. Nicht ausgefüllte Skalenfragen wurden aus dem Nenner der jeweiligen Frage ausgeschlossen. Teilnahmeverzerrung, Sprachbarrieren, Fragenformulierung und die Übertragung durch eine einzelne Person können die Ergebnisse beeinflussen.',
   'btn.demographics': 'Demografie der Teilnehmenden',
   'btn.cruises': 'In diesem Datensatz enthaltene Reisen',
 
@@ -596,7 +596,7 @@ T.de = {
   'cl.respondents': '{n} Teilnehmende',
   'cl.drives': 'Was sie antreibt',
 
-  'footer.text': 'Umfrage: „Wie denken Sie über den Klimawandel?“ · {n} Teilnehmende auf {nc} {cruiseWord} · Papier- und Online-Fragebögen auf {langs} · HX Expeditions · Studie durchgeführt von Jeanne de Lépinay',
+  'footer.text': 'Umfrage: „Wie denken Sie über den Klimawandel?“ · {n} Teilnehmende auf {nc} {cruiseWord} · Papier- und Online-Fragebögen auf {langs} · HX Expeditions · Studie durchgeführt von <a href="https://jeanne-de-lepinay.github.io/en/" target="_blank" rel="noopener" class="author-link">Jeanne de Lépinay</a>',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -609,7 +609,7 @@ T.fr = {
   'nav.profiles': 'Profils des participants',
   'hdr.h1': 'Que pensez-vous du <em>changement climatique ?</em>',
   'hdr.intro': 'Cette enquête est menée à bord des navires d’expédition HX en Antarctique &amp; en Arctique. Il s’agit d’une étude en cours sur le microcosme de nos navires, appelée à évoluer à mesure que de nouvelles réponses viennent enrichir la base de données. Les résultats ci-dessous reflètent les réponses des passagers qui ont choisi de participer : un groupe auto-sélectionné, intéressé par la science, la nature et les environnements polaires.',
-  'hdr.method': 'Méthodologie — Les questionnaires ont été distribués sur papier et par QR code (version en ligne), puis saisis par une seule analyste (Jeanne de Lépinay). Lorsqu\'un participant cochait deux réponses à une question à choix unique, chacune a été comptée pour 0,5. Les items d\'échelle laissés vides ont été exclus du dénominateur de la question concernée. Le biais de participation, les barrières linguistiques, la formulation des questions et la saisie par une seule personne peuvent influencer les résultats.',
+  'hdr.method': 'Méthodologie — Les questionnaires ont été distribués sur papier et par QR code (version en ligne), puis saisis par une seule analyste (<a href="https://jeanne-de-lepinay.github.io/en/" target="_blank" rel="noopener" class="author-link">Jeanne de Lépinay</a>). Lorsqu\'un participant cochait deux réponses à une question à choix unique, chacune a été comptée pour 0,5. Les items d\'échelle laissés vides ont été exclus du dénominateur de la question concernée. Le biais de participation, les barrières linguistiques, la formulation des questions et la saisie par une seule personne peuvent influencer les résultats.',
   'btn.demographics': 'Profil démographique des participants',
   'btn.cruises': 'Croisières incluses dans ce jeu de données',
 
@@ -873,7 +873,7 @@ T.fr = {
   'cl.respondents': '{n} participants',
   'cl.drives': 'Ce qui les motive',
 
-  'footer.text': 'Enquête : « Que pensez-vous du changement climatique ? » · {n} participants sur {nc} {cruiseWord} · Questionnaires papier et en ligne en {langs} · HX Expeditions · Étude réalisée par Jeanne de Lépinay',
+  'footer.text': 'Enquête : « Que pensez-vous du changement climatique ? » · {n} participants sur {nc} {cruiseWord} · Questionnaires papier et en ligne en {langs} · HX Expeditions · Étude réalisée par <a href="https://jeanne-de-lepinay.github.io/en/" target="_blank" rel="noopener" class="author-link">Jeanne de Lépinay</a>',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -886,7 +886,7 @@ T.zh = {
   'nav.profiles': '受访者画像',
   'hdr.h1': '您如何看待<em>气候变化？</em>',
   'hdr.intro': '本调查在前往南极与北极地区的 HX 探险船上进行。这是一项关于船上微观社会的持续研究，随着更多回答录入数据库，研究结果将不断更新。以下结果代表自愿参与的客人的回答：这是一个对科学、自然与极地环境感兴趣的自选群体。',
-  'hdr.method': '研究方法 — 问卷以纸质表格和二维码（在线版）两种方式发放，并由一位分析员（Jeanne de Lépinay）独立录入。若受访者在单选题中勾选了两个答案，每个答案计为 0.5。未作答的量表题目不计入该题的分母。参与偏差、语言障碍、问题表述方式以及由单人录入等因素均可能影响结果。',
+  'hdr.method': '研究方法 — 问卷以纸质表格和二维码（在线版）两种方式发放，并由一位分析员（<a href="https://jeanne-de-lepinay.github.io/en/" target="_blank" rel="noopener" class="author-link">Jeanne de Lépinay</a>）独立录入。若受访者在单选题中勾选了两个答案，每个答案计为 0.5。未作答的量表题目不计入该题的分母。参与偏差、语言障碍、问题表述方式以及由单人录入等因素均可能影响结果。',
   'btn.demographics': '受访者人口结构',
   'btn.cruises': '本数据集包含的航次',
 
@@ -1150,7 +1150,7 @@ T.zh = {
   'cl.respondents': '{n} 位受访者',
   'cl.drives': '他们的驱动力',
 
-  'footer.text': '调查：“您如何看待气候变化？” · {nc} 个{cruiseWord}共 {n} 位受访者 · 纸质及在线问卷语言：{langs} · HX Expeditions · 研究由 Jeanne de Lépinay 主持',
+  'footer.text': '调查：“您如何看待气候变化？” · {nc} 个{cruiseWord}共 {n} 位受访者 · 纸质及在线问卷语言：{langs} · HX Expeditions · 研究由 <a href="https://jeanne-de-lepinay.github.io/en/" target="_blank" rel="noopener" class="author-link">Jeanne de Lépinay</a> 主持',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
